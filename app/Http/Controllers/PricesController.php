@@ -15,7 +15,7 @@ class PricesController extends Controller
      */
     public function index()
     {
-        return view('prices.index', ['data' => Prices::select('id', 'kg', 'amount')->get()]);
+        return view('prices.index', ['data' => Prices::select('id', 'kg', 'amount', 'turn_on')->get()]);
     }
 
     /**
@@ -26,6 +26,25 @@ class PricesController extends Controller
     public function create()
     {
         //
+    }
+
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response 
+     */
+    public function status(Request $request)
+    {
+        $model = Prices::find($request->id);
+        if($model->turn_on == 0)
+        {
+            $model->turn_on = 1;
+        }
+        else
+        {
+            $model->turn_on = 0;
+        }
+        $model->save();
+        return redirect(route('prices.index'));
     }
 
     /**
@@ -40,9 +59,14 @@ class PricesController extends Controller
           'kg' => $request->kg,
           'amount' => $request->amount
         ]);
+        $data = Prices::select('id', 'kg', 'amount', 'turn_on')->get();
+        foreach($data as $value)
+        {
+            $value->url = route("prices.destroy", [$value->id]);
+        }
         return [
           'message' => "thêm mới thành công",
-          'data' => Prices::select('kg', 'amount')->get()
+          'data' => $data
         ];
     }
 
@@ -88,6 +112,7 @@ class PricesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Prices::find($id)->delete();
+        return redirect(route('prices.index'));
     }
 }

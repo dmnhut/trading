@@ -19,3 +19,4 @@ Route::get('/users', function () {
 });
 Route::resource('roles', 'RolesController');
 Route::resource('prices', 'PricesController');
+Route::post('prices/status', 'PricesController@status')->name('prices.status');
