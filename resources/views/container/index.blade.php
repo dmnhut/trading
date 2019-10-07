@@ -24,20 +24,23 @@
                 display: none !important;
             }
         }
+
     </style>
     @yield('style')
 </head>
+
 <body class="grey lighten-4">
     <nav class="grey darken-4">
         <div class="container">
             <div class="nav-wrapper">
-                <a href="" class="brand-logo center">Quản lý chuyển hàng</a>
-                <a href="#" title="Danh sách điều hướng" data-activates="side-nav" class="button-collapse show-on-large right">
+                <a href="" class="brand-logo center hide-on-med-and-down">Quản lý chuyển hàng</a>
+                <a href="#" title="Danh sách điều hướng" data-activates="side-nav"
+                    class="button-collapse show-on-large right">
                     <i class="material-icons">menu</i>
                 </a>
                 <ul class="right hide-on-med-and-down">
                     <li>
-                        <a href="" title="Bảng điều khiển"><i class="material-icons">dashboard</i></a>
+                        <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i class="material-icons">dashboard</i></a>
                     </li>
                 </ul>
                 <ul id="side-nav" class="side-nav">
@@ -50,35 +53,31 @@
                         </div>
                     </li>
                     <li>
-                        <a href="" title="Bảng điều khiển"><i class="material-icons">dashboard</i>Quản
+                        <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i
+                                class="material-icons">dashboard</i>Quản
                             lý chuyển hàng</a>
                     </li>
                     <li>
                         <div class="divider"></div>
                     </li>
                     <li>
-                        <a href=""><i class="material-icons">people</i>
-                            Tài khoản người dùng
+                        <a href="{{route('roles.index')}}">
+                            Nhóm người dùng
                         </a>
                     </li>
                     <li>
-                        <a href=""><i class="material-icons">book</i>
-                            Danh sách đơn hàng
-                        </a>
-                    </li>
-                    <li>
-                        <a href=""><i class="material-icons">attach_money</i>
-                            Lịch sử nạp tiền
+                        <a href="{{route('prices.index')}}">
+                            Cài đặt giá
                         </a>
                     </li>
                     <li>
                         <div class="divider"></div>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href=""><i class="material-icons">exit_to_app</i>
                             Đăng xuất
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -109,6 +108,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
         $('.button-collapse').sideNav();
+
     </script>
     @yield('script')
 </body>

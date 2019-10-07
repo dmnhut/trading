@@ -3,8 +3,8 @@
 <nav>
     <div class="nav-wrapper">
         <div class="col s12">
-            <a href="{{route('dashboard')}}" class="breadcrumb">Bảng điều khiển</a>
-            <a href="{{route('roles.index')}}" class="breadcrumb">Nhóm người dùng</a>
+            <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">Bảng điều khiển</a>
+            <a href="{{route('roles.index')}}" class="breadcrumb hide-on-med-and-down">Nhóm người dùng</a>
         </div>
     </div>
 </nav>
@@ -34,7 +34,7 @@
 </div>
 <div class="row">
     <center>
-      {{ $data->links() }}
+        {{ $data->links() }}
     </center>
 </div>
 @endsection
@@ -56,7 +56,8 @@
         for (let i = 1; i < rows.length; i++) {
             for (let cell = 0; cell < rows[i].childNodes.length; cell++) {
                 if (rows[i].childNodes[cell].childNodes.length !== 0) {
-                    if (rows[i].childNodes[cell].childNodes[0].nodeValue.toUpperCase().indexOf(this.value.toUpperCase()) > -1) {
+                    if (rows[i].childNodes[cell].childNodes[0].nodeValue.toUpperCase().indexOf(this.value
+                            .toUpperCase()) > -1) {
                         rows[i].style.display = "";
                         count++;
                         break;
@@ -72,5 +73,6 @@
             rows[0].style.display = "";
         }
     });
+
 </script>
 @endsection

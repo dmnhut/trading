@@ -2,10 +2,8 @@
 @section('content')
 <nav>
     <div class="nav-wrapper">
-        <div class="col s12">
-            <a href="{{route('dashboard')}}" class="breadcrumb">Bảng điều khiển</a>
-            <a href="{{route('prices.index')}}" class="breadcrumb">Cài đặt giá</a>
-        </div>
+        <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">Bảng điều khiển</a>
+        <a href="{{route('prices.index')}}" class="breadcrumb hide-on-med-and-down">Cài đặt giá</a>
     </div>
 </nav>
 <div class="row">
@@ -129,7 +127,7 @@
                     }
                     tbody += "</form>";
                     tbody += "</td>";
-                    
+
                     tbody += "<td>";
                     tbody += "<form method='POST' action='" + val.url + "'>";
                     tbody += "<input type='hidden' name='_method' value='DELETE'>";
