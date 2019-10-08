@@ -71,6 +71,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{route('pays.index')}}">
+                            Cài đặt phần trăm
+                        </a>
+                    </li>
+                    <li>
                         <div class="divider"></div>
                     </li>
                     {{-- <li>

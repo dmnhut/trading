@@ -13,9 +13,9 @@
     <form method="POST" action="{{route('roles.store')}}">
         @csrf
         <div class="row">
-            <div class="input-field col s6">
+            <div class="input-field col s12">
                 <input name="name" type="text">
-                <label>Tên nhóm người dùng</label>
+                <label>Nhóm người dùng</label>
             </div>
         </div>
         <div class="row">

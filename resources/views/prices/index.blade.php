@@ -16,10 +16,10 @@
     <table class="striped responsive-table">
         <thead>
             <tr>
-                <th>Số Kg</th>
+                <th>&lt;= Số Kg</th>
                 <th>Giá Tiền</th>
-                <th></th>
-                <th></th>
+                <th>Trạng Thái</th>
+                <th>Xóa</th>
             </tr>
         </thead>
         <tbody id="tbl">
