@@ -60,7 +60,6 @@
         .closebtn:hover {
             color: black;
         }
-
     </style>
     @yield('style')
 </head>
@@ -70,14 +69,12 @@
         <div class="container">
             <div class="nav-wrapper">
                 <a href="" class="brand-logo center hide-on-med-and-down">Quản lý chuyển hàng</a>
-                <a href="#" title="Danh sách điều hướng" data-activates="side-nav"
-                    class="button-collapse show-on-large right">
+                <a href="#" title="Danh sách điều hướng" data-activates="side-nav" class="button-collapse show-on-large right">
                     <i class="material-icons">menu</i>
                 </a>
                 <ul class="right hide-on-med-and-down">
                     <li>
-                        <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i
-                                class="material-icons">dashboard</i></a>
+                        <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i class="material-icons">dashboard</i></a>
                     </li>
                 </ul>
                 <ul id="side-nav" class="side-nav">
@@ -90,8 +87,7 @@
                         </div>
                     </li>
                     <li>
-                        <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i
-                                class="material-icons">dashboard</i>Quản
+                        <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i class="material-icons">dashboard</i>Quản
                             lý chuyển hàng</a>
                     </li>
                     <li>
@@ -139,7 +135,7 @@
         {{--</div>--}}
     </section>
     <footer class="section grey darken-4 white-text center">
-        <p><b>&copy; 2019</b> <i class="icon ion-heart"></i> <b>Github</b></p>
+        <p><b>&num;2019</b> <i class="icon ion-heart"></i> <i class="ion-social-tux"></i> &plus; <i class="ion-social-octocat"></i></p>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -154,15 +150,14 @@
         var i;
 
         for (i = 0; i < close.length; i++) {
-            close[i].onclick = function () {
+            close[i].onclick = function() {
                 var div = this.parentElement;
                 div.style.opacity = "0";
-                setTimeout(function () {
+                setTimeout(function() {
                     div.style.display = "none";
                 }, 600);
             }
         }
-
     </script>
     @yield('script')
 </body>
