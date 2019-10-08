@@ -145,13 +145,14 @@
     <script src="{{ url("material/js/materialize.min.js") }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
+        console.clear();
         $('.button-collapse').sideNav();
-        var close = document.getElementsByClassName("closebtn");
-        var i;
+        let close = document.getElementsByClassName("closebtn");
+        let i;
 
         for (i = 0; i < close.length; i++) {
             close[i].onclick = function() {
-                var div = this.parentElement;
+                let div = this.parentElement;
                 div.style.opacity = "0";
                 setTimeout(function() {
                     div.style.display = "none";
