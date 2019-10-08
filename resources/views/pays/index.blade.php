@@ -19,7 +19,7 @@
 </div>
 @endif
 <div class="card-panel">
-    <table class="striped responsive-table">
+    <table class="highlight responsive-table">
         <thead>
             <tr>
                 <th>Phần Trăm %</th>

@@ -13,7 +13,7 @@
     </div>
 </div>
 <div class="card-panel">
-    <table class="striped responsive-table">
+    <table class="highlight responsive-table">
         <thead>
             <tr>
                 <th>ID</th>
@@ -48,7 +48,7 @@
 @section('script')
 <script>
     console.clear();
-    document.querySelector("#txt").addEventListener("input", () => {
+    document.querySelector("#txt").addEventListener("input", function () {
         let count = 0;
         let rows = document.getElementsByTagName("table")[0].rows;
         for (let i = 1; i < rows.length; i++) {
