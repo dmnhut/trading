@@ -36,10 +36,20 @@ class PaysController extends Controller
      */
     public function store(Request $request)
     {
-        Pays::create([
-            'percent' => $request->percent
-        ]);
-        return redirect(route('pays.index'))->with(['message' => 'Thêm mới thành công']);
+        if (empty($request->percent)) {
+            return redirect(route('pays.index'))->with([
+              'message' => 'Phần trăm không được rỗng',
+              'error' => true
+            ]);
+        } else {
+            Pays::create([
+              'percent' => $request->percent
+            ]);
+            return redirect(route('pays.index'))->with([
+              'message' => 'Thêm mới thành công',
+              'error' => false
+            ]);
+        }
     }
 
     /**
@@ -49,17 +59,21 @@ class PaysController extends Controller
      */
     public function status(Request $request)
     {
+        $count = Pays::count();
         $model = Pays::find($request->id);
-        if($model->turn_on == 0)
-        {
-            $model->turn_on = 1;
+        if ($count == 1 && $model->turn_on == 1) {
+            return redirect(route('pays.index'));
         }
-        else
-        {
-            $model->turn_on = 0;
-        }
+        $model->turn_on = 1;
         $model->save();
-        return redirect(route('pays.index'))->with(['message' => 'Đã thay đổi trạng thái']);
+        Pays::where('id', '<>', $request->id)
+            ->update([
+                  'turn_on' => 0
+              ]);
+        return redirect(route('pays.index'))->with([
+          'message' => 'Đã thay đổi trạng thái',
+          'error' => false
+        ]);
     }
 
     /**
@@ -106,6 +120,9 @@ class PaysController extends Controller
     {
         $model = Pays::find($id);
         $model->delete();
-        return redirect(route('pays.index'))->with(['message' => 'Đã xóa thành công']);
+        return redirect(route('pays.index'))->with([
+          'message' => 'Đã xóa thành công',
+          'error' => false
+        ]);
     }
 }

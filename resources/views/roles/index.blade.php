@@ -27,6 +27,12 @@
                 <td>{{$value->name}}</td>
             </tr>
             @endforeach
+            @if($data->count() == 0)
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+            @endif
         </tbody>
     </table>
 </div>
@@ -48,7 +54,7 @@
 @section('script')
 <script>
     console.clear();
-    document.querySelector("#txt").addEventListener("input", function () {
+    document.querySelector("#txt").addEventListener("input", function() {
         let count = 0;
         let rows = document.getElementsByTagName("table")[0].rows;
         for (let i = 1; i < rows.length; i++) {
@@ -71,6 +77,5 @@
             rows[0].style.display = "";
         }
     });
-
 </script>
 @endsection

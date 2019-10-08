@@ -32,10 +32,10 @@
                         @csrf
                         <input type="hidden" name="id" value="{{$value->id}}"></input>
                         @if($value->turn_on == 0)
-                        <button class="waves-effect waves-light btn btn-small pink lighten-1">bật</button>
-                        @elseif($value->turn_on == 1)
-                        <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1">tắt</button>
-                        @endif
+                            <button class="waves-effect waves-light btn btn-small pink lighten-1">bật</button>
+                            @elseif($value->turn_on == 1)
+                                <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1">tắt</button>
+                                @endif
                     </form>
                 </td>
                 <td>
@@ -47,6 +47,14 @@
                 </td>
             </tr>
             @endforeach
+            @if($data->count() == 0)
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                @endif
         </tbody>
     </table>
 </div>
@@ -103,7 +111,7 @@
                 "kg": document.querySelector("#kg").value,
                 "amount": document.querySelector("#amount").value
             })
-            .then(function (response) {
+            .then(function(response) {
                 $(".modal").modal();
                 toastr.success(response.data.message);
                 document.querySelector("#kg").value = "";
@@ -141,11 +149,11 @@
                 });
                 document.querySelector("#tbl").innerHTML = tbody;
             })
-            .catch(function (error) {
+            .catch(function(error) {
                 console.log(error);
             });
     });
-    document.querySelector("#txt").addEventListener("input", function () {
+    document.querySelector("#txt").addEventListener("input", function() {
         let count = 0;
         let rows = document.getElementsByTagName("table")[0].rows;
         for (let i = 1; i < rows.length; i++) {
@@ -168,6 +176,5 @@
             rows[0].style.display = "";
         }
     });
-
 </script>
 @endsection

@@ -30,17 +30,14 @@ class PricesController extends Controller
 
     /**
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response 
+     * @return \Illuminate\Http\Response
      */
     public function status(Request $request)
     {
         $model = Prices::find($request->id);
-        if($model->turn_on == 0)
-        {
+        if ($model->turn_on == 0) {
             $model->turn_on = 1;
-        }
-        else
-        {
+        } else {
             $model->turn_on = 0;
         }
         $model->save();
@@ -60,8 +57,7 @@ class PricesController extends Controller
           'amount' => $request->amount
         ]);
         $data = Prices::select('id', 'kg', 'amount', 'turn_on')->get();
-        foreach($data as $value)
-        {
+        foreach ($data as $value) {
             $value->url = route("prices.destroy", [$value->id]);
         }
         return [
