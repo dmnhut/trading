@@ -2,9 +2,7 @@
 @section('content')
 <nav>
     <div class="nav-wrapper">
-        <div class="col s12">
-            <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">Bảng điều khiển</a>
-        </div>
+        <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">Bảng điều khiển</a>
     </div>
 </nav>
 <div class="col s12 m4 l4 pointer">

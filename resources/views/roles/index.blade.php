@@ -2,10 +2,8 @@
 @section('content')
 <nav>
     <div class="nav-wrapper">
-        <div class="col s12">
-            <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">Bảng điều khiển</a>
-            <a href="{{route('roles.index')}}" class="breadcrumb hide-on-med-and-down">Nhóm người dùng</a>
-        </div>
+        <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">Bảng điều khiển</a>
+        <a href="{{route('roles.index')}}" class="breadcrumb hide-on-med-and-down">Nhóm người dùng</a>
     </div>
 </nav>
 <div class="row">

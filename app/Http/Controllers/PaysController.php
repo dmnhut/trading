@@ -15,7 +15,7 @@ class PaysController extends Controller
      */
     public function index()
     {
-        return view('pays.index', ['data' => []]);
+        return view('pays.index', ['data' => Pays::select('id', 'percent', 'turn_on')->get()]);
     }
 
     /**
@@ -25,7 +25,7 @@ class PaysController extends Controller
      */
     public function create()
     {
-        //
+        return view('pays.create');
     }
 
     /**
@@ -36,7 +36,10 @@ class PaysController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Pays::create([
+            'percent' => $request->percent
+        ]);
+        return redirect(route('pays.index'))->with(['message' => 'Thêm mới thành công']);
     }
 
     /**
@@ -46,6 +49,17 @@ class PaysController extends Controller
      */
     public function status(Request $request)
     {
+        $model = Pays::find($request->id);
+        if($model->turn_on == 0)
+        {
+            $model->turn_on = 1;
+        }
+        else
+        {
+            $model->turn_on = 0;
+        }
+        $model->save();
+        return redirect(route('pays.index'))->with(['message' => 'Đã thay đổi trạng thái']);
     }
 
     /**
@@ -90,6 +104,8 @@ class PaysController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $model = Pays::find($id);
+        $model->delete();
+        return redirect(route('pays.index'))->with(['message' => 'Đã xóa thành công']);
     }
 }
