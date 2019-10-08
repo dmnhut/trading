@@ -2,7 +2,7 @@
 @section('content')
 <nav>
     <div class="row nav-wrapper">
-        <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">Bảng điều khiển</a>
+        <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
         <a href="{{route('pays.index')}}" class="breadcrumb hide-on-med-and-down">Cài đặt phần trăm</a>
         <a href="{{route('roles.create')}}" class="breadcrumb hide-on-med-and-down">Thêm mới phần trăm</a>
     </div>
