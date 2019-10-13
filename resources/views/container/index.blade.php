@@ -99,6 +99,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{route('users.index')}}">
+                            Người dùng
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{route('prices.index')}}">
                             Cài đặt giá
                         </a>
@@ -135,7 +140,7 @@
         {{--</div>--}}
     </section>
     <footer class="section grey darken-4 white-text center">
-        <p><b>&num;2019</b> <i class="icon ion-heart"></i> <i class="ion-social-tux"></i> &plus; <i class="ion-social-octocat"></i></p>
+        <p><b>2019</b> <i class="icon ion-heart"></i> <i class="ion-social-tux"></i> <i class="ion-social-octocat"></i></p>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
