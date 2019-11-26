@@ -1,6 +1,6 @@
 @extends('container.index')
 @section('content')
-<nav>
+<nav class="nav-top">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
     </div>

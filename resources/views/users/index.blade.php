@@ -1,15 +1,23 @@
 @extends('container.index')
 @section('content')
-<nav>
+<nav class="nav-top">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
-        <a href="{{route('prices.index')}}" class="breadcrumb hide-on-med-and-down">Người dùng</a>
+        <a href="{{route('users.index')}}" class="breadcrumb hide-on-med-and-down">Người dùng</a>
     </div>
 </nav>
-<div class="row">
-    <div class="input-field col s12">
-        <input id="txt" type="text" class="validate">
-        <label for="txt">Tìm kiếm</label>
+<div class="section">
+    <div class="row">
+        <div class="col s12">
+            <nav style="background-color:#e91e63">
+                <div class="nav-wrapper">
+                    <div class="input-field">
+                        <input id="txt" type="search" required>
+                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </div>
 </div>
 <div class="card-panel">
@@ -49,7 +57,7 @@
                         <input type="hidden" name="id" value="{{$value->id}}"></input>
                         @if($value->status == 2)
                             <button class="waves-effect waves-light btn btn-small pink lighten-1">khóa</button>
-                          @elseif($value->status == 3)
+                            @elseif($value->status == 3)
                                 <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1">mở khóa</button>
                                 @endif
                     </form>

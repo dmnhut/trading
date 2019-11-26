@@ -1,15 +1,23 @@
 @extends('container.index')
 @section('content')
-<nav>
+<nav class="nav-top">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
         <a href="{{route('roles.index')}}" class="breadcrumb hide-on-med-and-down">Nhóm người dùng</a>
     </div>
 </nav>
-<div class="row">
-    <div class="input-field col s12">
-        <input id="txt" type="text" class="validate">
-        <label for="txt">Tìm kiếm</label>
+<div class="section">
+    <div class="row">
+        <div class="col s12">
+            <nav style="background-color:#e91e63">
+                <div class="nav-wrapper">
+                    <div class="input-field">
+                        <input id="txt" type="search" required>
+                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </div>
 </div>
 <div class="card-panel">

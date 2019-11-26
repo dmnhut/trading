@@ -1,13 +1,13 @@
 @extends('container.index')
 @section('content')
-<nav>
-    <div class="row nav-wrapper">
+<nav class="nav-top">
+    <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
         <a href="{{route('pays.index')}}" class="breadcrumb hide-on-med-and-down">Cài đặt phần trăm</a>
-        <a href="{{route('roles.create')}}" class="breadcrumb hide-on-med-and-down">Thêm mới phần trăm</a>
+        <a href="{{route('pays.create')}}" class="breadcrumb hide-on-med-and-down">Thêm mới phần trăm</a>
     </div>
 </nav>
-<div class="row card-panel">
+<div class="card-panel">
     <form method="POST" action="{{route('pays.store')}}">
         @csrf
         <div class="row">
@@ -39,7 +39,7 @@
 <script>
     console.clear();
     $(document).ready(() => {
-        $('select').material_select();
+        $('select').formSelect();
     });
 
 </script>

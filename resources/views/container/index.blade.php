@@ -5,12 +5,11 @@
     <title>Hệ thống quản lý giao dịch chuyển hàng | Admin</title>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" type="image/png" href="{{ url("material/img/favicon.png") }}">
+    <link rel="shortcut icon" type="image/png" href="{{ url("img/favicon.png") }}">
     <!--Import Google Icon Font-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="{{ url("material/css/materialize.min.css") }}" media="screen,projection" />
-    <link rel="stylesheet" href="{{ url("material/css/main.css") }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@4.4.1/dist/css/tabulator.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
@@ -21,6 +20,12 @@
 
         @media(max-width: 650px) {
             .brand-logo {
+                display: none !important;
+            }
+        }
+
+        @media(max-width: 990px) {
+            .nav-top {
                 display: none !important;
             }
         }
@@ -68,8 +73,8 @@
     <nav class="grey darken-4">
         <div class="container">
             <div class="nav-wrapper">
-                <a href="" class="brand-logo center hide-on-med-and-down">Quản lý chuyển hàng</a>
-                <a href="#" title="Danh sách điều hướng" data-activates="side-nav" class="button-collapse show-on-large right">
+                <a href="{{route('dashboard')}}" class="brand-logo center hide-on-med-and-down">Quản lý chuyển hàng</a>
+                <a href="#" title="Danh sách điều hướng" data-target="slide-out" class="sidenav-trigger button-collapse show-on-large right">
                     <i class="material-icons">menu</i>
                 </a>
                 <ul class="right hide-on-med-and-down">
@@ -77,7 +82,7 @@
                         <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i class="material-icons">dashboard</i></a>
                     </li>
                 </ul>
-                <ul id="side-nav" class="side-nav">
+                <ul id="slide-out" class="sidenav">
                     <li>
                         <div class="user-view">
                             <div class="background">
@@ -147,11 +152,11 @@
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
     <script src="https://unpkg.com/tabulator-tables@4.4.1/dist/js/tabulator.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
-    <script src="{{ url("material/js/materialize.min.js") }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
         console.clear();
-        $('.button-collapse').sideNav();
+        $('.sidenav').sidenav();
         let close = document.getElementsByClassName("closebtn");
         let i;
 
