@@ -71,7 +71,7 @@ class UsersController extends Controller
             $extension = $request->file('path')->extension();
             $name = uniqid();
             $path = $name . '.' . $extension;
-            $image = url('img') . '/' . $path;
+            $image = $path;
             $user = new User();
             $user->path = $image;
             $file->move(public_path('img'), $path);

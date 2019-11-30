@@ -53,7 +53,7 @@
             @foreach ($data as $value)
             <tr>
                 <td>{{$value->name}}</td>
-                <td><img class="materialboxed" width="100" src="{{$value->path}}"/></td>
+                <td><img class="materialboxed" width="100" src="{{url('img') . '/' .$value->path}}"/></td>
                 <td>{{$value->email}}</td>
                 <td>{{$value->gender}}</td>
                 <td>{{$value->birthdate}}</td>
