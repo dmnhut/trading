@@ -36,8 +36,18 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        Roles::create(['name' => $request->name]);
-        return redirect(route('roles.index'));
+        if (empty($request->name)) {
+            return redirect(route('roles.index'))->with([
+            'message' => 'Tên nhóm người dùng không được rỗng',
+            'error' => true
+          ]);
+        } else {
+            Roles::create(['name' => $request->name]);
+            return redirect(route('roles.index'))->with([
+              'message' => 'Thêm mới thành công',
+              'error' => false
+            ]);
+        }
     }
 
     /**

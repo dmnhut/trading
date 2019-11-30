@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\User;
 
 class UsersController extends Controller
 {
@@ -13,7 +15,19 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return view('users.index');
+        $users = DB::select("select
+                                id,
+                                name,
+                                email,
+                                path,
+                                IF(gender = 1, 'Nam', 'Nữ') as 'gender',
+                                birthdate,
+                                identity_card,
+                                phone,
+                                2 as 'status'
+                            from
+                                users");
+        return view('users.index', ['data' => $users]);
     }
 
     /**
@@ -33,7 +47,6 @@ class UsersController extends Controller
      */
     public function status(Request $request)
     {
-
     }
 
     /**
@@ -44,7 +57,37 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (empty($request->name) || empty($request->identity_card) ||
+            empty($request->path) || empty($request->gender) ||
+            empty($request->birthdate) || empty($request->phone) ||
+            empty($request->password) || empty($request->email)) {
+            return redirect(route('users.index'))->with([
+            'message' => 'Chưa đủ thông tin',
+            'error' => true
+          ]);
+        } else {
+            $file = $request->file('path');
+            chmod($file, 0777 - umask());
+            $extension = $request->file('path')->extension();
+            $name = uniqid();
+            $path = $name . '.' . $extension;
+            $image = url('img') . '/' . $path;
+            $user = new User();
+            $user->path = $image;
+            $file->move(public_path('img'), $path);
+            $user->name = $request->name;
+            $user->identity_card = $request->identity_card;
+            $user->gender = $request->gender;
+            $user->birthdate = $request->birthdate;
+            $user->phone = $request->phone;
+            $user->password = $request->password;
+            $user->email = $request->email;
+            $user->save();
+            return redirect(route('users.index'))->with([
+              'message' => 'Thêm mới thành công',
+              'error' => false
+            ]);
+        }
     }
 
     /**

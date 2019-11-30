@@ -20,6 +20,19 @@
         </div>
     </div>
 </div>
+@if(!empty(Session::get('message')))
+@if(Session::get('error') == true)
+<div class="alert">
+    <span class="closebtn">&times;</span>
+    {{Session::get('message')}}
+</div>
+@else
+<div class="alert success">
+    <span class="closebtn">&times;</span>
+    {{Session::get('message')}}
+</div>
+@endif
+@endif
 <div class="card-panel">
     <table class="highlight responsive-table">
         <thead>
@@ -40,7 +53,7 @@
             @foreach ($data as $value)
             <tr>
                 <td>{{$value->name}}</td>
-                <td>{{$value->path}}</td>
+                <td><img class="materialboxed" width="100" src="{{$value->path}}"/></td>
                 <td>{{$value->email}}</td>
                 <td>{{$value->gender}}</td>
                 <td>{{$value->birthdate}}</td>
@@ -96,6 +109,7 @@
 @section('script')
 <script>
     console.clear();
+    $('.materialboxed').materialbox();
     document.querySelector("#txt").addEventListener("input", function() {
         let count = 0;
         let rows = document.getElementsByTagName("table")[0].rows;

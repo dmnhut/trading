@@ -20,6 +20,19 @@
         </div>
     </div>
 </div>
+@if(!empty(Session::get('message')))
+@if(Session::get('error') == true)
+<div class="alert">
+    <span class="closebtn">&times;</span>
+    {{Session::get('message')}}
+</div>
+@else
+<div class="alert success">
+    <span class="closebtn">&times;</span>
+    {{Session::get('message')}}
+</div>
+@endif
+@endif
 <div class="card-panel">
     <table class="highlight responsive-table">
         <thead>
@@ -36,11 +49,11 @@
             </tr>
             @endforeach
             @if($data->count() == 0)
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            @endif
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                @endif
         </tbody>
     </table>
 </div>
