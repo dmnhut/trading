@@ -15,7 +15,7 @@ class PricesController extends Controller
      */
     public function index()
     {
-        return view('prices.index', ['data' => Prices::select('id', 'kg', 'amount', 'turn_on')->get()]);
+        return view('prices.index', ['data' => Prices::select('id', 'kg', 'amount', 'turn_on')->where('del_flag', 0)->get()]);
     }
 
     /**
@@ -108,7 +108,7 @@ class PricesController extends Controller
      */
     public function destroy($id)
     {
-        Prices::find($id)->delete();
+        Prices::find($id)->update(['del_flag' => 1]);
         return redirect(route('prices.index'));
     }
 }

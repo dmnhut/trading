@@ -10,6 +10,6 @@ class BalanceLog extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id_order','id_user','id_shipper','amount','pay_shipper','note'
+      'id_order','id_user','id_shipper','amount','pay_shipper','note','del_flag'
     ];
 }

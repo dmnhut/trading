@@ -24,7 +24,7 @@
     <table class="highlight responsive-table">
         <thead>
             <tr>
-                <th>&le; Số Kg</th>
+                <th>Số Kg &le;</th>
                 <th>Giá Tiền</th>
                 <th>Trạng Thái</th>
                 <th>Xóa</th>

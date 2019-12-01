@@ -10,6 +10,6 @@ class AddressBook extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-     'id_user','id_province','id_district','id_ward','address'
+     'id_user','id_province','id_district','id_ward','address','del_flag'
    ];
 }

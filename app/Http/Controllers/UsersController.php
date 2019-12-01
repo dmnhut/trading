@@ -26,7 +26,9 @@ class UsersController extends Controller
                                  phone,
                                  2 as 'status'
                              from
-                                 users");
+                                 users
+                             where
+                                 del_flag = 0");
         return view('users.index', ['data' => $users]);
     }
 

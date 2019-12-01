@@ -10,6 +10,6 @@ class DetailShipper extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id_user','id_province','id_district','id_wards'
+      'id_user','id_province','id_district','id_wards','del_flag'
     ];
 }

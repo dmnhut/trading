@@ -15,7 +15,7 @@ class PaysController extends Controller
      */
     public function index()
     {
-        return view('pays.index', ['data' => Pays::select('id', 'percent', 'turn_on')->get()]);
+        return view('pays.index', ['data' => Pays::select('id', 'percent', 'turn_on')->where('del_flag', 0)->get()]);
     }
 
     /**
@@ -119,7 +119,8 @@ class PaysController extends Controller
     public function destroy($id)
     {
         $model = Pays::find($id);
-        $model->delete();
+        $model->del_flag = 1;
+        $model->save();
         return redirect(route('pays.index'))->with([
           'message' => 'Đã xóa thành công',
           'error' => false

@@ -10,6 +10,6 @@ class OrderDetail extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id_order','item_name','path','quantity','content'
+      'id_order','item_name','path','quantity','content','del_flag'
     ];
 }
