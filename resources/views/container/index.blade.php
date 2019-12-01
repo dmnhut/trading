@@ -13,59 +13,7 @@
     <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@4.4.1/dist/css/tabulator.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
-    <style>
-        .pointer {
-            cursor: pointer;
-        }
-
-        @media(max-width: 650px) {
-            .brand-logo {
-                display: none !important;
-            }
-        }
-
-        @media(max-width: 990px) {
-            .nav-top {
-                display: none !important;
-            }
-        }
-
-        .alert {
-            padding: 20px;
-            background-color: #f44336;
-            color: white;
-            opacity: 1;
-            transition: opacity 0.6s;
-            margin-bottom: 15px;
-        }
-
-        .alert.success {
-            background-color: #4CAF50;
-        }
-
-        .alert.info {
-            background-color: #2196F3;
-        }
-
-        .alert.warning {
-            background-color: #ff9800;
-        }
-
-        .closebtn {
-            margin-left: 15px;
-            color: white;
-            font-weight: bold;
-            float: right;
-            font-size: 22px;
-            line-height: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .closebtn:hover {
-            color: black;
-        }
-    </style>
+    <link rel="stylesheet" href="{{url('css/index.css')}}" />
     @yield('style')
 </head>
 
@@ -91,29 +39,29 @@
                             </div>
                         </div>
                     </li>
-                    <li>
+                    <li class="{{Request::is('/*') ? 'active' : ''}}">
                         <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i class="material-icons">dashboard</i>Quản
                             lý chuyển hàng</a>
                     </li>
                     <li>
                         <div class="divider"></div>
                     </li>
-                    <li>
+                    <li class="{{Request::is('roles*') ? 'active' : ''}}">
                         <a href="{{route('roles.index')}}">
                             Nhóm người dùng
                         </a>
                     </li>
-                    <li>
+                    <li class="{{Request::is('users*') ? 'active' : ''}}">
                         <a href="{{route('users.index')}}">
                             Người dùng
                         </a>
                     </li>
-                    <li>
+                    <li class="{{Request::is('prices*') ? 'active' : ''}}">
                         <a href="{{route('prices.index')}}">
                             Cài đặt giá
                         </a>
                     </li>
-                    <li>
+                    <li class="{{Request::is('pays*') ? 'active' : ''}}">
                         <a href="{{route('pays.index')}}">
                             Cài đặt phần trăm
                         </a>
@@ -121,16 +69,15 @@
                     <li>
                         <div class="divider"></div>
                     </li>
-                    {{-- <li>
+                    <li>
                         <a href=""><i class="material-icons">exit_to_app</i>
                             Đăng xuất
                         </a>
-                    </li> --}}
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
-
     <section class="section section-visitors lighten-4">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -138,11 +85,6 @@
             </div>
         </div>
         @yield('fix-btn')
-        {{--<div class="fixed-action-btn">--}}
-        {{--<a class="btn-floating btn-large pink">--}}
-        {{--<i class="material-icons">add</i>--}}
-        {{--</a>--}}
-        {{--</div>--}}
     </section>
     <footer class="section grey darken-4 white-text center">
         <p><b>2019</b> <i class="icon ion-heart"></i> <i class="ion-social-tux"></i> <i class="ion-social-octocat"></i></p>
@@ -154,22 +96,7 @@
     <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script>
-        console.clear();
-        $('.sidenav').sidenav();
-        let close = document.getElementsByClassName("closebtn");
-        let i;
-
-        for (i = 0; i < close.length; i++) {
-            close[i].onclick = function() {
-                let div = this.parentElement;
-                div.style.opacity = "0";
-                setTimeout(function() {
-                    div.style.display = "none";
-                }, 600);
-            }
-        }
-    </script>
+    <script src="{{url('js/container/index.js')}}"></script>
     @yield('script')
 </body>
 

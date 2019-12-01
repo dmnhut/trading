@@ -90,12 +90,5 @@
 </div>
 @endsection
 @section('script')
-<script>
-    console.clear();
-    $(document).ready(() => {
-        $(".datepicker").datepicker({
-            format: "dd/mm/yyyy"
-        });
-    });
-</script>
+<script src="{{url('js/users/create.js')}}"></script>
 @endsection

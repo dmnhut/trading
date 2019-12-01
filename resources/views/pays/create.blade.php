@@ -36,11 +36,5 @@
 </div>
 @endsection
 @section('script')
-<script>
-    console.clear();
-    $(document).ready(() => {
-        $('select').formSelect();
-    });
-
-</script>
+<script src="{{url('js/pays/create.js')}}"></script>
 @endsection

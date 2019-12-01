@@ -14,9 +14,6 @@
 Route::get('/', function () {
     return view('dashboard.index');
 })->name('dashboard');
-Route::get('/users', function () {
-    return view('users.index');
-});
 Route::resource('roles', 'RolesController');
 Route::resource('prices', 'PricesController');
 Route::post('prices/status', 'PricesController@status')->name('prices.status');

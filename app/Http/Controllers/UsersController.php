@@ -16,17 +16,17 @@ class UsersController extends Controller
     public function index()
     {
         $users = DB::select("select
-                                id,
-                                name,
-                                email,
-                                path,
-                                IF(gender = 1, 'Nam', 'Nữ') as 'gender',
-                                birthdate,
-                                identity_card,
-                                phone,
-                                2 as 'status'
-                            from
-                                users");
+                                 id,
+                                 name,
+                                 email,
+                                 path,
+                                 if(gender = 1, 'Nam', 'Nữ') as 'gender',
+                                 birthdate,
+                                 identity_card,
+                                 phone,
+                                 2 as 'status'
+                             from
+                                 users");
         return view('users.index', ['data' => $users]);
     }
 
