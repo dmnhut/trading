@@ -35,6 +35,3 @@
     </form>
 </div>
 @endsection
-@section('script')
-<script src="{{url('js/pays/create.js')}}"></script>
-@endsection

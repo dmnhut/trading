@@ -59,6 +59,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         if (empty($request->name) || empty($request->identity_card) ||
             empty($request->path) || empty($request->gender) ||
             empty($request->birthdate) || empty($request->phone) ||

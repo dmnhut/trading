@@ -1,7 +1,3 @@
-console.clear();
-$(document).ready(() => {
-    $(".modal").modal();
-});
 document.querySelector("#btn-cancel").addEventListener("click", () => {
     $(".modal").modal();
     document.querySelector("#kg").value = "";
@@ -55,7 +51,7 @@ document.querySelector("#btn-add").addEventListener("click", () => {
             console.log(error);
         });
 });
-document.querySelector("#txt").addEventListener("input", function() {
+document.querySelector("#txt").addEventListener("input", () => {
     let count = 0;
     let rows = document.getElementsByTagName("table")[0].rows;
     for (let i = 1; i < rows.length; i++) {

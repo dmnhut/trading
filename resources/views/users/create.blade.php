@@ -8,7 +8,7 @@
     </div>
 </nav>
 <div class="card-panel">
-    <form method="POST" action="{{route('users.store')}}" enctype="multipart/form-data">
+    <form id="users-create" action="{{route('users.store')}}" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col s6">
@@ -83,7 +83,7 @@
         </div>
         <div class="row">
             <div class="input-field col s6">
-                <button class="waves-effect waves-light btn">Thêm</button>
+                <button id="btn-add" class="waves-effect waves-light btn">Thêm</button>
             </div>
         </div>
     </form>

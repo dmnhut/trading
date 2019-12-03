@@ -1,6 +1,4 @@
-console.clear();
-$('.materialboxed').materialbox();
-document.querySelector("#txt").addEventListener("input", function() {
+document.querySelector("#txt").addEventListener("input", () => {
     let count = 0;
     let rows = document.getElementsByTagName("table")[0].rows;
     for (let i = 1; i < rows.length; i++) {
