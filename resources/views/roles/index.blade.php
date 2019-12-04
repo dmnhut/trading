@@ -72,6 +72,3 @@
     </div>
 </div>
 @endsection
-@section('script')
-<script src="{{url('js/roles/index.js')}}"></script>
-@endsection

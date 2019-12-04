@@ -86,6 +86,3 @@
     </div>
 </div>
 @endsection
-@section('script')
-<script scr="{{url('js/pays/index.js')}}"></script>
-@endsection

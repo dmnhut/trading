@@ -46,6 +46,7 @@
                 <th>Số CMND</th>
                 <th>Cập nhật</th>
                 <th>Trạng thái</th>
+                <th>Xóa</th>
             </tr>
         </thead>
         <tbody id="tbl">
@@ -61,24 +62,30 @@
                 <td>{{$value->identity_card}}</td>
                 <td>
                     <form method="GET" action="{{route('users.edit', [$value->id])}}">
-                        <button class="waves-effect waves-light btn btn-small red darken-2 lighten-1">xóa</button>
+                        <button class="waves-effect waves-light btn btn-small lighten-1">cập nhật</button>
                     </form>
                 </td>
                 <td>
                     <form method="POST" action="{{route('users.status')}}">
                         @csrf
                         <input type="hidden" name="id" value="{{$value->id}}">
-                        @if($value->status == 2)
-                            <button class="waves-effect waves-light btn btn-small pink lighten-1">khóa</button>
-                            @elseif($value->status == 3)
-                                <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1">mở khóa</button>
+                        @if($value->status == App\__::$STATUS[0])
+                            <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1">khóa</button>
+                          @elseif($value->status == App\__::$STATUS[1])
+                                <button class="waves-effect waves-light btn btn-small pink lighten-1">mở khóa</button>
                                 @endif
+                    </form>
+                </td>
+                <td>
+                    <form method="GET" action="{{route('users.destroy', [$value->id])}}">
+                        <button class="waves-effect waves-light btn btn-small red darken-2 lighten-1">xóa</button>
                     </form>
                 </td>
             </tr>
             @endforeach
             @else
             <tr>
+                <th>&nbsp;</th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>

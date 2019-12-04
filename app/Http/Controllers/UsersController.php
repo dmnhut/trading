@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\User;
 
@@ -16,19 +17,21 @@ class UsersController extends Controller
     public function index()
     {
         $users = DB::select("select
-                                 id,
-                                 name,
-                                 email,
-                                 path,
-                                 if(gender = 1, 'Nam', 'Nữ') as 'gender',
-                                 birthdate,
-                                 identity_card,
-                                 phone,
-                                 2 as 'status'
-                             from
-                                 users
-                             where
-                                 del_flag = 0");
+                                 users.id as id,
+                                 users.name as name,
+                                 users.email as email,
+                                 users.path as path,
+                                 if(users.gender = 1, 'Nam', 'Nữ') as 'gender',
+                                 users.birthdate as birthdate,
+                                 users.identity_card as identity_card,
+                                 users.phone as phone,
+                                 status.name as status
+                             from users
+                             left join status_user
+                             on status_user.id_user = users.id
+                             left join status
+                             on status.id = status_user.id_status
+                             where users.del_flag = 0");
         return view('users.index', ['data' => $users]);
     }
 
@@ -83,7 +86,7 @@ class UsersController extends Controller
             $user->gender = $request->gender;
             $user->birthdate = $request->birthdate;
             $user->phone = $request->phone;
-            $user->password = $request->password;
+            $user->password = Hash::make($request->password);
             $user->email = $request->email;
             $user->save();
             return redirect(route('users.index'))->with([
