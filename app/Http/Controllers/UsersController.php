@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use App\__;
 use App\User;
+use App\StatusUser;
 
 class UsersController extends Controller
 {
@@ -62,25 +64,47 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
-        if (empty($request->name) || empty($request->identity_card) ||
-            empty($request->path) || empty($request->gender) ||
-            empty($request->birthdate) || empty($request->phone) ||
-            empty($request->password) || empty($request->email)) {
-            return redirect(route('users.index'))->with([
-            'message' => 'Chưa đủ thông tin',
-            'error' => true
-          ]);
-        } else {
-            $file = $request->file('path');
-            chmod($file, 0777 - umask());
-            $extension = $request->file('path')->extension();
-            $name = uniqid();
-            $path = $name . '.' . $extension;
-            $image = $path;
-            $user = new User();
-            $user->path = $image;
-            $file->move(public_path('img'), $path);
+        if (__::$REDIRECT_USER == true) {
+            __::$REDIRECT_USER = false;
+            redirect(route('users.index'))->with([
+              'message' => __::$MESSAGES['success'],
+              'error' => false
+            ]);
+        }
+        $validate = [];
+        if (preg_match(__::$RE_NAME, $request->name) || $request->name == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][0]);
+        }
+        if (preg_match(__::$RE_IDENTITY_CARD, $request->identity_card) || $request->identity_card == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][1]);
+        }
+        if (preg_match(__::$RE_GENDER, $request->gender) || $request->gender == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][2]);
+        }
+        if ($request->birthdate == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][3]);
+        }
+        if (preg_match(__::$RE_PHONE, $request->phone) || $request->phone == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][4]);
+        }
+        if ($request->password == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][5]);
+        }
+        if (preg_match(__::$RE_EMAIL, $request->email) || $request->email == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][6]);
+        }
+        if (empty($validate)) {
+            if ($request->hasFile('path')) {
+                $file = $request->file('path');
+                chmod($file, 0777 - umask());
+                $extension = $request->file('path')->extension();
+                $name = uniqid();
+                $path = $name . '.' . $extension;
+                $image = $path;
+                $user = new User();
+                $user->path = $image;
+                $file->move(public_path('img'), $path);
+            }
             $user->name = $request->name;
             $user->identity_card = $request->identity_card;
             $user->gender = $request->gender;
@@ -89,10 +113,16 @@ class UsersController extends Controller
             $user->password = Hash::make($request->password);
             $user->email = $request->email;
             $user->save();
-            return redirect(route('users.index'))->with([
-              'message' => 'Thêm mới thành công',
-              'error' => false
+            StatusUser::create([
+              'id_status' => 1,
+              'id_user' => $user->id
             ]);
+            __::$REDIRECT_USER = true;
+        } else {
+            return [
+              'messages' => $validate,
+              'error' => true
+            ];
         }
     }
 

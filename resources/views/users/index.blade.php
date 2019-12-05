@@ -54,7 +54,13 @@
             @foreach ($data as $value)
             <tr>
                 <td>{{$value->name}}</td>
-                <td><img class="materialboxed" width="100" src="{{url('img') . '/' .$value->path}}" /></td>
+                <td>
+                    @if(empty($value->path))
+                        <img class="materialboxed" width="100" src="https://via.placeholder.com/100" />
+                        @else
+                        <img class="materialboxed" width="100" src="{{url('img') . '/' .$value->path}}" />
+                        @endif
+                </td>
                 <td>{{$value->email}}</td>
                 <td>{{$value->gender}}</td>
                 <td>{{$value->birthdate}}</td>
@@ -71,7 +77,7 @@
                         <input type="hidden" name="id" value="{{$value->id}}">
                         @if($value->status == App\__::$STATUS[0])
                             <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1">khóa</button>
-                          @elseif($value->status == App\__::$STATUS[1])
+                            @elseif($value->status == App\__::$STATUS[1])
                                 <button class="waves-effect waves-light btn btn-small pink lighten-1">mở khóa</button>
                                 @endif
                     </form>

@@ -38,13 +38,13 @@ class RolesController extends Controller
     {
         if (empty($request->name)) {
             return redirect(route('roles.index'))->with([
-            'message' => 'Tên nhóm người dùng không được rỗng',
+            'message' => __::$MESSAGES['errors']['roles'][0],
             'error' => true
           ]);
         } else {
             Roles::create(['name' => $request->name]);
             return redirect(route('roles.index'))->with([
-              'message' => 'Thêm mới thành công',
+              'message' => __::$MESSAGES['success'],
               'error' => false
             ]);
         }

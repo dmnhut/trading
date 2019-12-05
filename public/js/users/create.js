@@ -8,6 +8,14 @@ document.querySelector("#btn-add").addEventListener("click", (event) => {
         contentType: false,
         processData: false,
         data: data,
-        success: function(response) {}
+        success: function(response) {
+            if (response.error) {
+                response.messages.map((val) => {
+                    toastr["error"](val);
+                });
+            } else {
+                location = document.querySelector("#users-create").action
+            }
+        }
     });
 });

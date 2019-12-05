@@ -19,7 +19,7 @@
             </div>
             <div class="col s6">
                 <div class="input-field">
-                    <input id="identity_card" name="identity_card" type="text">
+                    <input id="identity_card" name="identity_card" type="number">
                     <label for="identity_card">Số chứng minh nhân dân</label>
                 </div>
             </div>

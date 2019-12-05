@@ -38,17 +38,25 @@ class PaysController extends Controller
     {
         if (empty($request->percent)) {
             return redirect(route('pays.index'))->with([
-              'message' => 'Phần trăm không được rỗng',
+              'message' => __::$MESSAGES['errors']['pays'][0],
               'error' => true
             ]);
         } else {
-            Pays::create([
-              'percent' => $request->percent
-            ]);
-            return redirect(route('pays.index'))->with([
-              'message' => 'Thêm mới thành công',
-              'error' => false
-            ]);
+            $percent = Pays::where('percent', $request->percent)->get();
+            if (empty($percent)) {
+                Pays::create([
+                  'percent' => $request->percent
+                ]);
+                return redirect(route('pays.index'))->with([
+                  'message' => __::$MESSAGES['success'],
+                  'error' => false
+                ]);
+            } else {
+                return redirect(route('pays.index'))->with([
+                  'message' => __::$MESSAGES['errors']['pays'][1],
+                  'error' => true
+                ]);
+            }
         }
     }
 
@@ -71,7 +79,7 @@ class PaysController extends Controller
                   'turn_on' => 0
               ]);
         return redirect(route('pays.index'))->with([
-          'message' => 'Đã thay đổi trạng thái',
+          'message' => __::$MESSAGES['status'],
           'error' => false
         ]);
     }
@@ -119,11 +127,18 @@ class PaysController extends Controller
     public function destroy($id)
     {
         $model = Pays::find($id);
-        $model->del_flag = 1;
-        $model->save();
-        return redirect(route('pays.index'))->with([
-          'message' => 'Đã xóa thành công',
-          'error' => false
-        ]);
+        if ($model->turn_on == 1) {
+            return redirect(route('pays.index'))->with([
+              'message' => __::$MESSAGES['errors']['pays'][2],
+              'error' => true
+            ]);
+        } else {
+            $model->del_flag = 1;
+            $model->save();
+            return redirect(route('pays.index'))->with([
+              'message' => __::$MESSAGES['delete'],
+              'error' => false
+            ]);
+        }
     }
 }
