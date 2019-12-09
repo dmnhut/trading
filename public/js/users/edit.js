@@ -55,13 +55,14 @@ $(".datepicker").datepicker({
         weekdaysAbbrev: [`CN`, `T2`, `T3`, `T4`, `T5`, `T6`, `T7`]
     }
 });
-document.querySelector("#btn-add").addEventListener("click", (event) => {
+$(".datepicker").datepicker("setDate", new Date(document.querySelector("#birthdate").value.split("/")[2], document.querySelector("#birthdate").value.split("/")[1] - 1, document.querySelector("#birthdate").value.split("/")[0], '00', '00', '00'));
+document.querySelector("#btn-edit").addEventListener("click", (event) => {
     event.preventDefault();
-    let data = new FormData(document.querySelector("#users-create"));
+    let data = new FormData(document.querySelector("#users-edit"));
     $.ajax({
         method: "POST",
         enctype: 'multipart/form-data',
-        url: document.querySelector("#users-create").action,
+        url: document.querySelector("#users-edit").action,
         contentType: false,
         processData: false,
         data: data,
@@ -71,7 +72,8 @@ document.querySelector("#btn-add").addEventListener("click", (event) => {
                     toastr["error"](val);
                 });
             } else {
-                location = document.querySelector("#users-create").action
+                document.querySelector("#message").innerHTML = response.messages[0];
+                $("#modal-message").modal("open");
             }
         }
     });

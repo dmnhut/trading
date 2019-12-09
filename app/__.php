@@ -4,7 +4,6 @@ namespace App;
 
 class __
 {
-    public static $REDIRECT_USER = false;
     public static $RE_NAME = '/[^ A-Za-z0-9_ăâêôơưĂÂÊÔƠƯáắấéếíýóốớúứÁẮẤÉẾÍÝÓỐỚÚỨàằầèềìỳòồờùừÀẰẦÈỀÌỲÒỒỜÙỪảẳẩẻểỉỷỏổởủửẢẲẨẺỂỈỶỎỔỞỦỬãẵẫẽễĩỹõỗỡũữÃẴẪẼỄĨỸÕỖỠŨỮ]| {2}/i';
     public static $RE_IDENTITY_CARD = '/[^0-9]|[0-9]{10}/m';
     public static $RE_GENDER = '/[^0-1]/m';
@@ -15,6 +14,7 @@ class __
     public static $MESSAGES = [
       'status' => 'Đã thay đổi trạng thái',
       'success' => 'Thêm mới thành công',
+      'update' => 'Cập nhật thành công',
       'delete' => 'Đã xóa thành công',
       'errors' => [
         'pays' => [

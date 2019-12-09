@@ -83,7 +83,9 @@
                     </form>
                 </td>
                 <td>
-                    <form method="GET" action="{{route('users.destroy', [$value->id])}}">
+                    <form method="POST" action="{{route('users.destroy', [$value->id])}}">
+                        @method('DELETE')
+                        @csrf
                         <button class="waves-effect waves-light btn btn-small red darken-2 lighten-1">xóa</button>
                     </form>
                 </td>

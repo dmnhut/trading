@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Session;
 use App\__;
 use App\User;
+use App\Status;
 use App\StatusUser;
 
 class UsersController extends Controller
@@ -33,7 +36,8 @@ class UsersController extends Controller
                              on status_user.id_user = users.id
                              left join status
                              on status.id = status_user.id_status
-                             where users.del_flag = 0");
+                             where users.del_flag = 0
+                             order by users.name asc");
         return view('users.index', ['data' => $users]);
     }
 
@@ -54,6 +58,23 @@ class UsersController extends Controller
      */
     public function status(Request $request)
     {
+        $data = Status::select('id', 'name')->wherein('name', __::$STATUS)->get();
+        foreach ($data as $value) {
+            $status[$value->name] = $value->id;
+        }
+        $statusUser = StatusUser::where('id_user', $request->id)->get();
+        foreach ($statusUser as $value) {
+            if ($value->id_status == $status['active']) {
+                $value->id_status = $status['locked'];
+            } else {
+                $value->id_status = $status['active'];
+            }
+            $value->save();
+        }
+        return redirect(route('users.index'))->with([
+        'message' => __::$MESSAGES['status'],
+        'error' => false
+      ]);
     }
 
     /**
@@ -64,8 +85,9 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        if (__::$REDIRECT_USER == true) {
-            __::$REDIRECT_USER = false;
+        Log::debug('REDIRECT_USER: ', ['Session' => Session::get('REDIRECT_USER')]);
+        if (Session::has('REDIRECT_USER')) {
+            Session::forget('REDIRECT_USER');
             redirect(route('users.index'))->with([
               'message' => __::$MESSAGES['success'],
               'error' => false
@@ -94,6 +116,7 @@ class UsersController extends Controller
             array_push($validate, __::$MESSAGES['errors']['users'][6]);
         }
         if (empty($validate)) {
+            $user = new User();
             if ($request->hasFile('path')) {
                 $file = $request->file('path');
                 chmod($file, 0777 - umask());
@@ -101,7 +124,6 @@ class UsersController extends Controller
                 $name = uniqid();
                 $path = $name . '.' . $extension;
                 $image = $path;
-                $user = new User();
                 $user->path = $image;
                 $file->move(public_path('img'), $path);
             }
@@ -117,7 +139,11 @@ class UsersController extends Controller
               'id_status' => 1,
               'id_user' => $user->id
             ]);
-            __::$REDIRECT_USER = true;
+            Session::put('REDIRECT_USER', true);
+            return [
+              'messages' => [],
+              'error' => false
+            ];
         } else {
             return [
               'messages' => $validate,
@@ -145,7 +171,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('users.edit', ['data' => User::find($id)]);
     }
 
     /**
@@ -157,7 +183,54 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validate = [];
+        if (preg_match(__::$RE_NAME, $request->name) || $request->name == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][0]);
+        }
+        if (preg_match(__::$RE_IDENTITY_CARD, $request->identity_card) || $request->identity_card == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][1]);
+        }
+        if (preg_match(__::$RE_GENDER, $request->gender) || $request->gender == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][2]);
+        }
+        if ($request->birthdate == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][3]);
+        }
+        if (preg_match(__::$RE_PHONE, $request->phone) || $request->phone == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][4]);
+        }
+        if (preg_match(__::$RE_EMAIL, $request->email) || $request->email == null) {
+            array_push($validate, __::$MESSAGES['errors']['users'][6]);
+        }
+        if (empty($validate)) {
+            $user = User::find($id);
+            if ($request->hasFile('path')) {
+                $file = $request->file('path');
+                chmod($file, 0777 - umask());
+                $extension = $request->file('path')->extension();
+                $name = uniqid();
+                $path = $name . '.' . $extension;
+                $image = $path;
+                $user->path = $image;
+                $file->move(public_path('img'), $path);
+            }
+            $user->name = $request->name;
+            $user->identity_card = $request->identity_card;
+            $user->gender = $request->gender;
+            $user->birthdate = $request->birthdate;
+            $user->phone = $request->phone;
+            $user->email = $request->email;
+            $user->save();
+            return [
+              'messages' => [__::$MESSAGES['update']],
+              'error' => false
+            ];
+        } else {
+            return [
+              'messages' => $validate,
+              'error' => true
+            ];
+        }
     }
 
     /**
@@ -168,6 +241,10 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::find($id)->update(['del_flag'=> 1]);
+        return redirect(route('users.index'))->with([
+          'message' => __::$MESSAGES['delete'],
+          'error' => false
+        ]);
     }
 }
