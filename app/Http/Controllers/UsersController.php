@@ -11,6 +11,7 @@ use App\__;
 use App\User;
 use App\Status;
 use App\StatusUser;
+use App\RoleUser;
 
 class UsersController extends Controller
 {
@@ -137,6 +138,10 @@ class UsersController extends Controller
             $user->save();
             StatusUser::create([
               'id_status' => 1,
+              'id_user' => $user->id
+            ]);
+            RoleUser::create([
+              'id_role' => __::$ROLES['USER'],
               'id_user' => $user->id
             ]);
             Session::put('REDIRECT_USER', true);

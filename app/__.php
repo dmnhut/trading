@@ -9,8 +9,13 @@ class __
     public static $RE_GENDER = '/[^0-1]/m';
     public static $RE_PHONE = '/[^0-9]|[0-9]{12}/m';
     public static $RE_EMAIL = '/[^0-9a-zA-Z_\.\@]/i';
+
+    public static $ROLES = ['ADMIN' => 1, 'USER' => 2];
+
     public static $TAKE_ITEM = 15;
+
     public static $STATUS = ['active', 'locked'];
+
     public static $MESSAGES = [
       'status' => 'Đã thay đổi trạng thái',
       'success' => 'Thêm mới thành công',
