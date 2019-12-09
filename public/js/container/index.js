@@ -5,6 +5,10 @@ console.log(
 );
 
 $(document).ready(() => {
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = () => {
+        window.history.pushState(null, "", window.location.href);
+    };
     $(".sidenav").sidenav();
     $(".modal").modal({
         "opacity": "0.2"
