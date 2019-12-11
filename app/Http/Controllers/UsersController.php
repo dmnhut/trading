@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Session;
 use App\__;
@@ -86,6 +87,21 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+          'email' => 'unique:users',
+          'identity_card' => 'unique:users',
+          'phone' => 'unique:users'
+        ], [
+          'email.unique' => __::$VALIDATES['email'],
+          'identity_card.unique' => __::$VALIDATES['identity_card'],
+          'phone.unique' => __::$VALIDATES['phone']
+        ]);
+        if ($validator->fails()) {
+            return [
+              'messages' => $validator->messages()->all(),
+              'error' => true
+            ];
+        }
         Log::debug('REDIRECT_USER: ', ['Session' => Session::get('REDIRECT_USER')]);
         if (Session::has('REDIRECT_USER')) {
             Session::forget('REDIRECT_USER');
@@ -188,6 +204,21 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'unique:users,email,'.$id,
+            'identity_card' => 'unique:users,identity_card,'.$id,
+            'phone' => 'unique:users,phone,'.$id
+          ], [
+            'email.unique' => __::$VALIDATES['email'],
+            'identity_card.unique' => __::$VALIDATES['identity_card'],
+            'phone.unique' => __::$VALIDATES['phone']
+          ]);
+        if ($validator->fails()) {
+            return [
+              'messages' => $validator->messages()->all(),
+              'error' => true
+            ];
+        }
         $validate = [];
         if (preg_match(__::$RE_NAME, $request->name) || $request->name == null) {
             array_push($validate, __::$MESSAGES['errors']['users'][0]);
