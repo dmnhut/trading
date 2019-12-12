@@ -74,7 +74,7 @@ class UsersController extends Controller
             $value->save();
         }
         return redirect(route('users.index'))->with([
-        'message' => __::$MESSAGES['status'],
+        'message' => __::messages()->status(),
         'error' => false
       ]);
     }
@@ -92,9 +92,9 @@ class UsersController extends Controller
           'identity_card' => 'unique:users',
           'phone' => 'unique:users'
         ], [
-          'email.unique' => __::$VALIDATES['email'],
-          'identity_card.unique' => __::$VALIDATES['identity_card'],
-          'phone.unique' => __::$VALIDATES['phone']
+          'email.unique' => __::validates('email'),
+          'identity_card.unique' => __::validates('identity_card'),
+          'phone.unique' => __::validates('phone')
         ]);
         if ($validator->fails()) {
             return [
@@ -106,31 +106,31 @@ class UsersController extends Controller
         if (Session::has('REDIRECT_USER')) {
             Session::forget('REDIRECT_USER');
             redirect(route('users.index'))->with([
-              'message' => __::$MESSAGES['success'],
+              'message' => __::messages()->success(),
               'error' => false
             ]);
         }
         $validate = [];
-        if (preg_match(__::$RE_NAME, $request->name) || $request->name == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][0]);
+        if (preg_match(__::re('NAME'), $request->name) || $request->name == null) {
+            array_push($validate, __::messages()->errors()->users('name'));
         }
-        if (preg_match(__::$RE_IDENTITY_CARD, $request->identity_card) || $request->identity_card == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][1]);
+        if (preg_match(__::re('IDENTITY_CARD'), $request->identity_card) || $request->identity_card == null) {
+            array_push($validate, __::messages()->errors()->users('identity_card'));
         }
-        if (preg_match(__::$RE_GENDER, $request->gender) || $request->gender == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][2]);
+        if (preg_match(__::re('GENDER'), $request->gender) || $request->gender == null) {
+            array_push($validate, __::messages()->errors()->users('gender'));
         }
         if ($request->birthdate == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][3]);
+            array_push($validate, __::messages()->errors()->users('birthdate'));
         }
-        if (preg_match(__::$RE_PHONE, $request->phone) || $request->phone == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][4]);
+        if (preg_match(__::re('PHONE'), $request->phone) || $request->phone == null) {
+            array_push($validate, __::messages()->errors()->users('phone'));
         }
         if ($request->password == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][5]);
+            array_push($validate, __::messages()->errors()->users('password'));
         }
-        if (preg_match(__::$RE_EMAIL, $request->email) || $request->email == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][6]);
+        if (preg_match(__::re('EMAIL'), $request->email) || $request->email == null) {
+            array_push($validate, __::messages()->errors()->users('email'));
         }
         if (empty($validate)) {
             $user = new User();
@@ -220,23 +220,23 @@ class UsersController extends Controller
             ];
         }
         $validate = [];
-        if (preg_match(__::$RE_NAME, $request->name) || $request->name == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][0]);
+        if (preg_match(__::re('NAME'), $request->name) || $request->name == null) {
+            array_push($validate, __::messages()->errors()->users('name'));
         }
-        if (preg_match(__::$RE_IDENTITY_CARD, $request->identity_card) || $request->identity_card == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][1]);
+        if (preg_match(__::re('IDENTITY_CARD'), $request->identity_card) || $request->identity_card == null) {
+            array_push($validate, __::messages()->errors()->users('identity_card'));
         }
-        if (preg_match(__::$RE_GENDER, $request->gender) || $request->gender == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][2]);
+        if (preg_match(__::re('GENDER'), $request->gender) || $request->gender == null) {
+            array_push($validate, __::messages()->errors()->users('gender'));
         }
         if ($request->birthdate == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][3]);
+            array_push($validate, __::messages()->errors()->users('birthdate'));
         }
-        if (preg_match(__::$RE_PHONE, $request->phone) || $request->phone == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][4]);
+        if (preg_match(__::re('PHONE'), $request->phone) || $request->phone == null) {
+            array_push($validate, __::messages()->errors()->users('phone'));
         }
-        if (preg_match(__::$RE_EMAIL, $request->email) || $request->email == null) {
-            array_push($validate, __::$MESSAGES['errors']['users'][6]);
+        if (preg_match(__::re('EMAIL'), $request->email) || $request->email == null) {
+            array_push($validate, __::messages()->errors()->users('email'));
         }
         if (empty($validate)) {
             $user = User::find($id);
@@ -258,7 +258,7 @@ class UsersController extends Controller
             $user->email = $request->email;
             $user->save();
             return [
-              'messages' => [__::$MESSAGES['update']],
+              'messages' => [__::messages()->update()],
               'error' => false
             ];
         } else {
@@ -279,7 +279,7 @@ class UsersController extends Controller
     {
         User::find($id)->update(['del_flag'=> 1]);
         return redirect(route('users.index'))->with([
-          'message' => __::$MESSAGES['delete'],
+          'message' => __::messages()->delete(),
           'error' => false
         ]);
     }

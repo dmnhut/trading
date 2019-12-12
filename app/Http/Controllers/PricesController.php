@@ -61,7 +61,7 @@ class PricesController extends Controller
             $value->url = route("prices.destroy", [$value->id]);
         }
         return [
-          'message' => __::$MESSAGES['success'],
+          'message' => __::messages()->success(),
           'data' => $data
         ];
     }

@@ -15,7 +15,7 @@ class RolesController extends Controller
      */
     public function index()
     {
-        return view('roles.index', ['data' => Roles::select('id', 'name')->where('del_flag', 0)->paginate(__::$TAKE_ITEM)]);
+        return view('roles.index', ['data' => Roles::select('id', 'name')->where('del_flag', 0)->paginate(__::take_item())]);
     }
 
     /**
@@ -38,13 +38,13 @@ class RolesController extends Controller
     {
         if (empty($request->name)) {
             return redirect(route('roles.index'))->with([
-            'message' => __::$MESSAGES['errors']['roles'][0],
+            'message' => __::messages()->errors()->roles('name'),
             'error' => true
           ]);
         } else {
             Roles::create(['name' => $request->name]);
             return redirect(route('roles.index'))->with([
-              'message' => __::$MESSAGES['success'],
+              'message' => __::messages()->success(),
               'error' => false
             ]);
         }

@@ -38,7 +38,7 @@ class PaysController extends Controller
     {
         if (empty($request->percent)) {
             return redirect(route('pays.index'))->with([
-              'message' => __::$MESSAGES['errors']['pays'][0],
+              'message' => __::messages()->errors()->pays('percent.require'),
               'error' => true
             ]);
         } else {
@@ -48,12 +48,12 @@ class PaysController extends Controller
                   'percent' => $request->percent
                 ]);
                 return redirect(route('pays.index'))->with([
-                  'message' => __::$MESSAGES['success'],
+                  'message' => __::messages()->success(),
                   'error' => false
                 ]);
             } else {
                 return redirect(route('pays.index'))->with([
-                  'message' => __::$MESSAGES['errors']['pays'][1],
+                  'message' => __::messages()->errors()->pays(percent.unique),
                   'error' => true
                 ]);
             }
@@ -79,7 +79,7 @@ class PaysController extends Controller
                   'turn_on' => 0
               ]);
         return redirect(route('pays.index'))->with([
-          'message' => __::$MESSAGES['status'],
+          'message' => __::messages()->status(),
           'error' => false
         ]);
     }
@@ -129,14 +129,14 @@ class PaysController extends Controller
         $model = Pays::find($id);
         if ($model->turn_on == 1) {
             return redirect(route('pays.index'))->with([
-              'message' => __::$MESSAGES['errors']['pays'][2],
+              'message' => __::messages()->errors()->pays('percent.use'),
               'error' => true
             ]);
         } else {
             $model->del_flag = 1;
             $model->save();
             return redirect(route('pays.index'))->with([
-              'message' => __::$MESSAGES['delete'],
+              'message' => __::messages()->delete(),
               'error' => false
             ]);
         }
