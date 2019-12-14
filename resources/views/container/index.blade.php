@@ -66,6 +66,11 @@
                             Cài đặt phần trăm
                         </a>
                     </li>
+                    <li class="{{Request::is('detail-shippers*') ? 'active' : ''}}">
+                        <a href="{{route('detail-shippers.index')}}">
+                            Cài đặt shipper
+                        </a>
+                    </li>
                     <li>
                         <div class="divider"></div>
                     </li>

@@ -80,23 +80,19 @@
 </div>
 <div id="modal-add" class="modal">
     <div class="modal-content">
-        <h5>Thêm mới cài đặt giá</h5>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="kg" name="kg" type="number">
-                <label>Số kg</label>
-            </div>
+        <h4>Thêm mới cài đặt giá</h4>
+        <div class="input-field">
+            <input id="kg" name="kg" type="number">
+            <label>Số kg</label>
         </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="amount" name="amount" type="number">
-                <label>Giá Tiền</label>
-            </div>
+        <div class="input-field">
+            <input id="amount" name="amount" type="number">
+            <label>Giá Tiền</label>
         </div>
-        <div class="row">
-            <button id="btn-add" class="waves-effect waves-light btn">Thêm mới</button>
-            <button id="btn-cancel" class="waves-effect waves-light btn btn-cancel pink lighten-1">Hủy</button>
-        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="btn-add" class="waves-effect waves-light btn">Thêm mới</button>
+        <button id="btn-cancel" class="waves-effect waves-light btn btn-cancel pink lighten-1">Hủy</button>
     </div>
 </div>
 @endsection

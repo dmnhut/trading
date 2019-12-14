@@ -33,4 +33,11 @@
         </div>
     </a>
 </div>
+<div class="col s12 m4 l4 pointer">
+    <a href="{{route('detail-shippers.index')}}">
+        <div class="hoverable card-panel pink lighten-1 white-text center">
+            <h5>Cài đặt shipper</h5>
+        </div>
+    </a>
+</div>
 @endsection
