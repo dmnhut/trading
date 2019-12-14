@@ -4,8 +4,8 @@ document.querySelector("#btn-cancel").addEventListener("click", () => {
     document.querySelector("#amount").value = "";
 });
 document.querySelector("#btn-add").addEventListener("click", () => {
-    axios.post("{{route('prices.store')}}", {
-            _token: "{{ csrf_token() }}",
+    axios.post(location, {
+            "_token": document.querySelector("input[name='_token']").value,
             "kg": document.querySelector("#kg").value,
             "amount": document.querySelector("#amount").value
         })
@@ -21,8 +21,8 @@ document.querySelector("#btn-add").addEventListener("click", () => {
                 tbody += "<td>" + val.kg + "</td>";
                 tbody += "<td>" + val.amount + "</td>";
                 tbody += "<td>";
-                tbody += "<form method='POST' action='{{route('prices.status')}}'>";
-                tbody += "<input type='hidden' name='_token' value='{{csrf_token()}}'>";
+                tbody += "<form method='POST' action='" + location + "/status'>";
+                tbody += "<input type='hidden' name='_token' value='" + document.querySelector("input[name='_token']").value + "'>";
                 tbody += "<input type='hidden' name='id' value='" + val.id + "'></input>";
                 if (val.turn_on == 0) {
                     tbody +=
@@ -37,7 +37,7 @@ document.querySelector("#btn-add").addEventListener("click", () => {
                 tbody += "<td>";
                 tbody += "<form method='POST' action='" + val.url + "'>";
                 tbody += "<input type='hidden' name='_method' value='DELETE'>";
-                tbody += "<input type='hidden' name='_token' value='{{csrf_token()}}'>";
+                tbody += "<input type='hidden' name='_token' value='" + document.querySelector("input[name='_token']").value + "'>";
                 tbody +=
                     "<button class='waves-effect waves-light btn btn-small red darken-2 lighten-1'>xóa</button>";
                 tbody += "</form>";

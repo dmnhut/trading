@@ -100,6 +100,7 @@
     </div>
 </div>
 @endsection
+@csrf
 @section('script')
 <script src="{{url('js/prices/index.js')}}"></script>
 @endsection
