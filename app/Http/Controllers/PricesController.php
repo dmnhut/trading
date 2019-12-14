@@ -56,7 +56,7 @@ class PricesController extends Controller
           'kg' => $request->kg,
           'amount' => $request->amount
         ]);
-        $data = Prices::select('id', 'kg', 'amount', 'turn_on')->get();
+        $data = Prices::select('id', 'kg', 'amount', 'turn_on')->where('del_flag', 0)->get();
         foreach ($data as $value) {
             $value->url = route("prices.destroy", [$value->id]);
         }
