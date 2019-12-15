@@ -22,3 +22,4 @@ Route::post('pays/status', 'PaysController@status')->name('pays.status');
 Route::resource('users', 'UsersController');
 Route::post('users/status', 'UsersController@status')->name('users.status');
 Route::resource('detail-shippers', 'DetailShipperController');
+Route::post('detail-shippers/detail', 'DetailShipperController@detail')->name('detail-shippers.detail');

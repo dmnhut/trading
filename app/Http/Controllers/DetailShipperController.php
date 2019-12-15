@@ -30,7 +30,7 @@ class DetailShipperController extends Controller
                                   ->get();
         $detail_shippers = [];
         foreach ($shippers as $val) {
-          $detail_shippers[$val->id] = [
+            $detail_shippers[$val->id] = [
               'id_shipper' => $val->id_shipper,
               'province' => $val->province,
               'district' => $val->district,
@@ -38,6 +38,28 @@ class DetailShipperController extends Controller
           ];
         }
         return view('detail-shippers.index', ['data' => $users, 'detail_shippers' => $detail_shippers]);
+    }
+
+    /**
+     * detail
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function detail(Request $request)
+    {
+        $data = User::find($request->get('id'));
+        if (empty($data)) {
+            $data = [];
+        } else {
+            $data = $data->toArray();
+            if ($data['gender'] == 1) {
+                $data['gender'] = 'Nam';
+            } else {
+                $data['gender'] = 'Nữ';
+            }
+        }
+        return $data;
     }
 
     /**

@@ -1,6 +1,7 @@
 console.clear();
 console.log(
-    "%cHACK! THE COOKER :]",
+    "%cHACK!", 
+    // THE COOKER"
     "color:black;font-family:monospace;font-size:4rem;font-weight:bold"
 );
 

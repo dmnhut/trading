@@ -64,9 +64,7 @@
                     </form>
                 </td>
                 <td>
-                    <form method="GET" action="{{route('users.edit', [$value->id])}}">
-                        <button class="waves-effect waves-light btn btn-small blue lighten-1">chi tiết</button>
-                    </form>
+                    <button class="waves-effect waves-light btn btn-small blue lighten-1 btn-detail" data="{{$value->id}}">chi tiết</button>
                 </td>
                 <td>
                     <form method="GET" action="">
@@ -91,12 +89,22 @@
         </tbody>
     </table>
 </div>
-<div id="modal1" class="modal">
+@csrf
+<div id="modal-detail" class="modal" url="{{route('detail-shippers.detail')}}">
     <div class="modal-content">
-      <h4>Thông tin chi tiết</h4>
+        <h5>Thông tin chi tiết
+            <div class="chip">
+                <span id="detail-name"></span>
+            </div>
+        </h5>
+        <p>Ngày sinh: <span id="detail-birthdate"></span></p>
+        <p>Email: <span id="detail-email"></p>
+        <p>Giới tính: <span id="detail-gender"></p>
+        <p>Số chứng minh nhân dân: <span id="detail-identity_card"></p>
+        <p>Số điện thoại: <span id="detail-phone"></p>
     </div>
     <div class="modal-footer">
-      <button class="modal-close waves-effect waves-green btn-flat">Đóng</button>
+        <button class="modal-close waves-effect waves-green btn-flat">Đóng</button>
     </div>
 </div>
 @endsection
