@@ -89,8 +89,17 @@ $("#district").on("change", () => {
     });
 });
 
-document.querySelectorAll(".btn-add").forEach((element) => {
+document.querySelectorAll(".btn-cu").forEach((element) => {
     element.addEventListener("click", () => {
+        if (element.getAttribute("mode") == "update") {
+            $("#btn-modal-cu").html("cập nhật");
+            document.querySelector("input[name=_mode]").value = "update";
+        } else {
+            $("#btn-modal-cu").html("thêm");
+            document.querySelector("input[name=_mode]").value = "add";
+        }
+        document.querySelector("#usrname").innerHTML = element.getAttribute("usrname");
+        document.querySelector("input[name=_id_shipper]").value = element.getAttribute("id_shipper");
         $(".main-loader").css("display", "");
         document.querySelector("input[name=_id]").value = element.getAttribute("data")
         $.ajax({
@@ -103,6 +112,9 @@ document.querySelectorAll(".btn-add").forEach((element) => {
                     opt.innerHTML = element.text;
                     document.querySelector("#province").appendChild(opt);
                 });
+                if (element.getAttribute("mode") == "update") {
+                    $("#province").val(element.getAttribute("province"));
+                }
                 $("#province").formSelect();
                 $.ajax({
                     method: "GET",
@@ -119,6 +131,9 @@ document.querySelectorAll(".btn-add").forEach((element) => {
                             document.querySelector("#district").appendChild(opt);
                         });
                         $("#district").prop("disabled", false);
+                        if (element.getAttribute("mode") == "update") {
+                            $("#district").val(element.getAttribute("district"));
+                        }
                         $("#district").formSelect();
                         $.ajax({
                             method: "GET",
@@ -135,6 +150,9 @@ document.querySelectorAll(".btn-add").forEach((element) => {
                                     document.querySelector("#ward").appendChild(opt);
                                 });
                                 $("#ward").prop("disabled", false);
+                                if (element.getAttribute("mode") == "update") {
+                                    $("#ward").val(element.getAttribute("ward"));
+                                }
                                 $("#ward").formSelect();
                                 $(".main-loader").css("display", "none");
                             }
@@ -174,7 +192,7 @@ document.querySelectorAll(".btn-detail").forEach((element) => {
     });
 });
 
-document.querySelector("#btn-modal-add").addEventListener("click", () => {
+document.querySelector("#btn-modal-cu").addEventListener("click", () => {
     $(".main-loader").css("display", "");
     if ($("#province").formSelect("getSelectedValues") == 0 || $("#district").formSelect("getSelectedValues") == 0 || $("#ward").formSelect("getSelectedValues") == 0) {
         console.log("wait loading...");
@@ -187,7 +205,10 @@ document.querySelector("#btn-modal-add").addEventListener("click", () => {
         district: $("#district").formSelect()[0].selectedOptions[0].value,
         ward: $("#ward").formSelect()[0].selectedOptions[0].value
     };
-    axios.post(document.querySelector("#url").value, data)
+    if(document.querySelector("input[name=_mode]").value == "update"){
+      data._method = "PUT";
+    }
+    axios.post([document.querySelector("#url").value, "/", document.querySelector("input[name=_id_shipper]").value].join(""), data)
         .then((response) => {
             console.log(response);
             if (response.data.error) {

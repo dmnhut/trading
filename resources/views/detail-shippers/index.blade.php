@@ -55,16 +55,16 @@
                 <td>{{$value->name}}</td>
                 <td>{{$value->email}}</td>
                 <td>{{$value->phone}}</td>
-                <td>{{$detail_shippers[$value->id]['province']}}</td>
-                <td>{{$detail_shippers[$value->id]['district']}}</td>
-                <td>{{$detail_shippers[$value->id]['ward']}}</td>
+                <td>{{$detail_shippers[$value->id]['province']['name']}}</td>
+                <td>{{$detail_shippers[$value->id]['district']['name']}}</td>
+                <td>{{$detail_shippers[$value->id]['ward']['name']}}</td>
                 @if(empty($detail_shippers[$value->id]['id_shipper']))
                     <td>
-                        <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1 btn-add" data="{{$value->id}}">chọn</button>
+                        <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1 btn-cu" mode="add" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="">chọn</button>
                     </td>
                     @else
                     <td>
-                        <button class="waves-effect waves-light btn btn-small lighten-1 btn-update" data="{{$value->id}}">cài đặt</button>
+                        <button class="waves-effect waves-light btn btn-small lighten-1 btn-cu" mode="update" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="{{$detail_shippers[$value->id]['id_shipper']}}" province="{{$detail_shippers[$value->id]['province']['id']}}" district="{{$detail_shippers[$value->id]['district']['id']}}" ward="{{$detail_shippers[$value->id]['ward']['id']}}">cài đặt</button>
                     </td>
                     @endif
                     <td>
@@ -105,10 +105,10 @@
             </div>
         </h5>
         <p>Ngày sinh: <span id="detail-birthdate"></span></p>
-        <p>Email: <span id="detail-email"></p>
-        <p>Giới tính: <span id="detail-gender"></p>
-        <p>Số chứng minh nhân dân: <span id="detail-identity_card"></p>
-        <p>Số điện thoại: <span id="detail-phone"></p>
+        <p>Email: <span id="detail-email"></span></p>
+        <p>Giới tính: <span id="detail-gender"></span></p>
+        <p>Số chứng minh nhân dân: <span id="detail-identity_card"></span></p>
+        <p>Số điện thoại: <span id="detail-phone"></span></p>
     </div>
     <div class="modal-footer">
         <button class="modal-close waves-effect waves-green btn-flat">Đóng</button>
@@ -116,7 +116,11 @@
 </div>
 <div id="modal-area" class="modal">
     <div class="modal-content">
-        <h5>Cài đặt khu vực</h5>
+        <h5>Cài đặt khu vực
+          <div class="chip">
+              <span id="usrname"></span>
+          </div>
+        </h5>
         <input type="hidden" />
         <div class="row">
             <div class="input-field col s4">
@@ -137,7 +141,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button id="btn-modal-add" class="waves-effect btn">Thêm</button>
+        <button id="btn-modal-cu" class="waves-effect btn">Thêm</button>
         <button class="modal-close waves-effect pink lighten-1 btn btn-close">Hủy</button>
     </div>
 </div>
@@ -154,6 +158,8 @@
 @csrf
 <input type="hidden" id="url" value="{{route('detail-shippers.index')}}" />
 <input type="hidden" name="_id" />
+<input type="hidden" name="_mode" />
+<input type="hidden" name="_id_shipper" />
 @endsection
 @section('script')
 <script src="{{url('js/detail-shippers/index.js')}}"></script>
