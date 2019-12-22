@@ -1,6 +1,6 @@
 console.clear();
 console.log(
-    "%cHACK!", 
+    "%cHACK!",
     // THE COOKER"
     "color:black;font-family:monospace;font-size:4rem;font-weight:bold"
 );
@@ -12,7 +12,8 @@ $(document).ready(() => {
     };
     $(".sidenav").sidenav();
     $(".modal").modal({
-        "opacity": "0.2"
+        opacity: "0.2",
+        dismissible: false
     });
     $(".materialboxed").materialbox();
     $("select").formSelect();

@@ -102,14 +102,6 @@ class UsersController extends Controller
               'error' => true
             ];
         }
-        Log::debug('REDIRECT_USER: ', ['Session' => Session::get('REDIRECT_USER')]);
-        if (Session::has('REDIRECT_USER')) {
-            Session::forget('REDIRECT_USER');
-            redirect(route('users.index'))->with([
-              'message' => __::messages()->success(),
-              'error' => false
-            ]);
-        }
         $validate = [];
         if (preg_match(__::re('NAME'), $request->name) || $request->name == null) {
             array_push($validate, __::messages()->errors()->users('name'));
@@ -160,9 +152,8 @@ class UsersController extends Controller
               'id_role' => __::$ROLES['USER'],
               'id_user' => $user->id
             ]);
-            Session::put('REDIRECT_USER', true);
             return [
-              'messages' => [],
+              'messages' => [__::messages()->success()],
               'error' => false
             ];
         } else {
@@ -209,9 +200,9 @@ class UsersController extends Controller
             'identity_card' => 'unique:users,identity_card,'.$id,
             'phone' => 'unique:users,phone,'.$id
           ], [
-            'email.unique' => __::$VALIDATES['email'],
-            'identity_card.unique' => __::$VALIDATES['identity_card'],
-            'phone.unique' => __::$VALIDATES['phone']
+            'email.unique' => __::messages()->errors()->users('email'),
+            'identity_card.unique' => __::messages()->errors()->users('identity_card'),
+            'phone.unique' => __::messages()->errors()->users('phone')
           ]);
         if ($validator->fails()) {
             return [

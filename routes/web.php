@@ -23,3 +23,6 @@ Route::resource('users', 'UsersController');
 Route::post('users/status', 'UsersController@status')->name('users.status');
 Route::resource('detail-shippers', 'DetailShipperController');
 Route::post('detail-shippers/detail', 'DetailShipperController@detail')->name('detail-shippers.detail');
+Route::get('provinces', 'ProvinceController@index')->name('provinces.index');
+Route::get('districts', 'DistrictController@index')->name('districts.index');
+Route::get('wards', 'WardController@index')->name('wards.index');

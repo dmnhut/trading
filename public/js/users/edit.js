@@ -58,6 +58,7 @@ $(".datepicker").datepicker({
 $(".datepicker").datepicker("setDate", new Date(document.querySelector("#birthdate").value.split("/")[2], document.querySelector("#birthdate").value.split("/")[1] - 1, document.querySelector("#birthdate").value.split("/")[0], '00', '00', '00'));
 document.querySelector("#btn-edit").addEventListener("click", (event) => {
     event.preventDefault();
+    $(".main-loader").css("display", "");
     let data = new FormData(document.querySelector("#users-edit"));
     $.ajax({
         method: "POST",
@@ -73,6 +74,7 @@ document.querySelector("#btn-edit").addEventListener("click", (event) => {
                 });
             } else {
                 document.querySelector("#message").innerHTML = response.messages[0];
+                $(".main-loader").css("display", "none");
                 $("#modal-message").modal("open");
             }
         }

@@ -1,6 +1,6 @@
 @extends('container.index')
 @section('content')
-<nav class="nav-top">
+<nav class="nav-top blue darken-1">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
         <a href="{{route('users.index')}}" class="breadcrumb hide-on-med-and-down">Người dùng</a>
@@ -87,6 +87,16 @@
             </div>
         </div>
     </form>
+</div>
+<div id="modal-message" class="modal" style="width:30%!important;">
+    <div class="modal-content">
+        <form method="GET" action="{{route('users.index')}}">
+            <span id="message"></span>
+            <div class="modal-footer">
+                <button class="modal-close waves-effect waves-green btn-flat">OK</button>
+            </div>
+        </form>
+    </div>
 </div>
 @endsection
 @section('script')

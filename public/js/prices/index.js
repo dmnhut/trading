@@ -1,20 +1,21 @@
 document.querySelector("#btn-cancel").addEventListener("click", () => {
-    $(".modal").modal();
-    document.querySelector("#kg").value = "";
-    document.querySelector("#amount").value = "";
+    $(".modal").modal("close");
+    $("#kg").val("");
+    $("#amount").val("");
+    $('label').removeClass("active");
 });
-document.querySelector("#btn-add").addEventListener("click", () => {
+$("#btn-add").on("click", () => {
+    $(".main-loader").css("display", "");
     axios.post(location, {
-            "_token": document.querySelector("input[name='_token']").value,
+            "_token": document.querySelector("input[name=_token]").value,
             "kg": document.querySelector("#kg").value,
             "amount": document.querySelector("#amount").value
         })
-        .then(function(response) {
-            $(".modal").modal();
-            toastr.success(response.data.message);
-            document.querySelector("#kg").value = "";
-            document.querySelector("#amount").value = "";
-            document.querySelector("#tbl").innerHTML = "";
+        .then((response) => {
+            $("#kg").val("");
+            $("#amount").val("");
+            $("#tbl").html("");
+            $('label').removeClass("active");
             let tbody = "";
             response.data.data.map((val) => {
                 tbody += "<tr>";
@@ -45,9 +46,12 @@ document.querySelector("#btn-add").addEventListener("click", () => {
 
                 tbody += "</tr>";
             });
-            document.querySelector("#tbl").innerHTML = tbody;
+            $(".modal").modal("close");
+            $("#tbl").html(tbody);
+            $(".main-loader").css("display", "none");
+            toastr.success(response.data.message);
         })
-        .catch(function(error) {
+        .catch((error) => {
             console.log(error);
         });
 });

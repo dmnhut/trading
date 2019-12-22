@@ -91,6 +91,21 @@
         </div>
         @yield('fix-btn')
     </section>
+    <div class="main-loader" style="display:none;">
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-black-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <footer class="section grey darken-4 white-text center">
         <p><b>#2019#2020</b> <i class="icon ion-heart"></i> <i class="ion-social-tux"></i> <i class="ion-social-octocat"></i></p>
     </footer>

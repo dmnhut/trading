@@ -1,6 +1,6 @@
 @extends('container.index')
 @section('content')
-<nav class="nav-top">
+<nav class="nav-top blue darken-1">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
         <a href="{{route('prices.index')}}" class="breadcrumb hide-on-med-and-down">Cài đặt giá</a>
@@ -9,7 +9,7 @@
 <div class="section">
     <div class="row">
         <div class="col s12">
-            <nav style="background-color:#e91e63">
+            <nav class="blue darken-2">
                 <div class="nav-wrapper">
                     <div class="input-field">
                         <input id="txt" type="search" required>
@@ -66,18 +66,7 @@
         </tbody>
     </table>
 </div>
-<div class="row">
-
-</div>
-@endsection
-@section('fix-btn')
-<div class="row">
-    <div class="fixed-action-btn">
-        <a class="btn-floating btn-large pink modal-trigger" href="#modal-add">
-            <i class="material-icons">add</i>
-        </a>
-    </div>
-</div>
+@csrf
 <div id="modal-add" class="modal">
     <div class="modal-content">
         <h4>Thêm mới cài đặt giá</h4>
@@ -96,7 +85,15 @@
     </div>
 </div>
 @endsection
-@csrf
+@section('fix-btn')
+<div class="row">
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large pink modal-trigger" href="#modal-add">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+</div>
+@endsection
 @section('script')
 <script src="{{url('js/prices/index.js')}}"></script>
 @endsection

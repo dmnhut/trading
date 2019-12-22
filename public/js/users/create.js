@@ -57,6 +57,7 @@ $(".datepicker").datepicker({
 });
 document.querySelector("#btn-add").addEventListener("click", (event) => {
     event.preventDefault();
+    $(".main-loader").css("display", "");
     let data = new FormData(document.querySelector("#users-create"));
     $.ajax({
         method: "POST",
@@ -71,7 +72,9 @@ document.querySelector("#btn-add").addEventListener("click", (event) => {
                     toastr["error"](val);
                 });
             } else {
-                location = document.querySelector("#users-create").action
+                document.querySelector("#message").innerHTML = response.messages[0];
+                $(".main-loader").css("display", "none");
+                $("#modal-message").modal("open");
             }
         }
     });
