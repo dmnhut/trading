@@ -10,6 +10,6 @@ class Wards extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'varchar';
     protected $fillable = [
-      'name','id_district','del_flag'
+      'name','id_district','del_flag','version_no'
     ];
 }

@@ -3,6 +3,7 @@
 
 <head>
     <title>Hệ thống quản lý giao dịch chuyển hàng | Admin</title>
+    <meta charset="UTF-8">
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" type="image/png" href="{{ url("img/favicon.png") }}">
@@ -69,6 +70,16 @@
                     <li class="{{Request::is('detail-shippers*') ? 'active' : ''}}">
                         <a href="{{route('detail-shippers.index')}}">
                             Cài đặt shipper
+                        </a>
+                    </li>
+                    <li class="{{Request::is('orders*') ? 'active' : ''}}">
+                        <a href="{{route('orders.index')}}">
+                            Đơn hàng
+                        </a>
+                    </li>
+                    <li class="{{Request::is('units*') ? 'active' : ''}}">
+                        <a href="{{route('units.index')}}">
+                            Đơn vị tính
                         </a>
                     </li>
                     <li>

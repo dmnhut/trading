@@ -10,6 +10,6 @@ class Districts extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'varchar';
     protected $fillable = [
-      'name','id_province','del_flag'
+      'name','id_province','del_flag','version_no'
     ];
 }

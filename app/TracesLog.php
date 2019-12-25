@@ -10,6 +10,6 @@ class TracesLog extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id_trace','id_status','time','note','del_flag'
+      'id_trace','id_status','time','note','del_flag','version_no'
     ];
 }

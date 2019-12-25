@@ -48,7 +48,7 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody id="tbl">
+        <tbody>
             @if(!empty($data))
             @foreach ($data as $value)
             <tr>
@@ -64,7 +64,7 @@
                     </td>
                     @else
                     <td>
-                        <button class="waves-effect waves-light btn btn-small lighten-1 btn-cu" mode="update" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="{{$detail_shippers[$value->id]['id_shipper']}}" province="{{$detail_shippers[$value->id]['province']['id']}}" district="{{$detail_shippers[$value->id]['district']['id']}}" ward="{{$detail_shippers[$value->id]['ward']['id']}}">cài đặt</button>
+                        <button class="waves-effect waves-light btn btn-small btn-cu" mode="update" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="{{$detail_shippers[$value->id]['id_shipper']}}" province="{{$detail_shippers[$value->id]['province']['id']}}" district="{{$detail_shippers[$value->id]['district']['id']}}" ward="{{$detail_shippers[$value->id]['ward']['id']}}">cài đặt</button>
                     </td>
                     @endif
                     <td>

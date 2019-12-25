@@ -42,7 +42,7 @@
                 <th>Xóa</th>
             </tr>
         </thead>
-        <tbody id="tbl">
+        <tbody>
             @foreach ($data as $value)
             <tr>
                 <td>{{$value->percent}}</td>

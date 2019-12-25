@@ -40,4 +40,18 @@
         </div>
     </a>
 </div>
+<div class="col s12 m4 l4 pointer">
+    <a href="{{route('orders.index')}}">
+        <div class="hoverable card-panel blue darken-4 white-text center">
+            <h5>Đơn hàng</h5>
+        </div>
+    </a>
+</div>
+<div class="col s12 m4 l4 pointer">
+    <a href="{{route('units.index')}}">
+        <div class="hoverable card-panel blue darken-3 white-text center">
+            <h5>Đơn vị tính</h5>
+        </div>
+    </a>
+</div>
 @endsection

@@ -26,3 +26,5 @@ Route::post('detail-shippers/detail', 'DetailShipperController@detail')->name('d
 Route::get('provinces', 'ProvinceController@index')->name('provinces.index');
 Route::get('districts', 'DistrictController@index')->name('districts.index');
 Route::get('wards', 'WardController@index')->name('wards.index');
+Route::resource('orders', 'OrdersController');
+Route::resource('units', 'UnitsController');

@@ -10,6 +10,6 @@ class StatusOrder extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id_status','id_order','del_flag'
+      'id_status','id_order','del_flag','version_no'
     ];
 }

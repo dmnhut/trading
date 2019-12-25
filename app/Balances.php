@@ -10,6 +10,6 @@ class Balances extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id_user','amount','del_flag'
+      'id_user','amount','del_flag','version_no'
     ];
 }

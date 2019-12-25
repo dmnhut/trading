@@ -49,7 +49,7 @@
                 <th>Xóa</th>
             </tr>
         </thead>
-        <tbody id="tbl">
+        <tbody>
             @if(!empty($data))
             @foreach ($data as $value)
             <tr>
@@ -68,7 +68,7 @@
                 <td>{{$value->identity_card}}</td>
                 <td>
                     <form method="GET" action="{{route('users.edit', [$value->id])}}">
-                        <button class="waves-effect waves-light btn btn-small lighten-1">cập nhật</button>
+                        <button class="waves-effect waves-light btn btn-small">cập nhật</button>
                     </form>
                 </td>
                 <td>
