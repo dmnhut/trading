@@ -12,8 +12,8 @@
         @csrf
         <div class="row">
             <div class="input-field col s12">
-                <input name="name" type="text">
-                <label>Nhóm người dùng</label>
+                <input name="name" type="text" />
+                <label for="name">Nhóm người dùng</label>
             </div>
         </div>
         <div class="row">

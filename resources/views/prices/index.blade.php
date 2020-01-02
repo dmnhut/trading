@@ -12,7 +12,7 @@
             <nav class="blue darken-2">
                 <div class="nav-wrapper">
                     <div class="input-field">
-                        <input id="txt" type="search" required>
+                        <input id="txt" type="search" required />
                         <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                 <td>
                     <form method="POST" action="{{route('prices.status')}}">
                         @csrf
-                        <input type="hidden" name="id" value="{{$value->id}}"></input>
+                        <input type="hidden" name="id" value="{{$value->id}}" />
                         @if($value->turn_on == 0)
                             <button class="waves-effect waves-light btn btn-small pink lighten-1">bật</button>
                             @elseif($value->turn_on == 1)
@@ -71,12 +71,12 @@
     <div class="modal-content">
         <h4>Thêm mới cài đặt giá</h4>
         <div class="input-field">
-            <input id="kg" name="kg" type="number">
-            <label>Số kg</label>
+            <input id="kg" name="kg" type="number" />
+            <label for="kg">Số kg</label>
         </div>
         <div class="input-field">
-            <input id="amount" name="amount" type="number">
-            <label>Giá Tiền</label>
+            <input id="amount" name="amount" type="number" />
+            <label for="amount">Giá Tiền</label>
         </div>
     </div>
     <div class="modal-footer">

@@ -15,7 +15,8 @@ class UnitsController extends Controller
      */
     public function index()
     {
-        return view('units.index');
+        $data = Units::select('id', 'name')->where('del_flag', 0)->orderBy('name')->get();
+        return view('units.index', ['data' => $data]);
     }
 
     /**
@@ -36,7 +37,24 @@ class UnitsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $validate = [];
+      if (preg_match(__::re('ALPHABET'), $request->name) || $request->name == null) {
+          array_push($validate, __::messages()->errors()->units('name'));
+      }
+      if(empty($validate)){
+        Units::create([
+          'name' => $request->name
+        ]);
+        return [
+          'messages' => [__::messages()->success()],
+          'error' => false
+        ];
+      } else {
+          return [
+            'messages' => $validate,
+            'error' => true
+          ];
+      }
     }
 
     /**

@@ -1,9 +1,16 @@
-document.querySelector("#btn-cancel").addEventListener("click", () => {
-    $(".modal").modal("close");
+$(document).ready(() => {
+    $("label").removeClass("active");
     $("#kg").val("");
     $("#amount").val("");
-    $('label').removeClass("active");
 });
+
+document.querySelector("#btn-cancel").addEventListener("click", () => {
+    $(".modal").modal("close");
+    $("label").removeClass("active");
+    $("#kg").val("");
+    $("#amount").val("");
+});
+
 $("#btn-add").on("click", () => {
     $(".main-loader").css("display", "");
     axios.post(location, {

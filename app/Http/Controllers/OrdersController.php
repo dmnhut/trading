@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Orders;
+use App\User;
+use App\Provinces;
+use App\Districts;
+use App\Wards;
+use App\Units;
 use App\__;
 
 class OrdersController extends Controller
@@ -25,7 +31,20 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        //
+        $users = DB::select("select
+                                 CONCAT(name, ' - ', phone) as name,
+                                 users.id as id
+                             from users
+                             left join status_user
+                             on status_user.id_user = users.id
+                             where users.del_flag = 0 and status_user.id_status = 1
+                             order by users.name");
+        $provinces = Provinces::select('id as id', 'name as text')->orderBy('text')->get();
+        $units = Units::select('id', 'name')->where('del_flag', 0)->orderBy('name')->get();
+        return view('orders.create', ['code' => __::struuid(),
+                                      'users' => $users,
+                                      'provinces' => $provinces,
+                                      'units' => $units]);
     }
 
     /**

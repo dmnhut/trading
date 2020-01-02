@@ -13,13 +13,13 @@
         <div class="row">
             <div class="col s6">
                 <div class="input-field">
-                    <input id="name" name="name" type="text">
+                    <input id="name" name="name" type="text" />
                     <label for="name">Họ và tên</label>
                 </div>
             </div>
             <div class="col s6">
                 <div class="input-field">
-                    <input id="identity_card" name="identity_card" type="number">
+                    <input id="identity_card" name="identity_card" type="number" />
                     <label for="identity_card">Số chứng minh nhân dân</label>
                 </div>
             </div>
@@ -30,10 +30,10 @@
                 <div class="file-field input-field">
                     <div class="btn">
                         <span>File</span>
-                        <input id="path" name="path" type="file">
+                        <input id="path" name="path" type="file" />
                     </div>
                     <div class="file-path-wrapper">
-                        <input class="file-path validate">
+                        <input class="file-path validate" />
                     </div>
                 </div>
             </div>
@@ -56,13 +56,13 @@
         <div class="row">
             <div class="col s6">
                 <div class="input-field">
-                    <input id="birthdate" name="birthdate" type="text" class="datepicker">
+                    <input id="birthdate" name="birthdate" type="text" class="datepicker" />
                     <label for="birthdate">Ngày sinh</label>
                 </div>
             </div>
             <div class="col s6">
                 <div class="input-field">
-                    <input id="phone" name="phone" type="number">
+                    <input id="phone" name="phone" type="number" />
                     <label for="phone">Số điện thoại</label>
                 </div>
             </div>
@@ -70,13 +70,13 @@
         <div class="row">
             <div class="col s6">
                 <div class="input-field">
-                    <input id="password" name="password" type="password">
+                    <input id="password" name="password" type="password" />
                     <label for="password">Mật khẩu</label>
                 </div>
             </div>
             <div class="col s6">
                 <div class="input-field">
-                    <input id="email" name="email" type="text">
+                    <input id="email" name="email" type="text" />
                     <label for="email">Email</label>
                 </div>
             </div>

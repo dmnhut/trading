@@ -14,6 +14,12 @@
     }
 }
 
+@media(max-width: 950px) {
+    .show-code {
+        display: none;
+    }
+}
+
 .alert {
     padding: 20px;
     background-color: #f44336;
@@ -79,4 +85,12 @@
 
 .sidenav li.active {
     background-color: #bbdefb;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.radio {
+    margin-right: 15px;
 }

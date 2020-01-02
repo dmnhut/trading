@@ -12,7 +12,7 @@
             <nav class="blue darken-2">
                 <div class="nav-wrapper">
                     <div class="input-field">
-                        <input id="txt" type="search" required>
+                        <input id="txt" type="search" required />
                         <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                 <td>
                     <form method="POST" action="{{route('users.status')}}">
                         @csrf
-                        <input type="hidden" name="id" value="{{$value->id}}">
+                        <input type="hidden" name="id" value="{{$value->id}}" />
                         @if($value->status == App\__::$STATUS[0])
                             <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1">khóa</button>
                             @elseif($value->status == App\__::$STATUS[1])

@@ -119,6 +119,19 @@ class __
     }
 
     /**
+     * units
+     * @param  $key
+     * @return string
+     */
+    public function units($key)
+    {
+        $__ = [
+            'name' => 'Tên đơn vị tính không hợp lệ'
+        ];
+        return $__[$key];
+    }
+
+    /**
      * re
      * @param  $key
      * @return string
@@ -126,11 +139,12 @@ class __
     public static function re($key)
     {
         $__ = [
-            'NAME' => '/[^ A-Za-z0-9_ăâêôơưĂÂÊÔƠƯáắấéếíýóốớúứÁẮẤÉẾÍÝÓỐỚÚỨàằầèềìỳòồờùừÀẰẦÈỀÌỲÒỒỜÙỪảẳẩẻểỉỷỏổởủửẢẲẨẺỂỈỶỎỔỞỦỬãẵẫẽễĩỹõỗỡũữÃẴẪẼỄĨỸÕỖỠŨỮ]| {2}/i',
+            'NAME' => '/[^ A-Za-z0-9_ăâêôơưĂÂÊÔƠƯáắấéếíýóốớúứÁẮẤÉẾÍÝÓỐỚÚỨàằầèềìỳòồờùừÀẰẦÈỀÌỲÒỒỜÙỪảẳẩẻểỉỷỏổởủửẢẲẨẺỂỈỶỎỔỞỦỬãẵẫẽễĩỹõỗỡũữÃẴẪẼỄĨỸÕỖỠŨỮạặậẹệịỵọộợụựẠẶẬẸỆỊỴỌỘỢỤỰ]| {2}/i',
             'IDENTITY_CARD' => '/[^0-9]|[0-9]{10}/m',
             'GENDER' => '/[^0-1]/m',
             'PHONE' => '/[^0-9]|[0-9]{12}/m',
-            'EMAIL' => '/[^0-9a-zA-Z_\.\@]/i'
+            'EMAIL' => '/[^0-9a-zA-Z_\.\@]/i',
+            'ALPHABET' => '/[^ A-Za-z_ăâêôơưĂÂÊÔƠƯáắấéếíýóốớúứÁẮẤÉẾÍÝÓỐỚÚỨàằầèềìỳòồờùừÀẰẦÈỀÌỲÒỒỜÙỪảẳẩẻểỉỷỏổởủửẢẲẨẺỂỈỶỎỔỞỦỬãẵẫẽễĩỹõỗỡũữÃẴẪẼỄĨỸÕỖỠŨỮạặậẹệịỵọộợụựẠẶẬẸỆỊỴỌỘỢỤỰ]| {2}/i'
         ];
         return $__[$key];
     }
@@ -164,7 +178,7 @@ class __
      * struuid
      * @return string
      */
-    function struuid()
+    public static function struuid()
     {
         $entropy = false;
         $s=uniqid("", $entropy);

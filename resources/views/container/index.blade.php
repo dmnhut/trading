@@ -127,6 +127,8 @@
     <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/JsBarcode.all.min.js"></script>
+    <script src="{{url('js/qrcode.js')}}"></script>
     <script src="{{url('js/container/index.js')}}"></script>
     @yield('script')
 </body>
