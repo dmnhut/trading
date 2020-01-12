@@ -101,7 +101,7 @@ class __
             'percent.require' => 'Phần trăm không được rỗng',
             'percent.unique' => 'Phần trăm đã được cài đặt',
             'percent.use' => 'Phần trăm đang được sử dụng'
-          ];
+        ];
         return $__[$key];
     }
 
@@ -114,7 +114,7 @@ class __
     {
         $__ = [
             'name' => 'Tên nhóm người dùng không được rỗng'
-          ];
+        ];
         return $__[$key];
     }
 
@@ -127,6 +127,17 @@ class __
     {
         $__ = [
             'name' => 'Tên đơn vị tính không hợp lệ'
+        ];
+        return $__[$key];
+    }
+
+
+    public function items($key)
+    {
+        $__ = [
+            'item' => 'Tên sản phẩm / dịch vụ chưa nhập',
+            'unit' => 'Đơn vị tính chưa nhập',
+            'quantity' => 'Số lượng chưa nhập'
         ];
         return $__[$key];
     }
@@ -144,7 +155,8 @@ class __
             'GENDER' => '/[^0-1]/m',
             'PHONE' => '/[^0-9]|[0-9]{12}/m',
             'EMAIL' => '/[^0-9a-zA-Z_\.\@]/i',
-            'ALPHABET' => '/[^ A-Za-z_ăâêôơưĂÂÊÔƠƯáắấéếíýóốớúứÁẮẤÉẾÍÝÓỐỚÚỨàằầèềìỳòồờùừÀẰẦÈỀÌỲÒỒỜÙỪảẳẩẻểỉỷỏổởủửẢẲẨẺỂỈỶỎỔỞỦỬãẵẫẽễĩỹõỗỡũữÃẴẪẼỄĨỸÕỖỠŨỮạặậẹệịỵọộợụựẠẶẬẸỆỊỴỌỘỢỤỰ]| {2}/i'
+            'ALPHABET' => '/[^ A-Za-z_ăâêôơưĂÂÊÔƠƯáắấéếíýóốớúứÁẮẤÉẾÍÝÓỐỚÚỨàằầèềìỳòồờùừÀẰẦÈỀÌỲÒỒỜÙỪảẳẩẻểỉỷỏổởủửẢẲẨẺỂỈỶỎỔỞỦỬãẵẫẽễĩỹõỗỡũữÃẴẪẼỄĨỸÕỖỠŨỮạặậẹệịỵọộợụựẠẶẬẸỆỊỴỌỘỢỤỰ]| {2}/i',
+            'QUANTITY' => '/[^0-9]/'
         ];
         return $__[$key];
     }
@@ -167,9 +179,10 @@ class __
     public static function validates($key)
     {
         $__ = [
-          'email' => 'Email không sẵn sàn vì nó đã được sử dụng',
-          'identity_card' => 'CMND không sẵn sàn vì nó đã được sử dụng',
-          'phone' => 'Số điện thoại không sẵn sàn vì nó đã được sử dụng'
+            'email' => 'Email không sẵn sàn vì nó đã được sử dụng',
+            'identity_card' => 'CMND không sẵn sàn vì nó đã được sử dụng',
+            'phone' => 'Số điện thoại không sẵn sàn vì nó đã được sử dụng',
+            'quantity' => 'Số lượng phải là số nguyên'
         ];
         return $__[$key];
     }
@@ -186,7 +199,7 @@ class __
         $index = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $base= strlen($index);
         $out = '';
-        for($t = floor(log10($num) / log10($base)); $t >= 0; $t--) {
+        for ($t = floor(log10($num) / log10($base)); $t >= 0; $t--) {
             $a = floor($num / pow($base, $t));
             $out = $out.substr($index, $a, 1);
             $num = $num-($a*pow($base, $t));

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Pays;
 use App\__;
 
@@ -72,11 +73,13 @@ class PaysController extends Controller
         if ($count == 1 && $model->turn_on == 1) {
             return redirect(route('pays.index'));
         }
+        $model->version_no = $model->version_no + 1;
         $model->turn_on = 1;
         $model->save();
         Pays::where('id', '<>', $request->id)
             ->update([
-                  'turn_on' => 0
+                'turn_on' => 0,
+                'version_no' => DB::raw('version_no + 1')
               ]);
         return redirect(route('pays.index'))->with([
           'message' => __::messages()->status(),
@@ -134,6 +137,7 @@ class PaysController extends Controller
             ]);
         } else {
             $model->del_flag = 1;
+            $model->version_no = $model->version_no + 1;
             $model->save();
             return redirect(route('pays.index'))->with([
               'message' => __::messages()->delete(),

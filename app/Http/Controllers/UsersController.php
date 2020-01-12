@@ -23,23 +23,22 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = DB::select("select
-                                 users.id as id,
-                                 users.name as name,
-                                 users.email as email,
-                                 users.path as path,
-                                 if(users.gender = 1, 'Nam', 'Nữ') as 'gender',
-                                 users.birthdate as birthdate,
-                                 users.identity_card as identity_card,
-                                 users.phone as phone,
-                                 status.name as status
-                             from users
-                             left join status_user
-                             on status_user.id_user = users.id
-                             left join status
-                             on status.id = status_user.id_status
-                             where users.del_flag = 0
-                             order by users.name asc");
+        $users = DB::select("select users.id                          as id,
+                                    users.name                        as name,
+                                    users.email                       as email,
+                                    users.path                        as path,
+                                    if(users.gender = 1, 'Nam', 'Nữ') as 'gender',
+                                    users.birthdate                   as birthdate,
+                                    users.identity_card               as identity_card,
+                                    users.phone                       as phone,
+                                    status.name                       as status
+                               from users
+                               left join status_user
+                                 on status_user.id_user               = users.id
+                               left join status
+                                 on status.id                         = status_user.id_status
+                              where users.del_flag                    = 0
+                              order by users.name asc");
         return view('users.index', ['data' => $users]);
     }
 
@@ -247,6 +246,7 @@ class UsersController extends Controller
             $user->birthdate = $request->birthdate;
             $user->phone = $request->phone;
             $user->email = $request->email;
+            $user->version_no = $user->version_no + 1;
             $user->save();
             return [
               'messages' => [__::messages()->update()],
@@ -268,7 +268,7 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->update(['del_flag'=> 1]);
+        User::find($id)->update(['del_flag'=> 1, DB::raw('version_no + 1')]);
         return redirect(route('users.index'))->with([
           'message' => __::messages()->delete(),
           'error' => false

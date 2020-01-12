@@ -17,38 +17,38 @@ class DetailShipperController extends Controller
     public function index()
     {
         $users = User::select('users.id as id', 'users.name as name', 'users.email as email', 'users.phone')
-                      ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
-                      ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
-                      ->where('users.del_flag', 0)
-                      ->where('status.name', 'active')
-                      ->get();
+                     ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
+                     ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
+                     ->where('users.del_flag', 0)
+                     ->where('status.name', 'active')
+                     ->get();
         $shippers = DetailShipper::select('users.id as id', 'detail_shipper.id as id_shipper', 'provinces.id as id_province', 'provinces.name as province', 'districts.id as id_district', 'districts.name as district', 'wards.id as id_ward', 'wards.name as ward')
-                                  ->rightjoin('users', 'users.id', '=', 'detail_shipper.id_user')
-                                  ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
-                                  ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
-                                  ->leftjoin('provinces', 'provinces.id', '=', 'detail_shipper.id_province')
-                                  ->leftjoin('districts', 'districts.id', '=', 'detail_shipper.id_district')
-                                  ->leftjoin('wards', 'wards.id', '=', 'detail_shipper.id_ward')
-                                  ->where('users.del_flag', 0)
-                                  ->where('status.name', 'active')
-                                  ->get();
+                                 ->rightjoin('users', 'users.id', '=', 'detail_shipper.id_user')
+                                 ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
+                                 ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
+                                 ->leftjoin('provinces', 'provinces.id', '=', 'detail_shipper.id_province')
+                                 ->leftjoin('districts', 'districts.id', '=', 'detail_shipper.id_district')
+                                 ->leftjoin('wards', 'wards.id', '=', 'detail_shipper.id_ward')
+                                 ->where('users.del_flag', 0)
+                                 ->where('status.name', 'active')
+                                 ->get();
         $detail_shippers = [];
         foreach ($shippers as $val) {
             $detail_shippers[$val->id] = [
-              'id_shipper' => $val->id_shipper,
-              'province' => [
-                'id' => $val->id_province,
-                'name' => $val->province
-              ],
-              'district' => [
-                'id'=> $val->id_district,
-                'name'=> $val->district
-              ],
-              'ward' => [
-                'id'=> $val->id_ward,
-                'name' => $val->ward
-              ]
-          ];
+                                       'id_shipper' => $val->id_shipper,
+                                       'province' => [
+                                          'id' => $val->id_province,
+                                          'name' => $val->province
+                                       ],
+                                       'district' => [
+                                          'id'=> $val->id_district,
+                                          'name'=> $val->district
+                                       ],
+                                       'ward' => [
+                                          'id'=> $val->id_ward,
+                                          'name' => $val->ward
+                                       ]
+            ];
         }
         return view('detail-shippers.index', ['data' => $users, 'detail_shippers' => $detail_shippers]);
     }
@@ -136,12 +136,13 @@ class DetailShipperController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $detail_shippers = DetailShipper::find($id)
-        ->update([
-            'id_province' => $request->province,
-            'id_district' => $request->district,
-            'id_ward' => $request->ward
-          ]);
+        $detail_shippers = DetailShipper::find($id);
+        $detail_shippers->update([
+                            'id_province' => $request->province,
+                            'id_district' => $request->district,
+                            'id_ward' => $request->ward,
+                            'version_no' => $detail_shippers->version_no + 1
+                          ]);
         return [
           'message' => __::messages()->update(),
           'error' => false

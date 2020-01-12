@@ -12,7 +12,7 @@
         @csrf
         <div class="row">
             <div class="right">
-                <button id="btn-back" class="waves-effect waves-light btn grey lighten-1">Trở lại</button>
+                <button id="btn-back" class="waves-effect waves-light btn grey">Trở lại</button>
                 <button id="btn-add" class="waves-effect waves-light btn">Thêm</button>
             </div>
         </div>
@@ -58,8 +58,37 @@
                         <label for="address">Địa chỉ</label>
                     </div>
                 </div>
+                <div class="card-panel show-code">
+                    <div class="row">
+                        <div class="col s8">
+                            <svg id="barcode"></svg>
+                        </div>
+                        <div class="col s4">
+                            <div id="qrcode"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col m7 s12">
+                <h5>Tổng tiền</h5>
+                <div class="card-panel">
+                    <div class="input-field">
+                        <input id="total-amount" class="right-align" name="total-amount" type="text" value="0" disabled />
+                        <label for="total-amount">Tổng tiền</label>
+                    </div>
+                </div>
+                <h5>Tổng trọng lượng &le; (kg)</h5>
+                <div class="card-panel">
+                    <div class="input-field">
+                        <select id="kg" name="kg">
+                            <option value="0" selected disabled>---</option>
+                            @foreach ($prices as $value)
+                            <option value="{{$value->id}}-{{$value->amount}}">bé hơn hoặc bằng {{$value->kg}} kg</option>
+                            @endforeach
+                        </select>
+                        <label for="kg">Tổng trọng lượng</label>
+                    </div>
+                </div>
                 <h5>Chi tiết đơn hàng</h5>
                 <div class="card-panel">
                     <div class="row">
@@ -86,26 +115,21 @@
                             </div>
                         </div>
                     </div>
-                    <a class="btn-floating btn-large waves-effect waves-light pink right">
+                    <button id="btn-add-item" class="btn-floating btn-large waves-effect waves-light pink right">
                         <i class="material-icons">add</i>
-                    </a>
-                </div>
-                <h5>Tổng tiền</h5>
-                <div class="card-panel">
-                    <div class="input-field">
-                        <input id="total-amount" class="right-align" name="total-amount" type="text" value="0" disabled />
-                        <label for="total-amount">Tổng tiền</label>
-                    </div>
-                </div>
-                <div class="card-panel show-code">
-                    <div class="row">
-                        <div class="col s8">
-                            <svg id="barcode"></svg>
-                        </div>
-                        <div class="col s4">
-                            <div id="qrcode"></div>
-                        </div>
-                    </div>
+                    </button>
+                    <table class="responsive-table striped centered" style="display:none">
+                        <thead>
+                            <tr>
+                                <th>Tên sản phẩm / dịch vụ</th>
+                                <th>Đơn vị tính</th>
+                                <th>Số lượng</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="items">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -121,6 +145,8 @@
         </form>
     </div>
 </div>
+<input type="hidden" name="_messages" value='@json($messages)' />
+<input type="hidden" name="_validator" value='@json($validator)' />
 <input type="hidden" name="_url_provinces" value="{{route('provinces.index')}}" />
 <input type="hidden" name="_url_districts" value="{{route('districts.index')}}" />
 <input type="hidden" name="_url_wards" value="{{route('wards.index')}}" />

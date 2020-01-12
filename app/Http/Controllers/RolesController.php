@@ -38,9 +38,9 @@ class RolesController extends Controller
     {
         if (empty($request->name)) {
             return redirect(route('roles.index'))->with([
-            'message' => __::messages()->errors()->roles('name'),
-            'error' => true
-          ]);
+              'message' => __::messages()->errors()->roles('name'),
+              'error' => true
+            ]);
         } else {
             Roles::create(['name' => $request->name]);
             return redirect(route('roles.index'))->with([

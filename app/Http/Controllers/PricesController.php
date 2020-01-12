@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Prices;
 use App\__;
 
@@ -40,6 +41,7 @@ class PricesController extends Controller
         } else {
             $model->turn_on = 0;
         }
+        $model->version_no = $model->version_no + 1;
         $model->save();
         return redirect(route('prices.index'));
     }
@@ -108,7 +110,7 @@ class PricesController extends Controller
      */
     public function destroy($id)
     {
-        Prices::find($id)->update(['del_flag' => 1]);
+        Prices::find($id)->update(['del_flag' => 1, DB::raw('version_no + 1')]);
         return redirect(route('prices.index'));
     }
 }
