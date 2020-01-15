@@ -63,6 +63,15 @@ class __
     }
 
     /**
+     * _500
+     * @return string
+     */
+    public function _500()
+    {
+        return 'Xảy ra lỗi không xác định';
+    }
+
+    /**
      * errors
      * @return $this
      */
@@ -131,13 +140,35 @@ class __
         return $__[$key];
     }
 
-
+    /**
+     * items
+     * @param  $key
+     * @return string
+     */
     public function items($key)
     {
         $__ = [
             'item' => 'Tên sản phẩm / dịch vụ chưa nhập',
             'unit' => 'Đơn vị tính chưa nhập',
             'quantity' => 'Số lượng chưa nhập'
+        ];
+        return $__[$key];
+    }
+
+    /**
+     * orders
+     * @param  $key
+     * @return string
+     */
+    public function orders($key)
+    {
+        $__ = [
+            'items' => 'Chi tiết đơn hàng đang rỗng',
+            'province' => 'Chưa chọn tỉnh thành',
+            'district' => 'Chưa chọn quận huyện',
+            'ward' => 'Chưa chọn phường xã',
+            'address' => 'Địa chỉ đang rỗng',
+            'kg' => 'Giá đơn hàng chưa được chọn'
         ];
         return $__[$key];
     }
@@ -194,15 +225,15 @@ class __
     public static function struuid()
     {
         $entropy = false;
-        $s=uniqid("", $entropy);
-        $num= hexdec(str_replace(".", "", (string)$s));
+        $s = uniqid('', $entropy);
+        $num = hexdec(str_replace('.', '', (string)$s));
         $index = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $base= strlen($index);
+        $base = strlen($index);
         $out = '';
         for ($t = floor(log10($num) / log10($base)); $t >= 0; $t--) {
             $a = floor($num / pow($base, $t));
             $out = $out.substr($index, $a, 1);
-            $num = $num-($a*pow($base, $t));
+            $num = $num-($a * pow($base, $t));
         }
         return $out.date('YmdHis');
     }

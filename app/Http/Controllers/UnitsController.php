@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Units;
 use App\__;
 
@@ -99,6 +100,10 @@ class UnitsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Units::find($id)->update(['del_flag' => 1, DB::raw('version_no + 1')]);
+        return redirect(route('units.index'))->with([
+          'message' => __::messages()->delete(),
+          'error' => false
+        ]);
     }
 }

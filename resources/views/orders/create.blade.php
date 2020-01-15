@@ -7,12 +7,20 @@
         <a href="{{route('orders.create')}}" class="breadcrumb hide-on-med-and-down">Thêm mới đơn hàng</a>
     </div>
 </nav>
+<div class="message form" style="display:none">
+    <div class="section error" style="display:none">
+        <div class="alert">
+            <span class="closebtn" onclick="removeMessage($(this))">&times;</span>
+        </div>
+    </div>
+</div>
 <div class="card-panel">
     <form id="orders-create" action="{{route('orders.store')}}" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="right">
                 <button id="btn-back" class="waves-effect waves-light btn grey">Trở lại</button>
+                <button id="btn-clear" class="waves-effect waves-light btn grey">Xóa</button>
                 <button id="btn-add" class="waves-effect waves-light btn">Thêm</button>
             </div>
         </div>
@@ -37,6 +45,7 @@
                 <div class="card-panel">
                     <div class="input-field">
                         <select id="province" name="province">
+                            <option value="0" selected disabled>---</option>
                             @foreach ($provinces as $value)
                             <option value="{{$value->id}}">{{$value->text}}</option>
                             @endforeach
@@ -45,27 +54,19 @@
                     </div>
                     <div class="input-field">
                         <select id="district" name="district" disabled>
+                            <option value="0" selected disabled>---</option>
                         </select>
                         <label for="district">Quận huyện</label>
                     </div>
                     <div class="input-field">
                         <select id="ward" name="ward" disabled>
+                            <option value="0" selected disabled>---</option>
                         </select>
                         <label for="ward">Phường xã</label>
                     </div>
                     <div class="input-field">
                         <input id="address" name="address" type="text" />
                         <label for="address">Địa chỉ</label>
-                    </div>
-                </div>
-                <div class="card-panel show-code">
-                    <div class="row">
-                        <div class="col s8">
-                            <svg id="barcode"></svg>
-                        </div>
-                        <div class="col s4">
-                            <div id="qrcode"></div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -90,6 +91,11 @@
                     </div>
                 </div>
                 <h5>Chi tiết đơn hàng</h5>
+                <div class="message items" style="display:none">
+                    <div class="alert">
+                        <span class="closebtn" onclick="removeMessage($(this))">&times;</span>
+                    </div>
+                </div>
                 <div class="card-panel">
                     <div class="row">
                         <div class="col s4">
@@ -133,6 +139,16 @@
                 </div>
             </div>
         </div>
+        <div class="card-panel show-code">
+            <div class="row">
+                <div class="col m8 s12 valign-wrapper">
+                    <svg id="barcode"></svg>
+                </div>
+                <div class="col m4 s12 valign-wrapper">
+                    <div id="qrcode"></div>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 <div id="modal-message" class="modal" style="width:30%!important;">
@@ -150,6 +166,7 @@
 <input type="hidden" name="_url_provinces" value="{{route('provinces.index')}}" />
 <input type="hidden" name="_url_districts" value="{{route('districts.index')}}" />
 <input type="hidden" name="_url_wards" value="{{route('wards.index')}}" />
+<input type="hidden" name="_url_code" value="{{route('orders.code')}}" />
 @endsection
 @section('script')
 <script src="{{url('js/orders/create.js')}}"></script>

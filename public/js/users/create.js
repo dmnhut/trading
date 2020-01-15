@@ -56,21 +56,21 @@ $(".datepicker").datepicker({
     }
 });
 
-document.querySelector("#btn-add").addEventListener("click", (event) => {
+document.querySelector("#btn-add").addEventListener("click", event => {
     event.preventDefault();
     $(".main-loader").css("display", "");
     let data = new FormData(document.querySelector("#users-create"));
     $.ajax({
         method: "POST",
-        enctype: 'multipart/form-data',
+        enctype: "multipart/form-data",
         url: document.querySelector("#users-create").action,
         contentType: false,
         processData: false,
         data: data,
-        success: function(response) {
+        success: response => {
             $(".main-loader").css("display", "none");
             if (response.error) {
-                response.messages.map((val) => {
+                response.messages.map(val => {
                     toastr["error"](val);
                 });
             } else {

@@ -56,22 +56,22 @@ $(".datepicker").datepicker({
     }
 });
 
-$(".datepicker").datepicker("setDate", new Date(document.querySelector("#birthdate").value.split("/")[2], document.querySelector("#birthdate").value.split("/")[1] - 1, document.querySelector("#birthdate").value.split("/")[0], '00', '00', '00'));
-document.querySelector("#btn-edit").addEventListener("click", (event) => {
+$(".datepicker").datepicker("setDate", new Date(document.querySelector("#birthdate").value.split("/")[2], document.querySelector("#birthdate").value.split("/")[1] - 1, document.querySelector("#birthdate").value.split("/")[0], "00", "00", "00"));
+document.querySelector("#btn-edit").addEventListener("click", event => {
     event.preventDefault();
     $(".main-loader").css("display", "");
     let data = new FormData(document.querySelector("#users-edit"));
     $.ajax({
         method: "POST",
-        enctype: 'multipart/form-data',
+        enctype: "multipart/form-data",
         url: document.querySelector("#users-edit").action,
         contentType: false,
         processData: false,
         data: data,
-        success: function(response) {
+        success: response => {
             $(".main-loader").css("display", "none");
             if (response.error) {
-                response.messages.map((val) => {
+                response.messages.map(val => {
                     toastr["error"](val);
                 });
             } else {

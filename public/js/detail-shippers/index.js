@@ -5,7 +5,7 @@ $(document).ready(() => {
     });
 });
 
-function formSelect() {
+const formSelect = () => {
     $("#province").formSelect("destroy");
     $("#province").empty();
     $("#province").formSelect();
@@ -27,40 +27,39 @@ $("#province").on("change", () => {
     $("#ward").empty();
     $("#ward").prop("disabled", true);
     $("#ward").formSelect();
-    $.ajax({
-        method: "GET",
-        url: "districts",
-        data: {
+    axios.get("districts", {
+        params: {
             id: $("#province").formSelect()[0].selectedOptions[0].value
-        },
-        success: function(response) {
-            response.forEach((element) => {
-                let opt = document.createElement('option');
+        }
+    }).then(response => {
+        response.data.forEach(element => {
+            let opt = document.createElement("option");
+            opt.value = element.id;
+            opt.innerHTML = element.text;
+            document.querySelector("#district").appendChild(opt);
+        });
+        $("#district").prop("disabled", false);
+        $("#district").formSelect();
+        axios.get("wards", {
+            params: {
+                id: $("#district").formSelect("getSelectedValues").pop()
+            }
+        }).then(response => {
+            response.data.forEach(element => {
+                let opt = document.createElement("option");
                 opt.value = element.id;
                 opt.innerHTML = element.text;
-                document.querySelector("#district").appendChild(opt);
+                document.querySelector("#ward").appendChild(opt);
             });
-            $("#district").prop("disabled", false);
-            $("#district").formSelect();
-            $.ajax({
-                method: "GET",
-                url: "wards",
-                data: {
-                    id: $("#district").formSelect("getSelectedValues").pop()
-                },
-                success: function(response) {
-                    response.forEach((element) => {
-                        let opt = document.createElement('option');
-                        opt.value = element.id;
-                        opt.innerHTML = element.text;
-                        document.querySelector("#ward").appendChild(opt);
-                    });
-                    $("#ward").prop("disabled", false);
-                    $("#ward").formSelect();
-                    $(".main-loader").css("display", "none");
-                }
-            });
-        }
+            $("#ward").prop("disabled", false);
+            $("#ward").formSelect();
+        }).catch(error => {
+            console.log(error);
+        }).finally(() => {
+            $(".main-loader").css("display", "none");
+        });
+    }).catch(error => {
+        console.log(error);
     });
 });
 
@@ -69,27 +68,27 @@ $("#district").on("change", () => {
     $("#ward").empty();
     $("#ward").prop("disabled", true);
     $("#ward").formSelect();
-    $.ajax({
-        method: "GET",
-        url: "wards",
-        data: {
+    axios.get("wards", {
+        params: {
             id: $("#district").formSelect()[0].selectedOptions[0].value
-        },
-        success: function(response) {
-            response.forEach((element) => {
-                let opt = document.createElement('option');
-                opt.value = element.id;
-                opt.innerHTML = element.text;
-                document.querySelector("#ward").appendChild(opt);
-            });
-            $("#ward").prop("disabled", false);
-            $("#ward").formSelect();
-            $(".main-loader").css("display", "none");
         }
+    }).then(response => {
+        response.data.forEach(element => {
+            let opt = document.createElement("option");
+            opt.value = element.id;
+            opt.innerHTML = element.text;
+            document.querySelector("#ward").appendChild(opt);
+        });
+        $("#ward").prop("disabled", false);
+        $("#ward").formSelect();
+    }).catch(error => {
+        console.log(error);
+    }).finally(() => {
+        $(".main-loader").css("display", "none");
     });
 });
 
-document.querySelectorAll(".btn-cu").forEach((element) => {
+document.querySelectorAll(".btn-cu").forEach(element => {
     element.addEventListener("click", () => {
         if (element.getAttribute("mode") == "update") {
             $("#btn-modal-cu").html("cập nhật");
@@ -101,71 +100,68 @@ document.querySelectorAll(".btn-cu").forEach((element) => {
         document.querySelector("#usrname").innerHTML = element.getAttribute("usrname");
         document.querySelector("input[name=_id_shipper]").value = element.getAttribute("id_shipper");
         $(".main-loader").css("display", "");
-        document.querySelector("input[name=_id]").value = element.getAttribute("data")
-        $.ajax({
-            method: "GET",
-            url: "provinces",
-            success: function(response) {
-                response.forEach((element) => {
-                    let opt = document.createElement('option');
+        document.querySelector("input[name=_id]").value = element.getAttribute("data");
+        axios.get("provinces").then(response => {
+            response.data.forEach(element => {
+                let opt = document.createElement("option");
+                opt.value = element.id;
+                opt.innerHTML = element.text;
+                document.querySelector("#province").appendChild(opt);
+            });
+            if (element.getAttribute("mode") == "update") {
+                $("#province").val(element.getAttribute("province"));
+            }
+            $("#province").formSelect();
+            axios.get("districts", {
+                params: {
+                    id: $("#province").formSelect("getSelectedValues").pop()
+                }
+            }).then(response => {
+                $("#district").empty();
+                response.data.forEach(element => {
+                    let opt = document.createElement("option");
                     opt.value = element.id;
                     opt.innerHTML = element.text;
-                    document.querySelector("#province").appendChild(opt);
+                    document.querySelector("#district").appendChild(opt);
                 });
+                $("#district").prop("disabled", false);
                 if (element.getAttribute("mode") == "update") {
-                    $("#province").val(element.getAttribute("province"));
+                    $("#district").val(element.getAttribute("district"));
                 }
-                $("#province").formSelect();
-                $.ajax({
-                    method: "GET",
-                    url: "districts",
-                    data: {
-                        id: $("#province").formSelect("getSelectedValues").pop()
-                    },
-                    success: function(response) {
-                        $("#district").empty();
-                        response.forEach((element) => {
-                            let opt = document.createElement('option');
-                            opt.value = element.id;
-                            opt.innerHTML = element.text;
-                            document.querySelector("#district").appendChild(opt);
-                        });
-                        $("#district").prop("disabled", false);
-                        if (element.getAttribute("mode") == "update") {
-                            $("#district").val(element.getAttribute("district"));
-                        }
-                        $("#district").formSelect();
-                        $.ajax({
-                            method: "GET",
-                            url: "wards",
-                            data: {
-                                id: $("#district").formSelect("getSelectedValues").pop()
-                            },
-                            success: function(response) {
-                                $("#ward").empty();
-                                response.forEach((element) => {
-                                    let opt = document.createElement('option');
-                                    opt.value = element.id;
-                                    opt.innerHTML = element.text;
-                                    document.querySelector("#ward").appendChild(opt);
-                                });
-                                $("#ward").prop("disabled", false);
-                                if (element.getAttribute("mode") == "update") {
-                                    $("#ward").val(element.getAttribute("ward"));
-                                }
-                                $("#ward").formSelect();
-                                $(".main-loader").css("display", "none");
-                            }
-                        });
+                $("#district").formSelect();
+                axios.get("wards", {
+                    params: {
+                        id: $("#district").formSelect("getSelectedValues").pop()
                     }
+                }).then(response => {
+                    $("#ward").empty();
+                    response.data.forEach(element => {
+                        let opt = document.createElement("option");
+                        opt.value = element.id;
+                        opt.innerHTML = element.text;
+                        document.querySelector("#ward").appendChild(opt);
+                    });
+                    $("#ward").prop("disabled", false);
+                    if (element.getAttribute("mode") == "update") {
+                        $("#ward").val(element.getAttribute("ward"));
+                    }
+                    $("#ward").formSelect();
+                }).catch(error => {
+                    console.log(error);
+                }).finally(() => {
+                    $(".main-loader").css("display", "none");
+                    $("#modal-area").modal("open");
                 });
-            }
+            }).catch(error => {
+                console.log(error);
+            });
+        }).catch(error => {
+            console.log(error);
         });
-        $("#modal-area").modal("open");
     });
 });
 
-document.querySelectorAll(".btn-detail").forEach((element) => {
+document.querySelectorAll(".btn-detail").forEach(element => {
     let id = element.getAttribute("data");
     element.addEventListener("click", () => {
         $(".main-loader").css("display", "");
@@ -174,7 +170,7 @@ document.querySelectorAll(".btn-detail").forEach((element) => {
             id: id
         }
         axios.post(document.querySelector("#modal-detail").getAttribute("url"), data)
-            .then((response) => {
+            .then(response => {
                 if (response.data != 0) {
                     document.querySelector("#detail-name").innerHTML = response.data.name;
                     document.querySelector("#detail-birthdate").innerHTML = response.data.birthdate;
@@ -185,8 +181,7 @@ document.querySelectorAll(".btn-detail").forEach((element) => {
                     $(".main-loader").css("display", "none");
                     $("#modal-detail").modal("open");
                 }
-            })
-            .catch((error) => {
+            }).catch(error => {
                 console.log(error);
             });
     });
@@ -205,21 +200,18 @@ document.querySelector("#btn-modal-cu").addEventListener("click", () => {
         district: $("#district").formSelect()[0].selectedOptions[0].value,
         ward: $("#ward").formSelect()[0].selectedOptions[0].value
     };
-    if(document.querySelector("input[name=_mode]").value == "update"){
-      data._method = "PUT";
+    if (document.querySelector("input[name=_mode]").value == "update") {
+        data._method = "PUT";
     }
-    axios.post([document.querySelector("#url").value, "/", document.querySelector("input[name=_id_shipper]").value].join(""), data)
-        .then((response) => {
-            console.log(response);
-            if (response.data.error) {
-                $(".btn-close").click();
-            } else {
-                document.querySelector("#message").innerHTML = response.data.message;
-                $(".main-loader").css("display", "none");
-                $("#modal-message").modal("open");
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    axios.post([document.querySelector("#url").value, "/", document.querySelector("input[name=_id_shipper]").value].join(""), data).then(response => {
+        if (response.data.error) {
+            $(".btn-close").click();
+        } else {
+            document.querySelector("#message").innerHTML = response.data.message;
+            $(".main-loader").css("display", "none");
+            $("#modal-message").modal("open");
+        }
+    }).catch(error => {
+        console.log(error);
+    });
 });

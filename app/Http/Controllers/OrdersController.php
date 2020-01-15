@@ -5,16 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Orders;
+use App\OrderDetail;
+use App\OrderPay;
+use App\OrderPrice;
+use App\OrderUnit;
 use App\User;
 use App\Provinces;
 use App\Districts;
 use App\Wards;
 use App\Units;
 use App\Prices;
+use App\Pays;
 use App\__;
+use DateTime;
 
 class OrdersController extends Controller
 {
+    /**
+     * generalCode
+     * @return string
+     */
+    public function generalCode()
+    {
+        return ['code' => __::struuid()];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -46,7 +61,13 @@ class OrdersController extends Controller
         $messages = [
           'item' => __::messages()->errors()->items('item'),
           'unit' => __::messages()->errors()->items('unit'),
-          'quantity' => __::messages()->errors()->items('quantity')
+          'quantity' => __::messages()->errors()->items('quantity'),
+          'items' => __::messages()->errors()->orders('items'),
+          'province' => __::messages()->errors()->orders('province'),
+          'district' => __::messages()->errors()->orders('district'),
+          'ward' => __::messages()->errors()->orders('ward'),
+          'address' => __::messages()->errors()->orders('address'),
+          'kg' => __::messages()->errors()->orders('kg')
         ];
         $validator = [
           're' => substr(__::re('QUANTITY'), 1, 6),
@@ -69,7 +90,54 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $order = Orders::create([
+              'code' => $request->code,
+              'id_user' => $request->user,
+              'id_province' => $request->province,
+              'id_district' => $request->district,
+              'id_ward' => $request->ward,
+              'total_amount' => $request->total_amount,
+              'address' => $request->address,
+              'note' => 'đơn hàng '.$request->code.' được tạo bởi '.'admin'.' vào lúc '.date_format(new DateTime('NOW'), 'd/m/Y H:i:s')
+            ]);
+            $items = json_decode($request->items);
+            foreach ($items as $value) {
+                $order_detail = OrderDetail::create([
+                  'id_order' => $order->id,
+                  'item_name' => $value->item_name,
+                  'quantity' => $value->quantity
+                ]);
+                $order_unit = OrderUnit::create([
+                  'id_item' => $order_detail->id,
+                  'id_unit' => $value->id_unit
+                ]);
+            }
+            $order_pay = OrderPay::create([
+                'id_order' => $order->id,
+                'id_pay' => Pays::select('id')
+                                ->where('turn_on', 1)
+                                ->where('del_flag', 0)
+                                ->first()
+                                ->id
+            ]);
+            $order_price = OrderPrice::create([
+              'id_order' =>$order->id,
+              'id_price' =>  $request->kg
+            ]);
+            DB::commit();
+            return [
+              'message' => __::messages()->success(),
+              'error' => false
+            ];
+        } catch (Exception $e) {
+            DB::rollBack();
+            return [
+              'message' => __::messages()->errors()->_500(),
+              'error' => true
+            ];
+        }
     }
 
     /**
