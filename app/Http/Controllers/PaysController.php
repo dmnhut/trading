@@ -16,7 +16,9 @@ class PaysController extends Controller
      */
     public function index()
     {
-        return view('pays.index', ['data' => Pays::select('id', 'percent', 'turn_on')->where('del_flag', 0)->get()]);
+        return view('pays.index', ['data' => Pays::select('id', 'percent', 'turn_on')
+                                                 ->where('del_flag', 0)
+                                                 ->get()]);
     }
 
     /**
@@ -43,7 +45,8 @@ class PaysController extends Controller
               'error' => true
             ]);
         } else {
-            $percent = Pays::where('percent', $request->percent)->get();
+            $percent = Pays::where('percent', $request->percent)
+                           ->get();
             if (empty($percent)) {
                 Pays::create([
                   'percent' => $request->percent

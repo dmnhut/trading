@@ -16,8 +16,9 @@ class UnitsController extends Controller
      */
     public function index()
     {
-        $data = Units::select('id', 'name')->where('del_flag', 0)->orderBy('name')->get();
-        return view('units.index', ['data' => $data]);
+        return view('units.index', ['data' => Units::select('id', 'name')
+                                                   ->where('del_flag', 0)
+                                                   ->orderBy('name')->get()]);
     }
 
     /**
@@ -100,7 +101,8 @@ class UnitsController extends Controller
      */
     public function destroy($id)
     {
-        Units::find($id)->update(['del_flag' => 1, DB::raw('version_no + 1')]);
+        Units::find($id)
+             ->update(['del_flag' => 1, DB::raw('version_no + 1')]);
         return redirect(route('units.index'))->with([
           'message' => __::messages()->delete(),
           'error' => false

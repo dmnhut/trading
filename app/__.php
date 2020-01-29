@@ -22,8 +22,16 @@ class __
      */
     public static function messages()
     {
-        $__ = new __();
-        return $__;
+        return new __;
+    }
+
+    /**
+     * errors
+     * @return $this
+     */
+    public function errors()
+    {
+        return $this;
     }
 
     /**
@@ -69,15 +77,6 @@ class __
     public function _500()
     {
         return 'Xảy ra lỗi không xác định';
-    }
-
-    /**
-     * errors
-     * @return $this
-     */
-    public function errors()
-    {
-        return $this;
     }
 
     /**
@@ -168,7 +167,9 @@ class __
             'district' => 'Chưa chọn quận huyện',
             'ward' => 'Chưa chọn phường xã',
             'address' => 'Địa chỉ đang rỗng',
-            'kg' => 'Giá đơn hàng chưa được chọn'
+            'kg' => 'Giá đơn hàng chưa được chọn',
+            'receiver' => 'Họ tên người nhận đang rỗng',
+            'phone' => 'Số điện thoại không hợp lệ'
         ];
         return $__[$key];
     }
@@ -213,7 +214,7 @@ class __
             'email' => 'Email không sẵn sàn vì nó đã được sử dụng',
             'identity_card' => 'CMND không sẵn sàn vì nó đã được sử dụng',
             'phone' => 'Số điện thoại không sẵn sàn vì nó đã được sử dụng',
-            'quantity' => 'Số lượng phải là số nguyên'
+            'quantity' => 'Số lượng phải là số nguyên dương'
         ];
         return $__[$key];
     }

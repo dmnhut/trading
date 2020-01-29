@@ -58,7 +58,7 @@ $(".datepicker").datepicker({
 
 document.querySelector("#btn-add").addEventListener("click", event => {
     event.preventDefault();
-    $(".main-loader").css("display", "");
+    document.querySelector(".main-loader").style.display = "";
     let data = new FormData(document.querySelector("#users-create"));
     $.ajax({
         method: "POST",
@@ -68,7 +68,7 @@ document.querySelector("#btn-add").addEventListener("click", event => {
         processData: false,
         data: data,
         success: response => {
-            $(".main-loader").css("display", "none");
+            document.querySelector(".main-loader").style.display = "none";
             if (response.error) {
                 response.messages.map(val => {
                     toastr["error"](val);

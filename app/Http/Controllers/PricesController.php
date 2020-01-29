@@ -16,7 +16,9 @@ class PricesController extends Controller
      */
     public function index()
     {
-        return view('prices.index', ['data' => Prices::select('id', 'kg', 'amount', 'turn_on')->where('del_flag', 0)->get()]);
+        return view('prices.index', ['data' => Prices::select('id', 'kg', 'amount', 'turn_on')
+                                                     ->where('del_flag', 0)
+                                                     ->get()]);
     }
 
     /**
@@ -58,7 +60,9 @@ class PricesController extends Controller
           'kg' => $request->kg,
           'amount' => $request->amount
         ]);
-        $data = Prices::select('id', 'kg', 'amount', 'turn_on')->where('del_flag', 0)->get();
+        $data = Prices::select('id', 'kg', 'amount', 'turn_on')
+                      ->where('del_flag', 0)
+                      ->get();
         foreach ($data as $value) {
             $value->url = route('prices.destroy', [$value->id]);
         }
@@ -110,7 +114,8 @@ class PricesController extends Controller
      */
     public function destroy($id)
     {
-        Prices::find($id)->update(['del_flag' => 1, DB::raw('version_no + 1')]);
+        Prices::find($id)
+              ->update(['del_flag' => 1, DB::raw('version_no + 1')]);
         return redirect(route('prices.index'));
     }
 }

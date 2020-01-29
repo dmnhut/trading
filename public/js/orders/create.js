@@ -1,6 +1,7 @@
 $(document).ready(() => {
     clear();
     printCode();
+    $(".tabs").tabs();
     $("#btn-back").on("click", event => {
         event.preventDefault();
         window.location.href = document
@@ -57,12 +58,12 @@ const clear = () => {
     document.querySelector("#address").value = "";
     document.querySelector("#item").value = "";
     document.querySelector("#quantity").value = "";
-    $("#items").html("");
+    document.querySelector("#items").innerHTML = "";
     $("#items").parents("table").css("display", "none");
-    $(".alert").css("display", "none");
-    $(".section.error").css("display", "none");
-    $(".message.items").css("display", "none");
-    $(".message.form").css("display", "none");
+    document.querySelector(".alert").style.display = "none";
+    document.querySelector(".section.error").style.display = "none";
+    document.querySelector(".message.items").style.display = "none";
+    document.querySelector(".message.form").style.display = "none";
 };
 
 const removeRow = node => {
@@ -74,13 +75,12 @@ const removeRow = node => {
 };
 
 const removeMessage = node => {
-    let div = node.parent();
     setTimeout(() => {
-        div.css("display", "none");
-        $(".section.error").css("display", "none");
+        node.parent().css("display", "none");
+        document.querySelector(".section.error").style.display = "none";
     }, 400);
-    $(".message.items").css("display", "none");
-    $(".message.form").css("display", "none");
+    document.querySelector(".message.items").style.display = "none";
+    document.querySelector(".message.form").style.display = "none";
 };
 $("#btn-add-item").on("click", event => {
     event.preventDefault();
@@ -88,10 +88,9 @@ $("#btn-add-item").on("click", event => {
     let {
         item,
         unit,
-        quantity,
-        re,
-        error
+        quantity
     } = JSON.parse($("input[name=_messages]").val());
+    let validate = JSON.parse($("input[name=_validator]").val());
     if (document.querySelector("#item").value.length == 0) {
         messages.push(item);
     }
@@ -101,19 +100,19 @@ $("#btn-add-item").on("click", event => {
     if (document.querySelector("#quantity").value.length == 0) {
         messages.push(quantity);
     } else {
-        if (Array.isArray(document.querySelector("#quantity").value.match(new RegExp(re)))) {
-            messages.push(error);
+        if (Array.isArray(document.querySelector("#quantity").value.match(new RegExp(validate.quantity.re)))) {
+            messages.push(validate.quantity.error);
         }
     }
     if (messages.length != 0) {
-        $(".message.items").css("display", "");
-        $(".message.form").css("display", "none");
+        document.querySelector(".message.items").style.display = "";
+        document.querySelector(".message.form").style.display = "none";
         $(".alert").html("<span class='closebtn' type='items' onclick='removeMessage($(this))'>&times;</span>");
         messages.map(val => {
             $(".alert").append(val + "<br>");
         });
-        $(".alert").css("display", "");
-        $(".section.error").css("display", "");
+        document.querySelector(".alert").style.display = "";
+        document.querySelector(".section.error").style.display = "";
         return;
     }
     let row = document.createElement("tr");
@@ -153,7 +152,7 @@ $("#kg").on("change", () => {
     document.querySelector("#total-amount").setAttribute("data", $("#kg").formSelect()[0].selectedOptions[0].value.split("-")[0]);
 });
 $("#province").on("change", () => {
-    $(".main-loader").css("display", "");
+    document.querySelector(".main-loader").style.display = "";
     $("#district").empty();
     $("#district").prop("disabled", true);
     $("#district").formSelect();
@@ -189,14 +188,14 @@ $("#province").on("change", () => {
         }).catch(error => {
             console.log(error);
         }).finally(() => {
-            $(".main-loader").css("display", "none");
+            document.querySelector(".main-loader").style.display = "none";
         });
     }).catch(error => {
         console.log(error);
     })
 });
 $("#district").on("change", () => {
-    $(".main-loader").css("display", "");
+    document.querySelector(".main-loader").style.display = "";
     $("#ward").empty();
     $("#ward").prop("disabled", true);
     $("#ward").formSelect();
@@ -216,7 +215,7 @@ $("#district").on("change", () => {
     }).catch(error => {
         console.log(error);
     }).finally(() => {
-        $(".main-loader").css("display", "none");
+        document.querySelector(".main-loader").style.display = "none";
     });
 });
 document.querySelector("#btn-add").addEventListener("click", event => {
@@ -250,14 +249,14 @@ document.querySelector("#btn-add").addEventListener("click", event => {
         messages.push(kg);
     }
     if (messages.length != 0) {
-        $(".message.form").css("display", "");
-        $(".message.items").css("display", "none");
+        document.querySelector(".message.form").style.display = "";
+        document.querySelector(".message.items").style.display = "none";
         $(".alert").html("<span class='closebtn' type='form' onclick='removeMessage($(this))'>&times;</span>");
         messages.map(val => {
             $(".alert").append(val + "<br>");
         });
-        $(".alert").css("display", "");
-        $(".section.error").css("display", "");
+        document.querySelector(".alert").style.display = "";
+        document.querySelector(".section.error").style.display = "";
         return;
     }
     let params = {};
@@ -271,7 +270,7 @@ document.querySelector("#btn-add").addEventListener("click", event => {
     params.address = document.querySelector("#address").value;
     params.kg = $("#kg").formSelect()[0].selectedOptions[0].value.split("-")[0];
     params.total_amount = document.querySelector("#total-amount").value.split(" ")[0];
-    $(".main-loader").css("display", "");
+    document.querySelector(".main-loader").style.display = "";
     axios.post(document.querySelector("#orders-create").getAttribute("action"), params).then(response => {
         if (response.data.error == true) {
             axios.post(document.querySelector("input[name=_url_code]").value, {
@@ -282,21 +281,21 @@ document.querySelector("#btn-add").addEventListener("click", event => {
             }).catch(error => {
                 console.log(error);
             });
-            $(".message.form").css("display", "");
-            $(".message.items").css("display", "none");
+            document.querySelector(".message.form").style.display = "";
+            document.querySelector(".message.items").style.display = "none";
             $(".alert").html("<span class='closebtn' type='form' onclick='removeMessage($(this))'>&times;</span>");
             $(".alert").append(response.data.message);
-            $(".alert").css("display", "");
-            $(".section.error").css("display", "");
-            $(".main-loader").css("display", "none");
+            document.querySelector(".alert").style.display = "";
+            document.querySelector(".section.error").style.display = "";
+            document.querySelector(".main-loader").style.display = "none";
         } else {
             document.querySelector("#message").innerHTML = response.data.message;
-            $(".main-loader").css("display", "none");
-            $(".alert").css("display", "none");
-            $(".section.error").css("display", "none");
-            $(".message.form").css("display", "none");
-            $(".message.items").css("display", "none");
-            $(".main-loader").css("display", "none");
+            document.querySelector(".main-loader").style.display = "none";
+            document.querySelector(".alert").style.display = "none";
+            document.querySelector(".section.error").style.display = "none";
+            document.querySelector(".message.form").style.display = "none";
+            document.querySelector(".message.items").style.display = "none";
+            document.querySelector(".main-loader").style.display = "none";
             $("#modal-message").modal("open");
         }
     }).catch(error => {

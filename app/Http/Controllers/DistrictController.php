@@ -9,7 +9,9 @@ class DistrictController extends Controller
 {
     public function index(Request $request)
     {
-        $data = Districts::select('id as id', 'name as text')->where('id_province', $request->id)->orderBy('text')->get();
-        return $data;
+        return Districts::select('id as id', 'name as text')
+                        ->where('id_province', $request->id)
+                        ->orderBy('text')
+                        ->get();
     }
 }

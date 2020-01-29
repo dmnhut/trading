@@ -14,12 +14,12 @@ document.querySelector(".fixed-action-btn").addEventListener("click", () => {
 });
 
 document.querySelector("#btn-modal-add").addEventListener("click", () => {
-    $(".main-loader").css("display", "");
+    document.querySelector(".main-loader").style.display = "";
     axios.post(document.querySelector("#url").value, {
         _token: document.querySelector("input[name=_token]").value,
         name: document.querySelector("#name").value.trim()
     }).then(response => {
-        $(".main-loader").css("display", "none");
+        $(".main-loader").style.display = "none";
         if (response.data.error) {
             response.data.messages.map(val => {
                 toastr["error"](val);

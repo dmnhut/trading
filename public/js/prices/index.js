@@ -12,7 +12,7 @@ document.querySelector("#btn-cancel").addEventListener("click", () => {
 });
 
 $("#btn-add").on("click", () => {
-    $(".main-loader").css("display", "");
+    document.querySelector(".main-loader").style.display = "";
     axios.post(location, {
         "_token": document.querySelector("input[name=_token]").value,
         "kg": document.querySelector("#kg").value,
@@ -49,7 +49,7 @@ $("#btn-add").on("click", () => {
         });
         $(".modal").modal("close");
         $("#tbl").html(tbody);
-        $(".main-loader").css("display", "none");
+        document.querySelector(".main-loader").style.display = "none";
         toastr.success(response.data.message);
     }).catch(error => {
         console.log(error);

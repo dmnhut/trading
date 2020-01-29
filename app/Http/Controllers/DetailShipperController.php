@@ -50,7 +50,8 @@ class DetailShipperController extends Controller
                                        ]
             ];
         }
-        return view('detail-shippers.index', ['data' => $users, 'detail_shippers' => $detail_shippers]);
+        return view('detail-shippers.index', ['data' => $users,
+                                              'detail_shippers' => $detail_shippers]);
     }
 
     /**

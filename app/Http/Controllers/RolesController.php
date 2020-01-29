@@ -15,7 +15,9 @@ class RolesController extends Controller
      */
     public function index()
     {
-        return view('roles.index', ['data' => Roles::select('id', 'name')->where('del_flag', 0)->paginate(__::take_item())]);
+        return view('roles.index', ['data' => Roles::select('id', 'name')
+                                                   ->where('del_flag', 0)
+                                                   ->paginate(__::take_item())]);
     }
 
     /**

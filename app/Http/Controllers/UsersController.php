@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Session;
 use App\__;
+use App\Sql;
 use App\User;
 use App\Status;
 use App\StatusUser;
@@ -23,23 +24,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = DB::select("select users.id                          as id,
-                                    users.name                        as name,
-                                    users.email                       as email,
-                                    users.path                        as path,
-                                    if(users.gender = 1, 'Nam', 'Nữ') as 'gender',
-                                    users.birthdate                   as birthdate,
-                                    users.identity_card               as identity_card,
-                                    users.phone                       as phone,
-                                    status.name                       as status
-                               from users
-                               left join status_user
-                                 on status_user.id_user               = users.id
-                               left join status
-                                 on status.id                         = status_user.id_status
-                              where users.del_flag                    = 0
-                              order by users.name asc");
-        return view('users.index', ['data' => $users]);
+        return view('users.index', ['data' => DB::select(Sql::getUsers4IndexUser())]);
     }
 
     /**
@@ -59,11 +44,14 @@ class UsersController extends Controller
      */
     public function status(Request $request)
     {
-        $data = Status::select('id', 'name')->wherein('name', __::$STATUS)->get();
+        $data = Status::select('id', 'name')
+                      ->wherein('name', __::$STATUS)
+                      ->get();
         foreach ($data as $value) {
             $status[$value->name] = $value->id;
         }
-        $statusUser = StatusUser::where('id_user', $request->id)->get();
+        $statusUser = StatusUser::where('id_user', $request->id)
+                                ->get();
         foreach ($statusUser as $value) {
             if ($value->id_status == $status['active']) {
                 $value->id_status = $status['locked'];
@@ -124,7 +112,7 @@ class UsersController extends Controller
             array_push($validate, __::messages()->errors()->users('email'));
         }
         if (empty($validate)) {
-            $user = new User();
+            $user = new User;
             if ($request->hasFile('path')) {
                 $file = $request->file('path');
                 chmod($file, 0777 - umask());
@@ -268,7 +256,8 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->update(['del_flag'=> 1, DB::raw('version_no + 1')]);
+        User::find($id)
+            ->update(['del_flag'=> 1, DB::raw('version_no + 1')]);
         return redirect(route('users.index'))->with([
           'message' => __::messages()->delete(),
           'error' => false

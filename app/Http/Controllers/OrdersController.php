@@ -17,6 +17,7 @@ use App\Units;
 use App\Prices;
 use App\Pays;
 use App\__;
+use App\Sql;
 use DateTime;
 
 class OrdersController extends Controller
@@ -47,17 +48,18 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        $users = DB::select("select CONCAT(name, ' - ', phone) as name,
-                                    users.id                   as id
-                               from users
-                               left join status_user
-                                 on status_user.id_user        = users.id
-                              where users.del_flag             = 0
-                                and status_user.id_status      = 1
-                              order by users.name");
-        $provinces = Provinces::select('id as id', 'name as text')->orderBy('text')->get();
-        $units = Units::select('id', 'name')->where('del_flag', 0)->orderBy('name')->get();
-        $prices = Prices::select('id', 'kg', 'amount')->where('del_flag', 0)->where('turn_on', 1)->get();
+        $users = DB::select(Sql::getUsers2CreateOrder());
+        $provinces = Provinces::select('id as id', 'name as text')
+                              ->orderBy('text')
+                              ->get();
+        $units = Units::select('id', 'name')
+                      ->where('del_flag', 0)
+                      ->orderBy('name')
+                      ->get();
+        $prices = Prices::select('id', 'kg', 'amount')
+                        ->where('del_flag', 0)
+                        ->where('turn_on', 1)
+                        ->get();
         $messages = [
           'item' => __::messages()->errors()->items('item'),
           'unit' => __::messages()->errors()->items('unit'),
@@ -70,8 +72,8 @@ class OrdersController extends Controller
           'kg' => __::messages()->errors()->orders('kg')
         ];
         $validator = [
-          're' => substr(__::re('QUANTITY'), 1, 6),
-          'error' => __::validates('quantity')
+          'quantity' => ['re' => substr(__::re('QUANTITY'), 1, 6),
+                         'error' => __::validates('quantity')]
         ];
         return view('orders.create', ['code' => __::struuid(),
                                       'users' => $users,

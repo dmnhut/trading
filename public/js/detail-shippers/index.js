@@ -20,7 +20,7 @@ const formSelect = () => {
 }
 
 $("#province").on("change", () => {
-    $(".main-loader").css("display", "");
+    document.querySelector(".main-loader").style.display = ""
     $("#district").empty();
     $("#district").prop("disabled", true);
     $("#district").formSelect();
@@ -56,7 +56,7 @@ $("#province").on("change", () => {
         }).catch(error => {
             console.log(error);
         }).finally(() => {
-            $(".main-loader").css("display", "none");
+            document.querySelector(".main-loader").style.display = "none";
         });
     }).catch(error => {
         console.log(error);
@@ -64,7 +64,7 @@ $("#province").on("change", () => {
 });
 
 $("#district").on("change", () => {
-    $(".main-loader").css("display", "");
+    document.querySelector(".main-loader").style.display = "";
     $("#ward").empty();
     $("#ward").prop("disabled", true);
     $("#ward").formSelect();
@@ -84,7 +84,7 @@ $("#district").on("change", () => {
     }).catch(error => {
         console.log(error);
     }).finally(() => {
-        $(".main-loader").css("display", "none");
+        document.querySelector(".main-loader").style.display = "none";
     });
 });
 
@@ -99,7 +99,7 @@ document.querySelectorAll(".btn-cu").forEach(element => {
         }
         document.querySelector("#usrname").innerHTML = element.getAttribute("usrname");
         document.querySelector("input[name=_id_shipper]").value = element.getAttribute("id_shipper");
-        $(".main-loader").css("display", "");
+        document.querySelector(".main-loader").style.display = "";
         document.querySelector("input[name=_id]").value = element.getAttribute("data");
         axios.get("provinces").then(response => {
             response.data.forEach(element => {
@@ -149,7 +149,7 @@ document.querySelectorAll(".btn-cu").forEach(element => {
                 }).catch(error => {
                     console.log(error);
                 }).finally(() => {
-                    $(".main-loader").css("display", "none");
+                    document.querySelector(".main-loader").style.display = "none";
                     $("#modal-area").modal("open");
                 });
             }).catch(error => {
@@ -164,7 +164,7 @@ document.querySelectorAll(".btn-cu").forEach(element => {
 document.querySelectorAll(".btn-detail").forEach(element => {
     let id = element.getAttribute("data");
     element.addEventListener("click", () => {
-        $(".main-loader").css("display", "");
+        document.querySelector(".main-loader").style.display = "";
         let data = {
             _token: document.querySelector("input[name=_token]").value,
             id: id
@@ -178,7 +178,7 @@ document.querySelectorAll(".btn-detail").forEach(element => {
                     document.querySelector("#detail-identity_card").innerHTML = response.data.identity_card;
                     document.querySelector("#detail-phone").innerHTML = response.data.phone;
                     document.querySelector("#detail-gender").innerHTML = response.data.gender;
-                    $(".main-loader").css("display", "none");
+                    document.querySelector(".main-loader").style.display = "none";
                     $("#modal-detail").modal("open");
                 }
             }).catch(error => {
@@ -188,7 +188,7 @@ document.querySelectorAll(".btn-detail").forEach(element => {
 });
 
 document.querySelector("#btn-modal-cu").addEventListener("click", () => {
-    $(".main-loader").css("display", "");
+    document.querySelector(".main-loader").style.display = "";
     if ($("#province").formSelect("getSelectedValues") == 0 || $("#district").formSelect("getSelectedValues") == 0 || $("#ward").formSelect("getSelectedValues") == 0) {
         console.log("wait loading...");
         return false;
@@ -208,7 +208,7 @@ document.querySelector("#btn-modal-cu").addEventListener("click", () => {
             $(".btn-close").click();
         } else {
             document.querySelector("#message").innerHTML = response.data.message;
-            $(".main-loader").css("display", "none");
+            document.querySelector(".main-loader").style.display = "none";
             $("#modal-message").modal("open");
         }
     }).catch(error => {
