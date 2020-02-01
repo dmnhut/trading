@@ -7,6 +7,12 @@ use App\Districts;
 
 class DistrictController extends Controller
 {
+    /**
+     * index
+     *
+     * @param  Request $request
+     * @return Districts
+     */
     public function index(Request $request)
     {
         return Districts::select('id as id', 'name as text')

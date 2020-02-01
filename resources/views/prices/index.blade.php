@@ -95,5 +95,5 @@
 </div>
 @endsection
 @section('script')
-<script src="{{url('js/prices/index.js')}}"></script>
+<script src="{{url('app/prices/index.js')}}"></script>
 @endsection

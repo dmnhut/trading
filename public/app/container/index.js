@@ -23,6 +23,7 @@ const onClickCloseBtn = element => {
         div.style.display = "none";
     }, 400);
 }
+
 for (let i = 0; i < document.querySelectorAll(".closebtn").length; i++) {
     document.querySelectorAll(".closebtn")[i].addEventListener("click", () => {
         onClickCloseBtn(document.querySelectorAll(".closebtn")[i]);

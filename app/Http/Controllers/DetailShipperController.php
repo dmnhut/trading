@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\DetailShipper;
-use App\__;
+use App\Fun\__;
+use App\Fun\Messages;
 
 class DetailShipperController extends Controller
 {
@@ -68,9 +69,9 @@ class DetailShipperController extends Controller
         } else {
             $data = $data->toArray();
             if ($data['gender'] == 1) {
-                $data['gender'] = 'Nam';
+                $data['gender'] = __::GENDER['MALE'];
             } else {
-                $data['gender'] = 'Nữ';
+                $data['gender'] = __::GENDER['FEMALE'];
             }
         }
         return $data;
@@ -101,7 +102,7 @@ class DetailShipperController extends Controller
           'id_ward' => $request->ward
         ]);
         return [
-          'message' => __::messages()->success(),
+          'message' => Messages::success(),
           'error' => false
         ];
     }
@@ -145,7 +146,7 @@ class DetailShipperController extends Controller
                             'version_no' => $detail_shippers->version_no + 1
                           ]);
         return [
-          'message' => __::messages()->update(),
+          'message' => Messages::update(),
           'error' => false
         ];
     }

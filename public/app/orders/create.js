@@ -2,13 +2,13 @@ $(document).ready(() => {
     clear();
     printCode();
     $(".tabs").tabs();
-    $("#btn-back").on("click", event => {
+    document.querySelector("#btn-back").addEventListener("click", event => {
         event.preventDefault();
         window.location.href = document
             .querySelector("#orders-create")
             .getAttribute("action");
     });
-    $("#btn-clear").on("click", event => {
+    document.querySelector("#btn-clear").addEventListener("click", event => {
         event.preventDefault();
         clear();
         axios.post(document.querySelector("input[name=_url_code]").value, {
@@ -54,12 +54,12 @@ const clear = () => {
     $("#district").val(0);
     $("#ward").val(0);
     $("select").formSelect();
+    $("#items").parents("table").css("display", "none");
     document.querySelector("#total-amount").value = 0;
     document.querySelector("#address").value = "";
     document.querySelector("#item").value = "";
     document.querySelector("#quantity").value = "";
     document.querySelector("#items").innerHTML = "";
-    $("#items").parents("table").css("display", "none");
     document.querySelector(".alert").style.display = "none";
     document.querySelector(".section.error").style.display = "none";
     document.querySelector(".message.items").style.display = "none";
@@ -82,7 +82,8 @@ const removeMessage = node => {
     document.querySelector(".message.items").style.display = "none";
     document.querySelector(".message.form").style.display = "none";
 };
-$("#btn-add-item").on("click", event => {
+
+document.querySelector("#btn-add-item").addEventListener("click", event => {
     event.preventDefault();
     let messages = [];
     let {
@@ -147,11 +148,13 @@ const getDataItems = () => {
     });
     return result;
 };
-$("#kg").on("change", () => {
+
+document.querySelector("#kg").addEventListener("change", () => {
     document.querySelector("#total-amount").value = $("#kg").formSelect()[0].selectedOptions[0].value.split("-")[1] + " VND";
     document.querySelector("#total-amount").setAttribute("data", $("#kg").formSelect()[0].selectedOptions[0].value.split("-")[0]);
 });
-$("#province").on("change", () => {
+
+document.querySelector("#province").addEventListener("change", () => {
     document.querySelector(".main-loader").style.display = "";
     $("#district").empty();
     $("#district").prop("disabled", true);
@@ -194,7 +197,8 @@ $("#province").on("change", () => {
         console.log(error);
     })
 });
-$("#district").on("change", () => {
+
+document.querySelector("#district").addEventListener("change", () => {
     document.querySelector(".main-loader").style.display = "";
     $("#ward").empty();
     $("#ward").prop("disabled", true);
@@ -218,6 +222,7 @@ $("#district").on("change", () => {
         document.querySelector(".main-loader").style.display = "none";
     });
 });
+
 document.querySelector("#btn-add").addEventListener("click", event => {
     event.preventDefault();
     let messages = [];

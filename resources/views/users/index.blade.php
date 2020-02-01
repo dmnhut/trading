@@ -75,9 +75,9 @@
                     <form method="POST" action="{{route('users.status')}}">
                         @csrf
                         <input type="hidden" name="id" value="{{$value->id}}" />
-                        @if($value->status == App\__::$STATUS[0])
+                        @if($value->status == App\Fun\__::STATUS[0])
                             <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1">khóa</button>
-                            @elseif($value->status == App\__::$STATUS[1])
+                          @elseif($value->status == App\Fun\__::STATUS[1])
                                 <button class="waves-effect waves-light btn btn-small pink lighten-1">mở khóa</button>
                                 @endif
                     </form>
@@ -117,7 +117,4 @@
         </a>
     </div>
 </div>
-@endsection
-@section('script')
-<script src="{{url('js/users/index.js')}}"></script>
 @endsection

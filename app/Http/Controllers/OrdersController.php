@@ -16,19 +16,22 @@ use App\Wards;
 use App\Units;
 use App\Prices;
 use App\Pays;
-use App\__;
-use App\Sql;
 use DateTime;
+use App\Fun\__;
+use App\Fun\Messages;
+use App\Fun\Sql;
+use App\Fun\Validate;
 
 class OrdersController extends Controller
 {
     /**
-     * generalCode
+     * general code
+     *
      * @return string
      */
-    public function generalCode()
+    public function code()
     {
-        return ['code' => __::struuid()];
+        return ['code' => __::uuid()];
     }
 
     /**
@@ -61,21 +64,21 @@ class OrdersController extends Controller
                         ->where('turn_on', 1)
                         ->get();
         $messages = [
-          'item' => __::messages()->errors()->items('item'),
-          'unit' => __::messages()->errors()->items('unit'),
-          'quantity' => __::messages()->errors()->items('quantity'),
-          'items' => __::messages()->errors()->orders('items'),
-          'province' => __::messages()->errors()->orders('province'),
-          'district' => __::messages()->errors()->orders('district'),
-          'ward' => __::messages()->errors()->orders('ward'),
-          'address' => __::messages()->errors()->orders('address'),
-          'kg' => __::messages()->errors()->orders('kg')
+          'item' => Messages::errors()->items('item'),
+          'unit' => Messages::errors()->items('unit'),
+          'quantity' => Messages::errors()->items('quantity'),
+          'items' => Messages::errors()->orders('items'),
+          'province' => Messages::errors()->orders('province'),
+          'district' => Messages::errors()->orders('district'),
+          'ward' => Messages::errors()->orders('ward'),
+          'address' => Messages::errors()->orders('address'),
+          'kg' => Messages::errors()->orders('kg')
         ];
         $validator = [
-          'quantity' => ['re' => substr(__::re('QUANTITY'), 1, 6),
-                         'error' => __::validates('quantity')]
+          'quantity' => ['re' => substr(Validate::reg('QUANTITY'), 1, 6),
+                         'error' => Validate::message('quantity')]
         ];
-        return view('orders.create', ['code' => __::struuid(),
+        return view('orders.create', ['code' => __::uuid(),
                                       'users' => $users,
                                       'provinces' => $provinces,
                                       'units' => $units,
@@ -130,13 +133,13 @@ class OrdersController extends Controller
             ]);
             DB::commit();
             return [
-              'message' => __::messages()->success(),
+              'message' => Messages::success(),
               'error' => false
             ];
         } catch (Exception $e) {
             DB::rollBack();
             return [
-              'message' => __::messages()->errors()->_500(),
+              'message' => Messages::errors()->_500(),
               'error' => true
             ];
         }

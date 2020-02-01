@@ -19,7 +19,7 @@ const formSelect = () => {
     $("#ward").formSelect();
 }
 
-$("#province").on("change", () => {
+document.querySelector("#province").addEventListener("change", () => {
     document.querySelector(".main-loader").style.display = ""
     $("#district").empty();
     $("#district").prop("disabled", true);
@@ -63,7 +63,7 @@ $("#province").on("change", () => {
     });
 });
 
-$("#district").on("change", () => {
+document.querySelector("#district").addEventListener("change", () => {
     document.querySelector(".main-loader").style.display = "";
     $("#ward").empty();
     $("#ward").prop("disabled", true);

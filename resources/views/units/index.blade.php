@@ -50,7 +50,7 @@
                     <form method="POST" action="{{route('units.destroy', [$value->id])}}">
                         @method('DELETE')
                         @csrf
-                        <button class="waves-effect waves-light btn btn-small pink lighten-1">Xóa</button>
+                        <button class="waves-effect waves-light btn btn-small pink lighten-1 right">Xóa</button>
                     </form>
                 </td>
             </tr>
@@ -97,5 +97,5 @@
 </div>
 @endsection
 @section('script')
-<script src="{{url('js/units/index.js')}}"></script>
+<script src="{{url('app/units/index.js')}}"></script>
 @endsection

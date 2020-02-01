@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Roles;
-use App\__;
+use App\Fun\__;
+use App\Fun\Messages;
 
 class RolesController extends Controller
 {
@@ -40,13 +41,13 @@ class RolesController extends Controller
     {
         if (empty($request->name)) {
             return redirect(route('roles.index'))->with([
-              'message' => __::messages()->errors()->roles('name'),
+              'message' => Messages::errors()->roles('name'),
               'error' => true
             ]);
         } else {
             Roles::create(['name' => $request->name]);
             return redirect(route('roles.index'))->with([
-              'message' => __::messages()->success(),
+              'message' => Messages::success(),
               'error' => false
             ]);
         }

@@ -7,6 +7,12 @@ use App\Wards;
 
 class WardController extends Controller
 {
+    /**
+     * index
+     *
+     * @param  Request
+     * @return Wards
+     */
     public function index(Request $request)
     {
         return Wards::select('id as id', 'name as text')

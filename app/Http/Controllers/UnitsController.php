@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Units;
-use App\__;
+use App\Fun\__;
+use App\Fun\Messages;
+use App\Fun\Validate;
 
 class UnitsController extends Controller
 {
@@ -40,22 +42,22 @@ class UnitsController extends Controller
     public function store(Request $request)
     {
         $validate = [];
-        if (preg_match(__::re('ALPHABET'), $request->name) || $request->name == null) {
-            array_push($validate, __::messages()->errors()->units('name'));
+        if (preg_match(Validate::reg('ALPHABET'), $request->name) || $request->name == null) {
+            array_push($validate, Messages::errors()->units('name'));
         }
         if (empty($validate)) {
             Units::create([
-          'name' => $request->name
-        ]);
+              'name' => $request->name
+            ]);
             return [
-          'messages' => [__::messages()->success()],
-          'error' => false
-        ];
+              'messages' => [Messages::success()],
+              'error' => false
+            ];
         } else {
             return [
-            'messages' => $validate,
-            'error' => true
-          ];
+              'messages' => $validate,
+              'error' => true
+            ];
         }
     }
 
@@ -104,7 +106,7 @@ class UnitsController extends Controller
         Units::find($id)
              ->update(['del_flag' => 1, DB::raw('version_no + 1')]);
         return redirect(route('units.index'))->with([
-          'message' => __::messages()->delete(),
+          'message' => Messages::delete(),
           'error' => false
         ]);
     }

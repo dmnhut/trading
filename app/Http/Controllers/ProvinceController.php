@@ -7,6 +7,11 @@ use App\Provinces;
 
 class ProvinceController extends Controller
 {
+    /**
+     * index
+     *
+     * @return Provinces
+     */
     public function index()
     {
         return Provinces::select('id as id', 'name as text')

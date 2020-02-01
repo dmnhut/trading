@@ -1,9 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Fun;
 
 class Sql
 {
+    /**
+     * getUsers2CreateOrder
+     *
+     * @return string
+     */
     public static function getUsers2CreateOrder()
     {
         return "select CONCAT(name, ' - ', phone) as name,
@@ -16,6 +21,11 @@ class Sql
                  order by users.name";
     }
 
+    /**
+     * getUsers4IndexUser
+     *
+     * @return string
+     */
     public static function getUsers4IndexUser()
     {
         return "select users.id                          as id,

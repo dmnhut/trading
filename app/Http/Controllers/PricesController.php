@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Prices;
-use App\__;
+use App\Fun\__;
+use App\Fun\Messages;
 
 class PricesController extends Controller
 {
@@ -32,8 +33,10 @@ class PricesController extends Controller
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * status
+     *
+     * @param  Request
+     * @return redirect
      */
     public function status(Request $request)
     {
@@ -67,7 +70,7 @@ class PricesController extends Controller
             $value->url = route('prices.destroy', [$value->id]);
         }
         return [
-          'message' => __::messages()->success(),
+          'message' => Messages::success(),
           'data' => $data
         ];
     }

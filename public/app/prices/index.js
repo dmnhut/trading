@@ -11,7 +11,7 @@ document.querySelector("#btn-cancel").addEventListener("click", () => {
     $("#amount").val("");
 });
 
-$("#btn-add").on("click", () => {
+document.querySelector("#btn-add").addEventListener("click", () => {
     document.querySelector(".main-loader").style.display = "";
     axios.post(location, {
         "_token": document.querySelector("input[name=_token]").value,

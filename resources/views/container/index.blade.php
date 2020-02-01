@@ -125,8 +125,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/JsBarcode.all.min.js"></script>
-    <script src="{{url('js/qrcode.js')}}"></script>
-    <script src="{{url('js/container/index.js')}}"></script>
+    <script src="{{url('app/qrcode.js')}}"></script>
+    <script src="{{url('app/container/index.js')}}"></script>
     @yield('script')
 </body>
 

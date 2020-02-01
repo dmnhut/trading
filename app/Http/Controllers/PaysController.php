@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Pays;
-use App\__;
+use App\Fun\__;
+use App\Fun\Messages;
 
 class PaysController extends Controller
 {
@@ -41,7 +42,7 @@ class PaysController extends Controller
     {
         if (empty($request->percent)) {
             return redirect(route('pays.index'))->with([
-              'message' => __::messages()->errors()->pays('percent.require'),
+              'message' => Messages::errors()->pays('percent.require'),
               'error' => true
             ]);
         } else {
@@ -52,12 +53,12 @@ class PaysController extends Controller
                   'percent' => $request->percent
                 ]);
                 return redirect(route('pays.index'))->with([
-                  'message' => __::messages()->success(),
+                  'message' => Messages::success(),
                   'error' => false
                 ]);
             } else {
                 return redirect(route('pays.index'))->with([
-                  'message' => __::messages()->errors()->pays(percent.unique),
+                  'message' => Messages::errors()->pays(percent.unique),
                   'error' => true
                 ]);
             }
@@ -65,9 +66,10 @@ class PaysController extends Controller
     }
 
     /**
-     * [status description]
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     * status
+     *
+     * @param  Request
+     * @return redirect
      */
     public function status(Request $request)
     {
@@ -85,7 +87,7 @@ class PaysController extends Controller
                 'version_no' => DB::raw('version_no + 1')
               ]);
         return redirect(route('pays.index'))->with([
-          'message' => __::messages()->status(),
+          'message' => Messages::status(),
           'error' => false
         ]);
     }
@@ -135,7 +137,7 @@ class PaysController extends Controller
         $model = Pays::find($id);
         if ($model->turn_on == 1) {
             return redirect(route('pays.index'))->with([
-              'message' => __::messages()->errors()->pays('percent.use'),
+              'message' => Messages::errors()->pays('percent.use'),
               'error' => true
             ]);
         } else {
@@ -143,7 +145,7 @@ class PaysController extends Controller
             $model->version_no = $model->version_no + 1;
             $model->save();
             return redirect(route('pays.index'))->with([
-              'message' => __::messages()->delete(),
+              'message' => Messages::delete(),
               'error' => false
             ]);
         }

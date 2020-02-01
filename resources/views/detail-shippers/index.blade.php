@@ -161,5 +161,5 @@
 <input type="hidden" name="_id_shipper" />
 @endsection
 @section('script')
-<script src="{{url('js/detail-shippers/index.js')}}"></script>
+<script src="{{url('app/detail-shippers/index.js')}}"></script>
 @endsection

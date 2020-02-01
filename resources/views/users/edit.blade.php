@@ -97,5 +97,5 @@
 </div>
 @endsection
 @section('script')
-<script src="{{url('js/users/edit.js')}}"></script>
+<script src="{{url('app/users/edit.js')}}"></script>
 @endsection

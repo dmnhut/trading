@@ -59,6 +59,3 @@
     </div>
 </div>
 @endsection
-@section('script')
-<script src="{{url('js/orders/index.js')}}"></script>
-@endsection

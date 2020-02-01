@@ -57,6 +57,7 @@ $(".datepicker").datepicker({
 });
 
 $(".datepicker").datepicker("setDate", new Date(document.querySelector("#birthdate").value.split("/")[2], document.querySelector("#birthdate").value.split("/")[1] - 1, document.querySelector("#birthdate").value.split("/")[0], "00", "00", "00"));
+
 document.querySelector("#btn-edit").addEventListener("click", event => {
     event.preventDefault();
     document.querySelector(".main-loader").style.display = "";

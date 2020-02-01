@@ -207,5 +207,5 @@
 <input type="hidden" name="_url_code" value="{{route('orders.code')}}" />
 @endsection
 @section('script')
-<script src="{{url('js/orders/create.js')}}"></script>
+<script src="{{url('app/orders/create.js')}}"></script>
 @endsection

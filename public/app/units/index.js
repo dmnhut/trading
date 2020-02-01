@@ -19,7 +19,7 @@ document.querySelector("#btn-modal-add").addEventListener("click", () => {
         _token: document.querySelector("input[name=_token]").value,
         name: document.querySelector("#name").value.trim()
     }).then(response => {
-        $(".main-loader").style.display = "none";
+        document.querySelector(".main-loader").style.display = "none";
         if (response.data.error) {
             response.data.messages.map(val => {
                 toastr["error"](val);
