@@ -32,9 +32,9 @@ document.querySelector("#btn-add").addEventListener("click", () => {
             tbody += "<input type='hidden' name='_token' value='" + document.querySelector("input[name='_token']").value + "'>";
             tbody += "<input type='hidden' name='id' value='" + val.id + "'></input>";
             if (val.turn_on == 0) {
-                tbody += "<button class='waves-effect waves-light btn btn-small pink lighten-1'>bật</button>";
+                tbody += "<button class='waves-effect waves-light btn btn-small green darken-3'>bật</button>";
             } else {
-                tbody += "<button class='waves-effect waves-light btn btn-small green accent-3 lighten-1'>tắt</button>";
+                tbody += "<button class='waves-effect waves-light btn btn-small green darken-3'>tắt</button>";
             }
             tbody += "</form>";
             tbody += "</td>";
@@ -42,7 +42,7 @@ document.querySelector("#btn-add").addEventListener("click", () => {
             tbody += "<form method='POST' action='" + val.url + "'>";
             tbody += "<input type='hidden' name='_method' value='DELETE'>";
             tbody += "<input type='hidden' name='_token' value='" + document.querySelector("input[name='_token']").value + "'>";
-            tbody += "<button class='waves-effect waves-light btn btn-small red darken-2 lighten-1'>xóa</button>";
+            tbody += "<button class='waves-effect waves-light btn btn-small grey darken-2'>xóa</button>";
             tbody += "</form>";
             tbody += "</td>";
             tbody += "</tr>";

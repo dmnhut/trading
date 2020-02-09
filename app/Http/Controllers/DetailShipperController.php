@@ -46,7 +46,7 @@ class DetailShipperController extends Controller
                                           'name'=> $val->district
                                        ],
                                        'ward' => [
-                                          'id'=> $val->id_ward,
+                                          'id' => $val->id_ward,
                                           'name' => $val->ward
                                        ]
             ];

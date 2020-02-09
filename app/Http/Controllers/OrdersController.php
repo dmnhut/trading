@@ -128,7 +128,7 @@ class OrdersController extends Controller
                                 ->id
             ]);
             $order_price = OrderPrice::create([
-              'id_order' =>$order->id,
+              'id_order' => $order->id,
               'id_price' =>  $request->kg
             ]);
             DB::commit();

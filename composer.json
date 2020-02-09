@@ -12,7 +12,8 @@
         "fideloper/proxy": "^4.0",
         "illuminate/view": "^6.6",
         "laravel/framework": "^6.0",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "prinsfrank/indenting-persistent-blade-compiler": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

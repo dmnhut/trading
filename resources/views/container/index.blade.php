@@ -4,12 +4,11 @@
 <head>
     <title>Hệ thống quản lý giao dịch chuyển hàng | Admin</title>
     <meta charset="UTF-8">
-    <!--Let browser know website is optimized for mobile-->
+    <meta name="description" content="LAMP stack on Heroku" />
+    <meta name="robots" content="index, follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" type="image/png" href="{{ url("img/favicon.png") }}">
-    <!--Import Google Icon Font-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <!--Import materialize.css-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@4.5.1/dist/css/tabulator.min.css">
@@ -18,8 +17,8 @@
     @yield('style')
 </head>
 
-<body class="grey lighten-4">
-    <nav class="grey darken-4">
+<body class="grey darken-3">
+    <nav class="grey darken-3">
         <div class="container">
             <div class="nav-wrapper">
                 <a href="{{route('dashboard')}}" class="brand-logo center hide-on-med-and-down">Quản lý chuyển hàng</a>
@@ -31,54 +30,54 @@
                         <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i class="material-icons">dashboard</i></a>
                     </li>
                 </ul>
-                <ul id="slide-out" class="sidenav">
+                <ul id="slide-out" class="sidenav grey darken-3">
                     <li>
                         <div class="user-view">
                             <div class="background">
-                                <div style="width: 1280px; height: 720px; background-color: #212121">
+                                <div style="width: 1280px; height: 720px;" class="grey darken-3">
                                 </div>
                             </div>
                         </div>
                     </li>
                     <li class="{{Request::is('/*') ? 'active' : ''}}">
-                        <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i class="material-icons">dashboard</i>Quản
+                        <a href="{{route('dashboard')}}" title="Bảng điều khiển" class="white-text"><i class="material-icons white-text">dashboard</i>Quản
                             lý chuyển hàng</a>
                     </li>
                     <li>
                         <div class="divider"></div>
                     </li>
                     <li class="{{Request::is('roles*') ? 'active' : ''}}">
-                        <a href="{{route('roles.index')}}">
+                        <a href="{{route('roles.index')}}" class="white-text">
                             Nhóm người dùng
                         </a>
                     </li>
                     <li class="{{Request::is('users*') ? 'active' : ''}}">
-                        <a href="{{route('users.index')}}">
+                        <a href="{{route('users.index')}}" class="white-text">
                             Người dùng
                         </a>
                     </li>
                     <li class="{{Request::is('prices*') ? 'active' : ''}}">
-                        <a href="{{route('prices.index')}}">
+                        <a href="{{route('prices.index')}}" class="white-text">
                             Cài đặt giá
                         </a>
                     </li>
                     <li class="{{Request::is('pays*') ? 'active' : ''}}">
-                        <a href="{{route('pays.index')}}">
+                        <a href="{{route('pays.index')}}" class="white-text">
                             Cài đặt phần trăm
                         </a>
                     </li>
                     <li class="{{Request::is('detail-shippers*') ? 'active' : ''}}">
-                        <a href="{{route('detail-shippers.index')}}">
+                        <a href="{{route('detail-shippers.index')}}" class="white-text">
                             Cài đặt shipper
                         </a>
                     </li>
                     <li class="{{Request::is('orders*') ? 'active' : ''}}">
-                        <a href="{{route('orders.index')}}">
+                        <a href="{{route('orders.index')}}" class="white-text">
                             Đơn hàng
                         </a>
                     </li>
                     <li class="{{Request::is('units*') ? 'active' : ''}}">
-                        <a href="{{route('units.index')}}">
+                        <a href="{{route('units.index')}}" class="white-text">
                             Đơn vị tính
                         </a>
                     </li>
@@ -86,7 +85,7 @@
                         <div class="divider"></div>
                     </li>
                     <li>
-                        <a href=""><i class="material-icons">exit_to_app</i>
+                        <a href="" class="white-text"><i class="material-icons white-text">exit_to_app</i>
                             Đăng xuất
                         </a>
                     </li>
@@ -117,7 +116,7 @@
             </div>
         </div>
     </div>
-    <footer class="section grey darken-4 white-text center">
+    <footer class="section grey darken-3 white-text center">
         <p><b>#2020</b> <i class="icon ion-heart"></i> <i class="ion-social-tux"></i> <i class="ion-social-octocat"></i></p>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

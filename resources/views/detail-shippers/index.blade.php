@@ -1,6 +1,6 @@
 @extends('container.index')
 @section('content')
-<nav class="nav-top blue darken-1">
+<nav class="nav-top cyan darken-4">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
         <a href="{{route('detail-shippers.index')}}" class="breadcrumb hide-on-med-and-down">Shipper</a>
@@ -9,7 +9,7 @@
 <div class="section">
     <div class="row">
         <div class="col s12">
-            <nav class="blue darken-2">
+            <nav class="cyan darken-3">
                 <div class="nav-wrapper">
                     <div class="input-field">
                         <input id="txt" type="search" required />
@@ -33,7 +33,7 @@
 </div>
 @endif
 @endif
-<div class="card-panel">
+<div class="card-panel grey darken-3 white-text">
     <table class="highlight responsive-table">
         <thead>
             <tr>
@@ -60,22 +60,23 @@
                 <td>{{$detail_shippers[$value->id]['ward']['name']}}</td>
                 @if(empty($detail_shippers[$value->id]['id_shipper']))
                     <td>
-                        <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1 btn-cu" mode="add" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="">chọn</button>
+                        <button class="waves-effect waves-light btn btn-small btn-cu green darken-3" mode="add" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="">chọn</button>
                     </td>
                     @else
                     <td>
-                        <button class="waves-effect waves-light btn btn-small btn-cu" mode="update" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="{{$detail_shippers[$value->id]['id_shipper']}}" province="{{$detail_shippers[$value->id]['province']['id']}}" district="{{$detail_shippers[$value->id]['district']['id']}}" ward="{{$detail_shippers[$value->id]['ward']['id']}}">cài đặt</button>
+                        <button class="waves-effect waves-light btn btn-small btn-cu green darken-3" mode="update" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="{{$detail_shippers[$value->id]['id_shipper']}}"
+                          province="{{$detail_shippers[$value->id]['province']['id']}}" district="{{$detail_shippers[$value->id]['district']['id']}}" ward="{{$detail_shippers[$value->id]['ward']['id']}}">cài đặt</button>
                     </td>
                     @endif
                     <td>
-                        <button class="waves-effect waves-light btn btn-small blue lighten-1 btn-detail" data="{{$value->id}}">chi tiết</button>
+                        <button class="waves-effect waves-light btn btn-small btn-detail light-green darken-3" data="{{$value->id}}">chi tiết</button>
                     </td>
                     <td>
                         @if(!empty($detail_shippers[$value->id]['id_shipper']))
                             <form method="POST" action="{{route('detail-shippers.destroy', [$detail_shippers[$value->id]['id_shipper']])}}">
                                 @method('DELETE')
                                 @csrf
-                                <button class="waves-effect waves-light btn btn-small pink lighten-1">Xóa cài đặt</button>
+                                <button class="waves-effect waves-light btn btn-small grey darken-2">Xóa cài đặt</button>
                             </form>
                             @endif
                     </td>
@@ -98,7 +99,7 @@
     </table>
 </div>
 <div id="modal-detail" class="modal" url="{{route('detail-shippers.detail')}}">
-    <div class="modal-content">
+    <div class="modal-content grey darken-3 white-text">
         <h5>Thông tin chi tiết
             <div class="chip">
                 <span id="detail-name"></span>
@@ -110,16 +111,16 @@
         <p>Số chứng minh nhân dân: <span id="detail-identity_card"></span></p>
         <p>Số điện thoại: <span id="detail-phone"></span></p>
     </div>
-    <div class="modal-footer">
-        <button class="modal-close waves-effect waves-green btn-flat">Đóng</button>
+    <div class="modal-footer grey darken-3 white-text">
+        <button class="modal-close waves-effect waves-green btn grey darken-2">Đóng</button>
     </div>
 </div>
 <div id="modal-area" class="modal">
-    <div class="modal-content">
+    <div class="modal-content grey darken-3 white-text">
         <h5>Cài đặt khu vực
-          <div class="chip">
-              <span id="usrname"></span>
-          </div>
+            <div class="chip">
+                <span id="usrname"></span>
+            </div>
         </h5>
         <div class="row">
             <div class="input-field col s4">
@@ -139,19 +140,19 @@
             </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button id="btn-modal-cu" class="waves-effect btn">Thêm</button>
-        <button class="modal-close waves-effect pink lighten-1 btn btn-close">Hủy</button>
+    <div class="modal-footer grey darken-3 white-text">
+        <button id="btn-modal-cu" class="waves-effect btn green darken-3">Thêm</button>
+        <button class="modal-close waves-effect btn btn-close grey darken-2">Hủy</button>
     </div>
 </div>
 <div id="modal-message" class="modal" style="width:30%!important;">
     <div class="modal-content">
-      <form method="GET" action="{{route('detail-shippers.index')}}">
-        <span id="message"></span>
-        <div class="modal-footer">
-            <button class="waves-effect waves-green btn-flat">OK</button>
-        </div>
-      </form>
+        <form method="GET" action="{{route('detail-shippers.index')}}">
+            <span id="message"></span>
+            <div class="modal-footer">
+                <button class="waves-effect waves-green btn-flat">OK</button>
+            </div>
+        </form>
     </div>
 </div>
 @csrf

@@ -1,6 +1,6 @@
 @extends('container.index')
 @section('content')
-<nav class="nav-top blue darken-1">
+<nav class="nav-top cyan darken-4">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
         <a href="{{route('units.index')}}" class="breadcrumb hide-on-med-and-down">Đơn vị tính</a>
@@ -9,7 +9,7 @@
 <div class="section">
     <div class="row">
         <div class="col s12">
-            <nav class="blue darken-2">
+            <nav class="cyan darken-3">
                 <div class="nav-wrapper">
                     <div class="input-field">
                         <input id="txt" type="search" required />
@@ -33,7 +33,7 @@
 </div>
 @endif
 @endif
-<div class="card-panel">
+<div class="card-panel grey darken-3 white-text">
     @if(!empty($data))
     <table class="highlight responsive-table">
         <thead>
@@ -50,7 +50,7 @@
                     <form method="POST" action="{{route('units.destroy', [$value->id])}}">
                         @method('DELETE')
                         @csrf
-                        <button class="waves-effect waves-light btn btn-small pink lighten-1 right">Xóa</button>
+                        <button class="waves-effect waves-light btn btn-small right grey darken-2">Xóa</button>
                     </form>
                 </td>
             </tr>
@@ -60,7 +60,7 @@
     @endif
 </div>
 <div id="modal-add" class="modal">
-    <div class="modal-content">
+    <div class="modal-content grey darken-3 white-text">
         <h5>Thêm đơn vị tính</h5>
         <div class="row">
             <div class="input-field col s12">
@@ -69,9 +69,9 @@
             </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button id="btn-modal-add" class="waves-effect btn">Thêm</button>
-        <button class="modal-close waves-effect pink lighten-1 btn btn-close">Hủy</button>
+    <div class="modal-footer grey darken-3 white-text">
+        <button id="btn-modal-add" class="waves-effect btn green darken-3">Thêm</button>
+        <button class="modal-close waves-effect btn btn-close grey darken-2">Hủy</button>
     </div>
 </div>
 <div id="modal-message" class="modal" style="width:30%!important;">
@@ -90,7 +90,7 @@
 @section('fix-btn')
 <div class="row">
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large pink">
+        <a class="btn-floating btn-large grey darken-3">
             <i class="material-icons">add</i>
         </a>
     </div>

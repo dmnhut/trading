@@ -1,6 +1,6 @@
 @extends('container.index')
 @section('content')
-<nav class="nav-top blue darken-1">
+<nav class="nav-top cyan darken-4">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
         <a href="{{route('prices.index')}}" class="breadcrumb hide-on-med-and-down">Cài đặt giá</a>
@@ -9,7 +9,7 @@
 <div class="section">
     <div class="row">
         <div class="col s12">
-            <nav class="blue darken-2">
+            <nav class="cyan darken-3">
                 <div class="nav-wrapper">
                     <div class="input-field">
                         <input id="txt" type="search" required />
@@ -20,7 +20,7 @@
         </div>
     </div>
 </div>
-<div class="card-panel">
+<div class="card-panel grey darken-3 white-text">
     <table class="highlight responsive-table">
         <thead>
             <tr>
@@ -40,9 +40,9 @@
                         @csrf
                         <input type="hidden" name="id" value="{{$value->id}}" />
                         @if($value->turn_on == 0)
-                            <button class="waves-effect waves-light btn btn-small pink lighten-1">bật</button>
+                            <button class="waves-effect waves-light btn btn-small green darken-3">bật</button>
                             @elseif($value->turn_on == 1)
-                                <button class="waves-effect waves-light btn btn-small green accent-3 lighten-1">tắt</button>
+                                <button class="waves-effect waves-light btn btn-small green darken-3">tắt</button>
                                 @endif
                     </form>
                 </td>
@@ -50,7 +50,7 @@
                     <form method="POST" action="{{route('prices.destroy', [$value->id])}}">
                         @method('DELETE')
                         @csrf
-                        <button class="waves-effect waves-light btn btn-small red darken-2 lighten-1">xóa</button>
+                        <button class="waves-effect waves-light btn btn-small grey darken-2">xóa</button>
                     </form>
                 </td>
             </tr>
@@ -68,7 +68,7 @@
 </div>
 @csrf
 <div id="modal-add" class="modal">
-    <div class="modal-content">
+    <div class="modal-content grey darken-3 white-text">
         <h4>Thêm mới cài đặt giá</h4>
         <div class="input-field">
             <input id="kg" name="kg" type="number" />
@@ -79,16 +79,16 @@
             <label for="amount">Giá Tiền</label>
         </div>
     </div>
-    <div class="modal-footer">
-        <button id="btn-add" class="waves-effect waves-light btn">Thêm mới</button>
-        <button id="btn-cancel" class="waves-effect waves-light btn btn-cancel pink lighten-1">Hủy</button>
+    <div class="modal-footer grey darken-3 white-text">
+        <button id="btn-add" class="waves-effect waves-light btn green darken-3">Thêm mới</button>
+        <button id="btn-cancel" class="waves-effect waves-light btn btn-cancel grey darken-2">Hủy</button>
     </div>
 </div>
 @endsection
 @section('fix-btn')
 <div class="row">
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large pink modal-trigger" href="#modal-add">
+        <a class="btn-floating btn-large modal-trigger grey darken-3" href="#modal-add">
             <i class="material-icons">add</i>
         </a>
     </div>

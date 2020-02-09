@@ -7,7 +7,7 @@ class Messages
     /**
      * errors
      *
-     * @return $this
+     * @return Messages
      */
     public static function errors()
     {
