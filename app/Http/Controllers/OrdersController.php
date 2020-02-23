@@ -64,26 +64,26 @@ class OrdersController extends Controller
                         ->where('turn_on', 1)
                         ->get();
         $messages = [
-          'item' => Messages::errors()->items('item'),
-          'unit' => Messages::errors()->items('unit'),
+          'item'     => Messages::errors()->items('item'),
+          'unit'     => Messages::errors()->items('unit'),
           'quantity' => Messages::errors()->items('quantity'),
-          'items' => Messages::errors()->orders('items'),
+          'items'    => Messages::errors()->orders('items'),
           'province' => Messages::errors()->orders('province'),
           'district' => Messages::errors()->orders('district'),
-          'ward' => Messages::errors()->orders('ward'),
-          'address' => Messages::errors()->orders('address'),
-          'kg' => Messages::errors()->orders('kg')
+          'ward'     => Messages::errors()->orders('ward'),
+          'address'  => Messages::errors()->orders('address'),
+          'kg'       => Messages::errors()->orders('kg')
         ];
         $validator = [
-          'quantity' => ['re' => substr(Validate::reg('QUANTITY'), 1, 6),
+          'quantity' => ['re'    => substr(Validate::reg('QUANTITY'), 1, 6),
                          'error' => Validate::message('quantity')]
         ];
-        return view('orders.create', ['code' => __::uuid(),
-                                      'users' => $users,
+        return view('orders.create', ['code'      => __::uuid(),
+                                      'users'     => $users,
                                       'provinces' => $provinces,
-                                      'units' => $units,
-                                      'prices' => $prices,
-                                      'messages' => $messages,
+                                      'units'     => $units,
+                                      'prices'    => $prices,
+                                      'messages'  => $messages,
                                       'validator' => $validator]);
     }
 
@@ -98,21 +98,21 @@ class OrdersController extends Controller
         try {
             DB::beginTransaction();
             $order = Orders::create([
-              'code' => $request->code,
-              'id_user' => $request->user,
-              'id_province' => $request->province,
-              'id_district' => $request->district,
-              'id_ward' => $request->ward,
+              'code'         => $request->code,
+              'id_user'      => $request->user,
+              'id_province'  => $request->province,
+              'id_district'  => $request->district,
+              'id_ward'      => $request->ward,
               'total_amount' => $request->total_amount,
-              'address' => $request->address,
-              'note' => 'đơn hàng '.$request->code.' được tạo bởi '.'admin'.' vào lúc '.date_format(new DateTime('NOW'), 'd/m/Y H:i:s')
+              'address'      => $request->address,
+              'note'         => 'đơn hàng '.$request->code.' được tạo bởi '.'admin'.' vào lúc '.date_format(new DateTime('NOW'), 'd/m/Y H:i:s')
             ]);
             $items = json_decode($request->items);
             foreach ($items as $value) {
                 $order_detail = OrderDetail::create([
-                  'id_order' => $order->id,
+                  'id_order'  => $order->id,
                   'item_name' => $value->item_name,
-                  'quantity' => $value->quantity
+                  'quantity'  => $value->quantity
                 ]);
                 $order_unit = OrderUnit::create([
                   'id_item' => $order_detail->id,
@@ -121,11 +121,11 @@ class OrdersController extends Controller
             }
             $order_pay = OrderPay::create([
                 'id_order' => $order->id,
-                'id_pay' => Pays::select('id')
-                                ->where('turn_on', 1)
-                                ->where('del_flag', 0)
-                                ->first()
-                                ->id
+                'id_pay'   => Pays::select('id')
+                                  ->where('turn_on', 1)
+                                  ->where('del_flag', 0)
+                                  ->first()
+                                  ->id
             ]);
             $order_price = OrderPrice::create([
               'id_order' => $order->id,
@@ -134,13 +134,13 @@ class OrdersController extends Controller
             DB::commit();
             return [
               'message' => Messages::success(),
-              'error' => false
+              'error'   => false
             ];
         } catch (Exception $e) {
             DB::rollBack();
             return [
               'message' => Messages::errors()->_500(),
-              'error' => true
+              'error'   => true
             ];
         }
     }

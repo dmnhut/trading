@@ -51,12 +51,12 @@ class UnitsController extends Controller
             ]);
             return [
               'messages' => [Messages::success()],
-              'error' => false
+              'error'    => false
             ];
         } else {
             return [
               'messages' => $validate,
-              'error' => true
+              'error'    => true
             ];
         }
     }
@@ -107,7 +107,7 @@ class UnitsController extends Controller
              ->update(['del_flag' => 1, DB::raw('version_no + 1')]);
         return redirect(route('units.index'))->with([
           'message' => Messages::delete(),
-          'error' => false
+          'error'   => false
         ]);
     }
 }

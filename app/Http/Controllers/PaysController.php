@@ -17,9 +17,10 @@ class PaysController extends Controller
      */
     public function index()
     {
-        return view('pays.index', ['data' => Pays::select('id', 'percent', 'turn_on')
-                                                 ->where('del_flag', 0)
-                                                 ->get()]);
+        $data = Pays::select('id', 'percent', 'turn_on')->where('del_flag', 0)
+                                                        ->paginate(1);
+        // dd($data);
+        return view('pays.index', ['data' => $data]);
     }
 
     /**
@@ -43,7 +44,7 @@ class PaysController extends Controller
         if (empty($request->percent)) {
             return redirect(route('pays.index'))->with([
               'message' => Messages::errors()->pays('percent.require'),
-              'error' => true
+              'error'   => true
             ]);
         } else {
             $percent = Pays::where('percent', $request->percent)
@@ -54,12 +55,12 @@ class PaysController extends Controller
                 ]);
                 return redirect(route('pays.index'))->with([
                   'message' => Messages::success(),
-                  'error' => false
+                  'error'   => false
                 ]);
             } else {
                 return redirect(route('pays.index'))->with([
                   'message' => Messages::errors()->pays(percent.unique),
-                  'error' => true
+                  'error'   => true
                 ]);
             }
         }
@@ -83,12 +84,12 @@ class PaysController extends Controller
         $model->save();
         Pays::where('id', '<>', $request->id)
             ->update([
-                'turn_on' => 0,
+                'turn_on'    => 0,
                 'version_no' => DB::raw('version_no + 1')
               ]);
         return redirect(route('pays.index'))->with([
           'message' => Messages::status(),
-          'error' => false
+          'error'   => false
         ]);
     }
 
@@ -138,7 +139,7 @@ class PaysController extends Controller
         if ($model->turn_on == 1) {
             return redirect(route('pays.index'))->with([
               'message' => Messages::errors()->pays('percent.use'),
-              'error' => true
+              'error'   => true
             ]);
         } else {
             $model->del_flag = 1;
@@ -146,7 +147,7 @@ class PaysController extends Controller
             $model->save();
             return redirect(route('pays.index'))->with([
               'message' => Messages::delete(),
-              'error' => false
+              'error'   => false
             ]);
         }
     }

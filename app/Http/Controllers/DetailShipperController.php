@@ -37,21 +37,21 @@ class DetailShipperController extends Controller
         foreach ($shippers as $val) {
             $detail_shippers[$val->id] = [
                                        'id_shipper' => $val->id_shipper,
-                                       'province' => [
-                                          'id' => $val->id_province,
-                                          'name' => $val->province
+                                       'province'   => [
+                                          'id'      => $val->id_province,
+                                          'name'    => $val->province
                                        ],
-                                       'district' => [
-                                          'id'=> $val->id_district,
-                                          'name'=> $val->district
+                                       'district'   => [
+                                          'id'      => $val->id_district,
+                                          'name'    => $val->district
                                        ],
-                                       'ward' => [
-                                          'id' => $val->id_ward,
-                                          'name' => $val->ward
+                                       'ward'       => [
+                                          'id'      => $val->id_ward,
+                                          'name'    => $val->ward
                                        ]
             ];
         }
-        return view('detail-shippers.index', ['data' => $users,
+        return view('detail-shippers.index', ['data'            => $users,
                                               'detail_shippers' => $detail_shippers]);
     }
 
@@ -96,14 +96,14 @@ class DetailShipperController extends Controller
     public function store(Request $request)
     {
         DetailShipper::create([
-          'id_user' => $request->user,
+          'id_user'     => $request->user,
           'id_province' => $request->province,
           'id_district' => $request->district,
-          'id_ward' => $request->ward
+          'id_ward'     => $request->ward
         ]);
         return [
           'message' => Messages::success(),
-          'error' => false
+          'error'   => false
         ];
     }
 
@@ -142,12 +142,12 @@ class DetailShipperController extends Controller
         $detail_shippers->update([
                             'id_province' => $request->province,
                             'id_district' => $request->district,
-                            'id_ward' => $request->ward,
-                            'version_no' => $detail_shippers->version_no + 1
+                            'id_ward'     => $request->ward,
+                            'version_no'  => $detail_shippers->version_no + 1
                           ]);
         return [
           'message' => Messages::update(),
-          'error' => false
+          'error'   => false
         ];
     }
 

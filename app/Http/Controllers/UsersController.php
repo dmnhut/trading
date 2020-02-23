@@ -22,11 +22,17 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  Request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('users.index', ['data' => DB::select(Sql::getUsers4IndexUser())]);
+        $page = empty($request->page) ? 1 : $request->page;
+        $data = DB::select(DB::raw(Sql::getUsers4IndexUser()), ['limit' => __::TAKE_ITEM, 'offset' => $page]);
+        $total = collect(DB::select(Sql::getUsers4IndexUser(true)))->count();
+        $page_number = ceil($total/__::TAKE_ITEM);
+        // dd($total, $page_number);
+        return view('users.index', ['data' => $data, 'page_number' => $page_number]);
     }
 
     /**
@@ -65,7 +71,7 @@ class UsersController extends Controller
         }
         return redirect(route('users.index'))->with([
           'message' => Messages::status(),
-          'error' => false
+          'error'   => false
         ]);
     }
 
@@ -78,18 +84,18 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-          'email' => 'unique:users',
+          'email'         => 'unique:users',
           'identity_card' => 'unique:users',
-          'phone' => 'unique:users'
+          'phone'         => 'unique:users'
         ], [
-          'email.unique' => Validate::message('email'),
+          'email.unique'         => Validate::message('email'),
           'identity_card.unique' => Validate::message('identity_card'),
-          'phone.unique' => Validate::message('phone')
+          'phone.unique'         => Validate::message('phone')
         ]);
         if ($validator->fails()) {
             return [
               'messages' => $validator->messages()->all(),
-              'error' => true
+              'error'    => true
             ];
         }
         $validate = [];
@@ -136,7 +142,7 @@ class UsersController extends Controller
             $user->save();
             StatusUser::create([
               'id_status' => 1,
-              'id_user' => $user->id
+              'id_user'   => $user->id
             ]);
             RoleUser::create([
               'id_role' => __::ROLES['USER'],
@@ -144,12 +150,12 @@ class UsersController extends Controller
             ]);
             return [
               'messages' => [Messages::success()],
-              'error' => false
+              'error'    => false
             ];
         } else {
             return [
               'messages' => $validate,
-              'error' => true
+              'error'    => true
             ];
         }
     }
@@ -186,18 +192,18 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'unique:users,email,'.$id,
+            'email'         => 'unique:users,email,'.$id,
             'identity_card' => 'unique:users,identity_card,'.$id,
-            'phone' => 'unique:users,phone,'.$id
+            'phone'         => 'unique:users,phone,'.$id
           ], [
-            'email.unique' => Messages::errors()->users('email'),
+            'email.unique'         => Messages::errors()->users('email'),
             'identity_card.unique' => Messages::errors()->users('identity_card'),
-            'phone.unique' => Messages::errors()->users('phone')
+            'phone.unique'         => Messages::errors()->users('phone')
           ]);
         if ($validator->fails()) {
             return [
               'messages' => $validator->messages()->all(),
-              'error' => true
+              'error'    => true
             ];
         }
         $validate = [];
@@ -241,12 +247,12 @@ class UsersController extends Controller
             $user->save();
             return [
               'messages' => [Messages::update()],
-              'error' => false
+              'error'    => false
             ];
         } else {
             return [
               'messages' => $validate,
-              'error' => true
+              'error'    => true
             ];
         }
     }
@@ -263,7 +269,7 @@ class UsersController extends Controller
             ->update(['del_flag'=> 1, DB::raw('version_no + 1')]);
         return redirect(route('users.index'))->with([
           'message' => Messages::delete(),
-          'error' => false
+          'error'   => false
         ]);
     }
 }

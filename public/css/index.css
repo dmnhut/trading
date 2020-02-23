@@ -97,3 +97,11 @@ input {
 label {
     color: #fff !important;
 }
+
+div>.input-field>#txt {
+    color: #000 !important;
+}
+
+.pagination li>a {
+    color: #fff !important;
+}

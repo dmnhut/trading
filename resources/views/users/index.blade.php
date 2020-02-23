@@ -1,6 +1,6 @@
 @extends('container.index')
 @section('content')
-<nav class="nav-top cyan darken-4">
+<nav class="nav-top teal darken-3">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
         <a href="{{route('users.index')}}" class="breadcrumb hide-on-med-and-down">Người dùng</a>
@@ -106,6 +106,12 @@
         </tbody>
     </table>
 </div>
+<ul class="pagination">
+    {{-- <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_left</i></a></li> --}}
+    @for ($i = 1; $i <= $page_number; $i++) <li class="waves-effect"><a href="{{route('users.index', ['page' => $i])}}">{{$i}}</a></li>
+        @endfor
+        {{-- <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li> --}}
+</ul>
 @endsection
 @section('fix-btn')
 <div class="row">

@@ -1,6 +1,6 @@
 @extends('container.index')
 @section('content')
-<nav class="nav-top cyan darken-4">
+<nav class="nav-top teal darken-3">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
         <a href="{{route('orders.index')}}" class="breadcrumb hide-on-med-and-down">Đơn hàng</a>
@@ -127,6 +127,8 @@
                                     <label for="item">Tên sản phẩm / dịch vụ</label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col s6">
                                 <div class="input-field">
                                     <select id="unit" name="unit">
@@ -137,14 +139,6 @@
                                     <label for="unit">Đơn vị tính</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s6">
-                                <div class="input-field">
-                                    <input id="" name="" type="number" class="validate" />
-                                    <label for="">Đơn giá</label>
-                                </div>
-                            </div>
                             <div class="col s6">
                                 <div class="input-field">
                                     <input id="quantity" name="quantity" type="number" class="validate" />
@@ -152,10 +146,10 @@
                                 </div>
                             </div>
                         </div>
-                        <button id="btn-add-item" class="btn-floating btn-large waves-effect waves-light pink right">
+                        <button id="btn-add-item" class="btn-floating btn-large waves-effect waves-light grey darken-3 right">
                             <i class="material-icons">add</i>
                         </button>
-                        <table class="responsive-table striped centered" style="display:none">
+                        <table class="highlight responsive-table centered" style="display:none">
                             <thead>
                                 <tr style="width:120px">
                                     <th>Tên sản phẩm / dịch vụ</th>

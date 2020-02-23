@@ -60,7 +60,7 @@ class PricesController extends Controller
     public function store(Request $request)
     {
         Prices::create([
-          'kg' => $request->kg,
+          'kg'     => $request->kg,
           'amount' => $request->amount
         ]);
         $data = Prices::select('id', 'kg', 'amount', 'turn_on')
@@ -71,7 +71,7 @@ class PricesController extends Controller
         }
         return [
           'message' => Messages::success(),
-          'data' => $data
+          'data'    => $data
         ];
     }
 

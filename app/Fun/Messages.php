@@ -73,13 +73,13 @@ class Messages
     public function users($key)
     {
         $__ = [
-          'name' => 'Họ và tên không hợp lệ',
+          'name'          => 'Họ và tên không hợp lệ',
           'identity_card' => 'Số chứng minh nhân dân không hợp lệ',
-          'gender' => 'Giới tính không hợp lệ',
-          'birthdate' => 'Ngày sinh không hợp lệ',
-          'phone' => 'Số điện thoại không hợp lệ',
-          'password' => 'Mật khẩu không hợp lệ',
-          'email' => 'Email không hợp lệ'
+          'gender'        => 'Giới tính không hợp lệ',
+          'birthdate'     => 'Ngày sinh không hợp lệ',
+          'phone'         => 'Số điện thoại không hợp lệ',
+          'password'      => 'Mật khẩu không hợp lệ',
+          'email'         => 'Email không hợp lệ'
         ];
         return $__[$key];
     }
@@ -94,8 +94,8 @@ class Messages
     {
         $__ = [
           'percent.require' => 'Phần trăm không được rỗng',
-          'percent.unique' => 'Phần trăm đã được cài đặt',
-          'percent.use' => 'Phần trăm đang được sử dụng'
+          'percent.unique'  => 'Phần trăm đã được cài đặt',
+          'percent.use'     => 'Phần trăm đang được sử dụng'
         ];
         return $__[$key];
     }
@@ -137,8 +137,8 @@ class Messages
     public function items($key)
     {
         $__ = [
-          'item' => 'Tên sản phẩm / dịch vụ chưa nhập',
-          'unit' => 'Đơn vị tính chưa nhập',
+          'item'     => 'Tên sản phẩm / dịch vụ chưa nhập',
+          'unit'     => 'Đơn vị tính chưa nhập',
           'quantity' => 'Số lượng chưa nhập'
         ];
         return $__[$key];
@@ -153,14 +153,14 @@ class Messages
     public function orders($key)
     {
         $__ = [
-          'items' => 'Chi tiết đơn hàng đang rỗng',
+          'items'    => 'Chi tiết đơn hàng đang rỗng',
           'province' => 'Chưa chọn tỉnh thành',
           'district' => 'Chưa chọn quận huyện',
-          'ward' => 'Chưa chọn phường xã',
-          'address' => 'Địa chỉ đang rỗng',
-          'kg' => 'Giá đơn hàng chưa được chọn',
+          'ward'     => 'Chưa chọn phường xã',
+          'address'  => 'Địa chỉ đang rỗng',
+          'kg'       => 'Giá đơn hàng chưa được chọn',
           'receiver' => 'Họ tên người nhận đang rỗng',
-          'phone' => 'Số điện thoại không hợp lệ'
+          'phone'    => 'Số điện thoại không hợp lệ'
         ];
         return $__[$key];
     }
