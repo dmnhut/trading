@@ -13,14 +13,20 @@ class PaysController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  Request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Pays::select('id', 'percent', 'turn_on')->where('del_flag', 0)
-                                                        ->paginate(1);
-        // dd($data);
-        return view('pays.index', ['data' => $data]);
+        $page = empty($request->page) ? 1 : $request->page;
+        $query = Pays::select('id', 'percent', 'turn_on')->where('del_flag', 0);
+        $total = $query->count();
+        $page_number = ceil($total/__::TAKE_ITEM);
+        return view('pays.index', [
+                                    'data'        => $query->paginate(__::TAKE_ITEM),
+                                    'page_number' => $page_number,
+                                    'page_active' => $page
+                                   ]);
     }
 
     /**

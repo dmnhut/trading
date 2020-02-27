@@ -65,6 +65,15 @@
                 @endif
         </tbody>
     </table>
+    <ul class="pagination">
+        @for ($i = 1; $i
+        <= $page_number; $i++) @if($page_active == $i)
+        <li class="active"><a href="{{route('prices.index', ['page' => $i])}}">{{$i}}</a></li>
+        @else
+        <li class="waves-effect"><a href="{{route('prices.index', ['page' => $i])}}">{{$i}}</a></li>
+        @endif
+        @endfor
+    </ul>
 </div>
 @csrf
 <div id="modal-add" class="modal">

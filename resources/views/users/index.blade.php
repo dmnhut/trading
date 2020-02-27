@@ -107,10 +107,13 @@
     </table>
 </div>
 <ul class="pagination">
-    {{-- <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_left</i></a></li> --}}
-    @for ($i = 1; $i <= $page_number; $i++) <li class="waves-effect"><a href="{{route('users.index', ['page' => $i])}}">{{$i}}</a></li>
-        @endfor
-        {{-- <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li> --}}
+    @for ($i = 1; $i
+    <= $page_number; $i++) @if($page_active == $i)
+    <li class="active"><a href="{{route('users.index', ['page' => $i])}}">{{$i}}</a></li>
+    @else
+    <li class="waves-effect"><a href="{{route('users.index', ['page' => $i])}}">{{$i}}</a></li>
+    @endif
+    @endfor
 </ul>
 @endsection
 @section('fix-btn')

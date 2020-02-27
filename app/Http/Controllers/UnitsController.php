@@ -14,13 +14,22 @@ class UnitsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  Request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('units.index', ['data' => Units::select('id', 'name')
-                                                   ->where('del_flag', 0)
-                                                   ->orderBy('name')->get()]);
+        $page = empty($request->page) ? 1 : $request->page;
+        $query = Units::select('id', 'name')
+                      ->where('del_flag', 0)
+                      ->orderBy('name');
+        $total = $query->count();
+        $page_number = ceil($total/__::TAKE_ITEM);
+        return view('units.index', [
+                                     'data'        => $query->paginate(__::TAKE_ITEM),
+                                     'page_number' => $page_number,
+                                     'page_active' => $page
+                                   ]);
     }
 
     /**

@@ -97,6 +97,15 @@
             @endif
         </tbody>
     </table>
+    <ul class="pagination">
+        @for ($i = 1; $i
+        <= $page_number; $i++) @if($page_active == $i)
+        <li class="active"><a href="{{route('detail-shippers.index', ['page' => $i])}}">{{$i}}</a></li>
+        @else
+        <li class="waves-effect"><a href="{{route('detail-shippers.index', ['page' => $i])}}">{{$i}}</a></li>
+        @endif
+        @endfor
+    </ul>
 </div>
 <div id="modal-detail" class="modal" url="{{route('detail-shippers.detail')}}">
     <div class="modal-content grey darken-3 white-text">

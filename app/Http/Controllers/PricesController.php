@@ -13,13 +13,20 @@ class PricesController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  Request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('prices.index', ['data' => Prices::select('id', 'kg', 'amount', 'turn_on')
-                                                     ->where('del_flag', 0)
-                                                     ->get()]);
+        $page = empty($request->page) ? 1 : $request->page;
+        $query = Prices::select('id', 'kg', 'amount', 'turn_on')->where('del_flag', 0);
+        $total = $query->count();
+        $page_number = ceil($total/__::TAKE_ITEM);
+        return view('prices.index', [
+                                      'data'        => $query->paginate(__::TAKE_ITEM),
+                                      'page_number' => $page_number,
+                                      'page_active' => $page
+                                    ]);
     }
 
     /**

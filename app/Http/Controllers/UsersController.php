@@ -28,11 +28,12 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         $page = empty($request->page) ? 1 : $request->page;
-        $data = DB::select(DB::raw(Sql::getUsers4IndexUser()), ['limit' => __::TAKE_ITEM, 'offset' => $page]);
+        $limit = __::TAKE_ITEM;
+        $offset = ($page-1)*$limit;
+        $data = DB::select(DB::raw(Sql::getUsers4IndexUser()), ['limit' => $limit, 'offset' => $offset]);
         $total = collect(DB::select(Sql::getUsers4IndexUser(true)))->count();
         $page_number = ceil($total/__::TAKE_ITEM);
-        // dd($total, $page_number);
-        return view('users.index', ['data' => $data, 'page_number' => $page_number]);
+        return view('users.index', ['data' => $data, 'page_number' => $page_number, 'page_active' => $page]);
     }
 
     /**

@@ -13,16 +13,19 @@ class DetailShipperController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  Request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::select('users.id as id', 'users.name as name', 'users.email as email', 'users.phone')
+        $page = empty($request->page) ? 1 : $request->page;
+        $query = User::select('users.id as id', 'users.name as name', 'users.email as email', 'users.phone')
                      ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
                      ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
                      ->where('users.del_flag', 0)
-                     ->where('status.name', 'active')
-                     ->get();
+                     ->where('status.name', 'active');
+        $total = $query->count();
+        $page_number = ceil($total/__::TAKE_ITEM);
         $shippers = DetailShipper::select('users.id as id', 'detail_shipper.id as id_shipper', 'provinces.id as id_province', 'provinces.name as province', 'districts.id as id_district', 'districts.name as district', 'wards.id as id_ward', 'wards.name as ward')
                                  ->rightjoin('users', 'users.id', '=', 'detail_shipper.id_user')
                                  ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
@@ -31,8 +34,7 @@ class DetailShipperController extends Controller
                                  ->leftjoin('districts', 'districts.id', '=', 'detail_shipper.id_district')
                                  ->leftjoin('wards', 'wards.id', '=', 'detail_shipper.id_ward')
                                  ->where('users.del_flag', 0)
-                                 ->where('status.name', 'active')
-                                 ->get();
+                                 ->where('status.name', 'active')->get();
         $detail_shippers = [];
         foreach ($shippers as $val) {
             $detail_shippers[$val->id] = [
@@ -51,8 +53,12 @@ class DetailShipperController extends Controller
                                        ]
             ];
         }
-        return view('detail-shippers.index', ['data'            => $users,
-                                              'detail_shippers' => $detail_shippers]);
+        return view('detail-shippers.index', [
+                                               'data'            => $query->paginate(__::TAKE_ITEM),
+                                               'page_number'     => $page_number,
+                                               'page_active'     => $page,
+                                               'detail_shippers' => $detail_shippers
+                                             ]);
     }
 
     /**
