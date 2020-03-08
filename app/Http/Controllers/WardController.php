@@ -10,7 +10,7 @@ class WardController extends Controller
     /**
      * index
      *
-     * @param  Request
+     * @param  $request
      * @return Wards
      */
     public function index(Request $request)

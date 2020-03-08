@@ -169,21 +169,20 @@ document.querySelectorAll(".btn-detail").forEach(element => {
             _token: document.querySelector("input[name=_token]").value,
             id: id
         }
-        axios.post(document.querySelector("#modal-detail").getAttribute("url"), data)
-            .then(response => {
-                if (response.data != 0) {
-                    document.querySelector("#detail-name").innerHTML = response.data.name;
-                    document.querySelector("#detail-birthdate").innerHTML = response.data.birthdate;
-                    document.querySelector("#detail-email").innerHTML = response.data.email;
-                    document.querySelector("#detail-identity_card").innerHTML = response.data.identity_card;
-                    document.querySelector("#detail-phone").innerHTML = response.data.phone;
-                    document.querySelector("#detail-gender").innerHTML = response.data.gender;
-                    document.querySelector(".main-loader").style.display = "none";
-                    $("#modal-detail").modal("open");
-                }
-            }).catch(error => {
-                console.log(error);
-            });
+        axios.post(document.querySelector("#modal-detail").getAttribute("url"), data).then(response => {
+            if (response.data != 0) {
+                document.querySelector("#detail-name").innerHTML = response.data.name;
+                document.querySelector("#detail-birthdate").innerHTML = response.data.birthdate;
+                document.querySelector("#detail-email").innerHTML = response.data.email;
+                document.querySelector("#detail-identity_card").innerHTML = response.data.identity_card;
+                document.querySelector("#detail-phone").innerHTML = response.data.phone;
+                document.querySelector("#detail-gender").innerHTML = response.data.gender;
+                document.querySelector(".main-loader").style.display = "none";
+                $("#modal-detail").modal("open");
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     });
 });
 

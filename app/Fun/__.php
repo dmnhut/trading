@@ -30,7 +30,7 @@ class __
      *
      * @var number
      */
-    const TAKE_ITEM = 15;
+    const TAKE_ITEM = 10;
 
     /**
      * take_item
@@ -40,6 +40,73 @@ class __
     public static function take_item()
     {
         return self::TAKE_ITEM;
+    }
+
+    /**
+     * status
+     *
+     * @param  $key
+     * @return number
+     */
+    public static function status($key)
+    {
+        $__ = [
+          'active'    => 1,
+          'locked'    => 2,
+          'create'    => 3,
+          'pack'      => 4,
+          'assign'    => 5,
+          'shipping'  => 6,
+          'success'   => 7,
+          'cancel'    => 8,
+          'rollback'  => 9,
+          'pending'   => 10,
+          'pay'       => 11,
+          'transfers' => 12,
+          'updated'   => 13
+        ];
+        return $__[$key];
+    }
+
+    /**
+     * status_name
+     *
+     * @param  $key
+     * @return string
+     */
+    public static function status_name($key)
+    {
+        $__ = [
+          'active'    => 'hoạt động',
+          'locked'    => 'đã khóa',
+          'create'    => 'mới tạo',
+          'pack'      => 'đóng gói',
+          'assign'    => 'phân công',
+          'shipping'  => 'đang chuyển',
+          'success'   => 'thành công',
+          'cancel'    => 'đã hủy',
+          'rollback'  => 'chuyển lại',
+          'pending'   => 'tạm dừng',
+          'pay'       => 'đã thanh toán',
+          'transfers' => 'đã chuyển tiền',
+          'updated'   => 'đã chỉnh sửa'
+        ];
+        return $__[$key];
+    }
+
+    /**
+     * get_text
+     *
+     * @param  $key
+     * @return string
+     */
+    public static function get_text($key)
+    {
+        $__ = [
+          'order' => 'đơn hàng',
+          'admin' => 'admin'
+        ];
+        return $__[$key];
     }
 
     /**

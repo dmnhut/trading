@@ -84,11 +84,11 @@
                     <li>
                         <div class="divider"></div>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="" class="white-text"><i class="material-icons white-text">exit_to_app</i>
                             Đăng xuất
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>

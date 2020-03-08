@@ -7,13 +7,15 @@ $(document).ready(() => {
     window.onpopstate = () => {
         window.history.pushState(null, "", window.location.href);
     };
+    $("select").formSelect();
     $(".sidenav").sidenav();
     $(".modal").modal({
         opacity: "0.2",
         dismissible: false
     });
+    $(".tabs").tabs();
     $(".materialboxed").materialbox();
-    $("select").formSelect();
+    $(".tooltipped").tooltip();
 });
 
 const onClickCloseBtn = element => {

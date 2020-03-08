@@ -9,6 +9,7 @@ class Sql
     /**
      * getUsers2CreateOrder
      *
+     * @param  $count_flag
      * @return string
      */
     public static function getUsers2CreateOrder($count_flag = false)
@@ -27,6 +28,7 @@ class Sql
     /**
      * getUsers4IndexUser
      *
+     * @param  $count_flag
      * @return string
      */
     public static function getUsers4IndexUser($count_flag = false)

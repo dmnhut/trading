@@ -10,6 +10,6 @@ class Orders extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'code','id_user','id_shipper','id_price','id_pay','id_province','id_district','id_ward','total_amount','address','note','del_flag','version_no'
+      'code','id_user','id_shipper','id_province','id_district','id_ward','total_amount','address','receiver','phone','note','del_flag','version_no'
     ];
 }

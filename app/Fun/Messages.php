@@ -55,6 +55,17 @@ class Messages
     }
 
     /**
+     * cancel
+     *
+     * @param  $content
+     * @return string
+     */
+    public static function cancel($content = '')
+    {
+        return 'Đã hủy '.$content.' thành công';
+    }
+
+    /**
      * code 500
      *
      * @return string

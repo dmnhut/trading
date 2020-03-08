@@ -10,7 +10,7 @@ class DistrictController extends Controller
     /**
      * index
      *
-     * @param  Request $request
+     * @param  $request
      * @return Districts
      */
     public function index(Request $request)

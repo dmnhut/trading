@@ -1,21 +1,14 @@
 $(document).ready(() => {
     clear();
     printCode();
+    $(".tabs").tabs();
     document.querySelector("#btn-back").addEventListener("click", event => {
         event.preventDefault();
-        window.location.href = document.querySelector("#orders-create").getAttribute("action");
+        window.location.href = document.querySelector("#orders-edit").getAttribute("action").slice(0, -2);
     });
-    document.querySelector("#btn-clear").addEventListener("click", event => {
+    document.querySelector("#btn-reload").addEventListener("click", event => {
         event.preventDefault();
-        clear();
-        axios.post(document.querySelector("input[name=_url_code]").value, {
-            _token: document.querySelector("input[name=_token]").value
-        }).then(response => {
-            document.querySelector("#code").value = response.data.code;
-            printCode();
-        }).catch(error => {
-            console.log(error);
-        });
+        location.href = location.toLocaleString();
     });
 });
 
@@ -40,24 +33,9 @@ const printCode = () => {
 const clear = () => {
     $("#quantity").parent().children().last().removeClass("active");
     $("select").formSelect("destroy");
-    $("#kg").val(0);
-    $("#province").val(0);
-    $("#district").prop("disabled", true);
-    $("#ward").prop("disabled", true);
-    $("#district").empty();
-    $("#ward").empty();
-    $("#district").append(new Option("---", 0));
-    $("#ward").append(new Option("---", 0));
-    $("#district").val(0);
-    $("#ward").val(0);
     $("select").formSelect();
-    $("#items").parents("table").css("display", "none");
-    document.querySelector("label[for=address]").classList.remove("active");
-    document.querySelector("#total-amount").value = 0;
-    document.querySelector("#address").value = "";
     document.querySelector("#item").value = "";
     document.querySelector("#quantity").value = "";
-    document.querySelector("#items").innerHTML = "";
     document.querySelector(".alert").style.display = "none";
     document.querySelector(".section.error").style.display = "none";
     document.querySelector(".message.items").style.display = "none";
@@ -242,7 +220,7 @@ document.querySelector("#ward").addEventListener("change", () => {
     document.querySelector("label[for=address]").classList.add("active");
 });
 
-document.querySelector("#btn-add").addEventListener("click", event => {
+document.querySelector("#btn-edit").addEventListener("click", event => {
     event.preventDefault();
     let messages = [];
     let {
@@ -293,6 +271,7 @@ document.querySelector("#btn-add").addEventListener("click", event => {
     }
     let params = {};
     params._token = document.querySelector("input[name=_token]").value;
+    params._method = document.querySelector("input[name=_method]").value;
     params.code = document.querySelector("#code").value;
     params.items = JSON.stringify(listItems);
     params.user = $("#user").formSelect()[0].selectedOptions[0].value;
@@ -305,16 +284,8 @@ document.querySelector("#btn-add").addEventListener("click", event => {
     params.kg = $("#kg").formSelect()[0].selectedOptions[0].value.split("-")[0];
     params.total_amount = document.querySelector("#total-amount").value.split(" ")[0];
     document.querySelector(".main-loader").style.display = "";
-    axios.post(document.querySelector("#orders-create").getAttribute("action"), params).then(response => {
+    axios.put(document.querySelector("#orders-edit").getAttribute("action"), params).then(response => {
         if (response.data.error == true) {
-            axios.post(document.querySelector("input[name=_url_code]").value, {
-                _token: document.querySelector("input[name=_token]").value
-            }).then(response => {
-                document.querySelector("#code").value = response.data.code;
-                printCode();
-            }).catch(error => {
-                console.log(error);
-            });
             document.querySelector(".message.form").style.display = "";
             document.querySelector(".message.items").style.display = "none";
             $(".alert").html("<span class='closebtn' type='form' onclick='removeMessage($(this))'>&times;</span>");

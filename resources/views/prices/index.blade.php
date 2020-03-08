@@ -12,7 +12,7 @@
             <nav class="cyan darken-3">
                 <div class="nav-wrapper">
                     <div class="input-field">
-                        <input id="txt" type="search" required />
+                        <input id="txt" class="tooltipped" type="search" data-position="bottom" data-tooltip="Nhập vào thông tin cần tìm kiếm">
                         <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                     </div>
                 </div>
