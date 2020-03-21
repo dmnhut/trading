@@ -35,7 +35,7 @@
 @endif
 <div class="card-panel grey darken-3 white-text">
     @if(!empty($data))
-    <table class="highlight responsive-table">
+    <table class="highlight responsive-table activated">
         <thead>
             <tr>
                 <th>Tên</th>
@@ -57,17 +57,17 @@
             @endforeach
         </tbody>
     </table>
-    <ul class="pagination">
-        @for ($i = 1; $i
-        <= $page_number; $i++) @if($page_active == $i)
-        <li class="active"><a href="{{route('units.index', ['page' => $i])}}">{{$i}}</a></li>
-        @else
-        <li class="waves-effect"><a href="{{route('units.index', ['page' => $i])}}">{{$i}}</a></li>
-        @endif
-        @endfor
-    </ul>
     @endif
 </div>
+<ul class="pagination">
+    @for ($i = 1; $i
+    <= $page_number; $i++) @if($page_active == $i)
+    <li class="active"><a href="{{route('roles.index', ['page' => $i])}}">{{$i}}</a></li>
+    @else
+    <li class="waves-effect"><a href="{{route('roles.index', ['page' => $i])}}">{{$i}}</a></li>
+    @endif
+    @endfor
+</ul>
 <div id="modal-add" class="modal">
     <div class="modal-content grey darken-3 white-text">
         <h5>Thêm đơn vị tính</h5>

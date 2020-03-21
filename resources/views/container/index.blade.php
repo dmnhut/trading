@@ -46,6 +46,11 @@
                     <li>
                         <div class="divider"></div>
                     </li>
+                    <li class="{{Request::is('portal*') ? 'active' : ''}}">
+                        <a href="{{route('portal.index')}}" class="white-text">
+                            Portal
+                        </a>
+                    </li>
                     <li class="{{Request::is('roles*') ? 'active' : ''}}">
                         <a href="{{route('roles.index')}}" class="white-text">
                             Nhóm người dùng

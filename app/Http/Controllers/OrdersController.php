@@ -406,7 +406,7 @@ class OrdersController extends Controller
     public function destroy($id)
     {
         Orders::find($id)
-              ->update(['del_flag'=> 1, DB::raw('version_no + 1')]);
+              ->update(['del_flag' => 1, DB::raw('version_no + 1')]);
         return redirect(route('orders.index'))->with([
           'message' => Messages::cancel(__::get_text('order')),
           'error'   => false

@@ -34,7 +34,7 @@
 @endif
 @endif
 <div class="card-panel grey darken-3 white-text">
-    <table class="highlight responsive-table">
+    <table class="highlight responsive-table activated">
         <thead>
             <tr>
                 <th>Phần Trăm %</th>
@@ -75,16 +75,16 @@
                 @endif
         </tbody>
     </table>
-    <ul class="pagination">
-        @for ($i = 1; $i
-        <= $page_number; $i++) @if($page_active == $i)
-        <li class="active"><a href="{{route('pays.index', ['page' => $i])}}">{{$i}}</a></li>
-        @else
-        <li class="waves-effect"><a href="{{route('pays.index', ['page' => $i])}}">{{$i}}</a></li>
-        @endif
-        @endfor
-    </ul>
 </div>
+<ul class="pagination">
+    @for ($i = 1; $i
+    <= $page_number; $i++) @if($page_active == $i)
+    <li class="active"><a href="{{route('orders.index', ['page' => $i])}}">{{$i}}</a></li>
+    @else
+    <li class="waves-effect"><a href="{{route('orders.index', ['page' => $i])}}">{{$i}}</a></li>
+    @endif
+    @endfor
+</ul>
 @endsection
 @section('fix-btn')
 <div class="row">

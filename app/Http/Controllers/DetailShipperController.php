@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\User;
 use App\DetailShipper;
+use App\Balances;
 use App\Fun\__;
 use App\Fun\Messages;
 
@@ -23,7 +25,7 @@ class DetailShipperController extends Controller
                      ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
                      ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
                      ->where('users.del_flag', 0)
-                     ->where('status.name', 'active');
+                     ->where('status.id', __::status('active'));
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         $shippers = DetailShipper::select('users.id as id', 'detail_shipper.id as id_shipper', 'provinces.id as id_province', 'provinces.name as province', 'districts.id as id_district', 'districts.name as district', 'wards.id as id_ward', 'wards.name as ward')
@@ -107,6 +109,10 @@ class DetailShipperController extends Controller
           'id_district' => $request->district,
           'id_ward'     => $request->ward
         ]);
+        Balances::create([
+          'id_shipper' => $request->user,
+          'total'      => '0'
+        ]);
         return [
           'message' => Messages::success(),
           'error'   => false
@@ -166,7 +172,9 @@ class DetailShipperController extends Controller
     public function destroy($id)
     {
         $detail_shippers = DetailShipper::find($id);
+        $balances = Balances::where('id_shipper', $detail_shippers->id_user);
         $detail_shippers->delete();
+        $balances->update(['del_flag' => 1, 'version_no' => DB::raw('version_no + 1')]);
         return redirect(route('detail-shippers.index'));
     }
 }

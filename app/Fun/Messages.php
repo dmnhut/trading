@@ -27,10 +27,14 @@ class Messages
     /**
      * success
      *
+     * @param  $code
      * @return string
      */
-    public static function success()
+    public static function success($code = '{1}')
     {
+        if ($code != '{1}') {
+            return 'Đơn hàng '.$code.' được vận chuyển thành công';
+        }
         return 'Thêm mới thành công';
     }
 
@@ -58,11 +62,93 @@ class Messages
      * cancel
      *
      * @param  $content
+     * @param  $code
      * @return string
      */
-    public static function cancel($content = '')
+    public static function cancel($content = '', $code = '{1}')
     {
+        if ($code != '{1}') {
+            return 'Đơn hàng '.$code.' đã được hủy';
+        }
         return 'Đã hủy '.$content.' thành công';
+    }
+
+    /**
+     * assign
+     *
+     * @param  $code
+     * @param  $shipper
+     * @return string
+     */
+    public static function assign($code = '{1}', $shipper = '{2}')
+    {
+        return 'Đơn hàng '.$code.' được phân công cho '.$shipper.' vận chuyển';
+    }
+
+    /**
+     * pack
+     *
+     * @param  $code
+     * @return string
+     */
+    public static function pack($code = '{1}')
+    {
+        return 'Đơn hàng '.$code.' được đóng gói xong';
+    }
+
+    /**
+     * shipping
+     *
+     * @param  $code
+     * @return string
+     */
+    public static function shipping($code = '{1}')
+    {
+        return 'Đơn hàng '.$code.' đang được vận chuyển';
+    }
+
+    /**
+     * rollback
+     *
+     * @param  $code
+     * @return string
+     */
+    public static function rollback($code = '{1}')
+    {
+        return 'Đơn hàng '.$code.' được phân công chuyển lại';
+    }
+
+    /**
+     * pending
+     *
+     * @param  $code
+     * @return string
+     */
+    public static function pending($code = '{1}')
+    {
+        return 'Đơn hàng '.$code.' tạm dừng vận chuyển';
+    }
+
+    /**
+     * pay
+     *
+     * @param  $code
+     * @return string
+     */
+    public static function pay($code = '{1}')
+    {
+        return 'Đơn hàng '.$code.' đã được thanh toán';
+    }
+
+    /**
+     * transfers
+     *
+     * @param  $code
+     * @return string
+     */
+    public static function transfers($code = '{1}')
+    {
+        return 'Đơn hàng '.$code.' đã được chuyển tiền vận chuyển';
     }
 
     /**
@@ -171,7 +257,22 @@ class Messages
           'address'  => 'Địa chỉ đang rỗng',
           'kg'       => 'Giá đơn hàng chưa được chọn',
           'receiver' => 'Họ tên người nhận đang rỗng',
-          'phone'    => 'Số điện thoại không hợp lệ'
+          'phone'    => 'Số điện thoại không hợp lệ',
+          'status'   => 'Thay đổi trạng thái đơn hàng trước khi cập nhật'
+        ];
+        return $__[$key];
+    }
+
+    /**
+     * detail_shipper
+     *
+     * @param  $key
+     * @return string
+     */
+    public function detail_shipper($key)
+    {
+        $__ = [
+          'empty' => 'Không có người chuyển hàng để chọn'
         ];
         return $__[$key];
     }

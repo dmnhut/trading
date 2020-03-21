@@ -2,6 +2,8 @@ console.log("THE COOKER");
 console.clear();
 console.log("%cHACK!", "color:black;font-family:monospace;font-size:2rem;font-weight:bold");
 
+const NULL = null;
+
 $(document).ready(() => {
     window.history.pushState(null, "", window.location.href);
     window.onpopstate = () => {
@@ -36,7 +38,7 @@ let searchBox = document.querySelector("#txt");
 if (searchBox != null) {
     searchBox.addEventListener("input", () => {
         let count = 0;
-        let rows = document.getElementsByTagName("table")[0].rows;
+        let rows = document.querySelector("table.activated").rows;
         for (let i = 1; i < rows.length; i++) {
             for (let cell = 0; cell < rows[i].childNodes.length; cell++) {
                 if (rows[i].childNodes[cell].firstChild != null) {

@@ -34,7 +34,7 @@
 @endif
 @endif
 <div class="card-panel grey darken-3 white-text">
-    <table class="highlight responsive-table">
+    <table class="highlight responsive-table activated">
         <thead>
             <tr>
                 <th>Họ tên</th>

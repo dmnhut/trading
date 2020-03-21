@@ -35,7 +35,7 @@
 @endif
 <div class="card-panel grey darken-3 white-text">
     @if(!empty($data))
-    <table class="highlight responsive-table">
+    <table class="highlight responsive-table activated">
         <thead>
             <tr>
                 <th>Mã đơn hàng</th>
@@ -72,7 +72,7 @@
                 <td>
                     <form method="GET" action="{{route('orders.edit', [$value->id])}}">
                         <button class="waves-effect waves-light btn btn-small green darken-3 tooltipped" data-position="top" data-tooltip="Cập Nhật">
-                            <i class=" material-icons">edit</i>
+                            <i class="material-icons">edit</i>
                         </button>
                     </form>
                 </td>
@@ -89,17 +89,17 @@
             @endforeach
         </tbody>
     </table>
-    <ul class="pagination">
-        @for ($i = 1; $i
-        <= $page_number; $i++) @if($page_active == $i)
-        <li class="active"><a href="{{route('orders.index', ['page' => $i])}}">{{$i}}</a></li>
-        @else
-        <li class="waves-effect"><a href="{{route('orders.index', ['page' => $i])}}">{{$i}}</a></li>
-        @endif
-        @endfor
-    </ul>
     @endif
 </div>
+<ul class="pagination">
+    @for ($i = 1; $i
+    <= $page_number; $i++) @if($page_active == $i)
+    <li class="active"><a href="{{route('orders.index', ['page' => $i])}}">{{$i}}</a></li>
+    @else
+    <li class="waves-effect"><a href="{{route('orders.index', ['page' => $i])}}">{{$i}}</a></li>
+    @endif
+    @endfor
+</ul>
 @endsection
 @section('fix-btn')
 <div class="row">

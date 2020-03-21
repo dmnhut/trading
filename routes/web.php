@@ -1,9 +1,14 @@
 <?php
 
-Route::get('/', function () {
+Route::get('/panel', function () {
     return view('dashboard.index');
 })->name('dashboard');
 Route::get('/tables', '__@getTables');
+Route::get('/', 'PortalController@index')->name('portal.index');
+Route::post('portal/assign', 'PortalController@assign')->name('portal.assign');
+Route::get('portal/shippers', 'PortalController@get_shippers')->name('portal.shippers');
+Route::post('portal/status', 'PortalController@update_status')->name('portal.status');
+Route::post('portal/transfers', 'PortalController@transfers')->name('portal.transfers');
 Route::resource('roles', 'RolesController');
 Route::resource('prices', 'PricesController');
 Route::post('prices/status', 'PricesController@status')->name('prices.status');

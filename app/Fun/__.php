@@ -4,6 +4,21 @@ namespace App\Fun;
 
 class __
 {
+
+   /**
+    * INDEX
+    *
+    * @var integer
+    */
+    const INDEX = 1;
+
+    /**
+     * MOD
+     *
+     * @var integer
+     */
+    const MOD = 5;
+
     /**
      * STATUS
      *
@@ -90,6 +105,22 @@ class __
           'pay'       => 'đã thanh toán',
           'transfers' => 'đã chuyển tiền',
           'updated'   => 'đã chỉnh sửa'
+        ];
+        return $__[$key];
+    }
+
+    /**
+     * get_tab
+     *
+     * @param  $key
+     * @return string
+     */
+    public static function get_tab($key)
+    {
+        $__ = [
+          'ASSIGN'    => 'tab-assign',
+          'SHIPPING'  => 'tab-shipping',
+          'TRANSFERS' => 'tab-transfers'
         ];
         return $__[$key];
     }
