@@ -27,7 +27,7 @@
                 </a>
                 <ul class="right hide-on-med-and-down">
                     <li>
-                        <a href="{{route('dashboard')}}" title="Bảng điều khiển"><i class="material-icons">dashboard</i></a>
+                        <a href="" title="Thông tin tài khoản"><i class="material-icons">account_circle</i></a>
                     </li>
                 </ul>
                 <ul id="slide-out" class="sidenav grey darken-3">
@@ -89,11 +89,11 @@
                     <li>
                         <div class="divider"></div>
                     </li>
-                    {{-- <li>
-                        <a href="" class="white-text"><i class="material-icons white-text">exit_to_app</i>
+                    <li>
+                        <a href="{{route('logout')}}" class="white-text"><i class="material-icons white-text">exit_to_app</i>
                             Đăng xuất
                         </a>
-                    </li> --}}
+                    </li>
                 </ul>
             </div>
         </div>

@@ -18,6 +18,7 @@ use DateTime;
 use App\Fun\__;
 use App\Fun\Messages;
 use App\Fun\Notes;
+use Auth;
 
 class PortalController extends Controller
 {
