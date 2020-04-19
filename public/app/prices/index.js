@@ -12,6 +12,21 @@ document.querySelector("#btn-cancel").addEventListener("click", () => {
 });
 
 document.querySelector("#btn-add").addEventListener("click", () => {
+    let messages = [];
+    let {
+        amount,
+        kg,
+    } = JSON.parse($("input[name=_messages]").val());
+    if (document.querySelector("#amount").value.length == 0) {
+        messages.push(amount);
+    }
+    if (document.querySelector("#kg").value.length == 0) {
+        messages.push(kg);
+    }
+    if (messages.length > 0) {
+        toastr.error(messages.join("<br>"));
+        return;
+    }
     document.querySelector(".main-loader").style.display = "";
     axios.post(location, {
         "_token": document.querySelector("input[name=_token]").value,
@@ -55,3 +70,5 @@ document.querySelector("#btn-add").addEventListener("click", () => {
         console.log(error);
     });
 });
+
+onFocusOutInputNumber(["#kg", "#amount"]);

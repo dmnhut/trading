@@ -17,12 +17,11 @@ Route::resource('users', 'UsersController')->middleware('admin');
 Route::post('users/status', 'UsersController@status')->name('users.status')->middleware('admin');
 Route::resource('detail-shippers', 'DetailShipperController')->middleware('admin');
 Route::post('detail-shippers/detail', 'DetailShipperController@detail')->name('detail-shippers.detail')->middleware('admin');
-Route::get('provinces', 'ProvinceController@index')->name('provinces.index')->middleware('admin', 'user');
-Route::get('districts', 'DistrictController@index')->name('districts.index')->middleware('admin', 'user');
-Route::get('wards', 'WardController@index')->name('wards.index')->middleware('admin', 'user');
-Route::resource('orders', 'OrdersController')->middleware('admin', 'user');
-Route::post('orders/code', 'OrdersController@code')->name('orders.code')->middleware('admin', 'user');
+Route::get('provinces', 'ProvinceController@index')->name('provinces.index')->middleware('auth');
+Route::get('districts', 'DistrictController@index')->name('districts.index')->middleware('auth');
+Route::get('wards', 'WardController@index')->name('wards.index')->middleware('auth');
+Route::resource('orders', 'OrdersController')->middleware('auth');
+Route::post('orders/code', 'OrdersController@code')->name('orders.code')->middleware('auth');
 Route::resource('units', 'UnitsController')->middleware('admin');
-
 Auth::routes();
 Route::get('logout', 'HomeController@logout')->name('logout');

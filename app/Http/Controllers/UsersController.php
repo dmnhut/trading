@@ -43,7 +43,17 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return view('users.create', ['text' => [
+                                               'cancel'         => __::CANCEL,
+                                               'clear'          => __::CLEAR,
+                                               'done'           => __::DONE,
+                                               'weekdays'       => __::WEEKDAYS,
+                                               'weekdaysShort'  => __::WEEKDAYS,
+                                               'weekdaysAbbrev' => __::WEEKDAYS_ABBREV,
+                                               'months'         => __::MONTHS,
+                                               'monthsShort'    => __::MONTHS_SHORT
+                                               ]
+                                    ]);
     }
 
     /**
@@ -180,7 +190,19 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        return view('users.edit', ['data' => User::find($id)]);
+        return view('users.edit', [
+                                    'data' => User::find($id),
+                                    'text' => [
+                                                'cancel'         => __::CANCEL,
+                                                'clear'          => __::CLEAR,
+                                                'done'           => __::DONE,
+                                                'weekdays'       => __::WEEKDAYS,
+                                                'weekdaysShort'  => __::WEEKDAYS,
+                                                'weekdaysAbbrev' => __::WEEKDAYS_ABBREV,
+                                                'months'         => __::MONTHS,
+                                                'monthsShort'    => __::MONTHS_SHORT
+                                              ]
+                                  ]);
     }
 
     /**

@@ -90,11 +90,12 @@ document.querySelector("#district").addEventListener("change", () => {
 
 document.querySelectorAll(".btn-cu").forEach(element => {
     element.addEventListener("click", () => {
+        let captions = JSON.parse(document.querySelector("input[name=_captions]").value);
         if (element.getAttribute("mode") == "update") {
-            $("#btn-modal-cu").html("cập nhật");
+            $("#btn-modal-cu").html(captions["update"]);
             document.querySelector("input[name=_mode]").value = "update";
         } else {
-            $("#btn-modal-cu").html("thêm");
+            $("#btn-modal-cu").html(captions["add"]);
             document.querySelector("input[name=_mode]").value = "add";
         }
         document.querySelector("#usrname").innerHTML = element.getAttribute("usrname");

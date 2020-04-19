@@ -19,7 +19,7 @@
             </div>
             <div class="col s6">
                 <div class="input-field">
-                    <input id="identity_card" name="identity_card" type="number" />
+                    <input id="identity_card" name="identity_card" type="text" />
                     <label for="identity_card">Số chứng minh nhân dân</label>
                 </div>
             </div>
@@ -62,7 +62,7 @@
             </div>
             <div class="col s6">
                 <div class="input-field">
-                    <input id="phone" name="phone" type="number" />
+                    <input id="phone" name="phone" type="text" />
                     <label for="phone">Số điện thoại</label>
                 </div>
             </div>
@@ -98,6 +98,7 @@
         </form>
     </div>
 </div>
+<input type="hidden" name="_text" value='@json($text)' />
 @endsection
 @section('script')
 <script src="{{url('app/users/create.js')}}"></script>

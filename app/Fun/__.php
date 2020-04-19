@@ -20,6 +20,41 @@ class __
     const MOD = 5;
 
     /**
+     * CANCEL
+     *
+     * @var string
+     */
+    const CANCEL = 'Hủy';
+
+    /**
+     * CLEAR
+     *
+     * @var string
+     */
+    const CLEAR = 'Xóa';
+
+    /**
+     * DONE
+     *
+     * @var string
+     */
+    const DONE = 'Thêm';
+
+    /**
+     * ADD
+     *
+     * @var string
+     */
+    const ADD = 'Thêm';
+
+    /**
+     * UPDATE
+     *
+     * @var string
+     */
+    const UPDATE = 'Cập nhật';
+
+    /**
      * STATUS
      *
      * @var string
@@ -29,7 +64,7 @@ class __
     /**
      * ROLES
      *
-     * @var number
+     * @var array
      */
     const ROLES = ['ADMIN' => 1, 'USER' => 2];
 
@@ -41,9 +76,38 @@ class __
     const GENDER = ['FEMALE' => 'Nữ', 'MALE' => 'Nam'];
 
     /**
+     * WEEKDAYS
+     *
+     * @var array
+     */
+    const WEEKDAYS = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+
+    /**
+     * WEEKDAYS_ABBREV
+     *
+     * @var array
+     */
+    const WEEKDAYS_ABBREV = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+
+    /**
+     * MONTHS
+     *
+     * @var array
+     */
+    const MONTHS = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+
+    /**
+     * MONTHS_SHORT
+     *
+     * @var array
+     */
+    const MONTHS_SHORT = ['Tháng 1, Ngày ', 'Tháng 2, Ngày ', 'Tháng 3, Ngày ', 'Tháng 4, Ngày ', 'Tháng 5, Ngày ', 'Tháng 6, Ngày ', 'Tháng 7, Ngày ', 'Tháng 8, Ngày ', 'Tháng 9, Ngày ', 'Tháng 10, Ngày ', 'Tháng 11, Ngày ', 'Tháng 12, Ngày '];
+
+
+    /**
      * TAKE_ITEM
      *
-     * @var number
+     * @var integer
      */
     const TAKE_ITEM = 10;
 
@@ -61,7 +125,7 @@ class __
      * status
      *
      * @param  $key
-     * @return number
+     * @return integer
      */
     public static function status($key)
     {

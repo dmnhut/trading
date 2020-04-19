@@ -22,7 +22,7 @@ document.querySelector("#btn-modal-add").addEventListener("click", () => {
         document.querySelector(".main-loader").style.display = "none";
         if (response.data.error) {
             response.data.messages.map(val => {
-                toastr["error"](val);
+                toastr.error(val);
             });
         } else {
             document.querySelector("#message").innerHTML = response.data.messages[0];

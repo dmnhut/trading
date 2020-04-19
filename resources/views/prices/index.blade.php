@@ -80,11 +80,11 @@
     <div class="modal-content grey darken-3 white-text">
         <h4>Thêm mới cài đặt giá</h4>
         <div class="input-field">
-            <input id="kg" name="kg" type="number" />
+            <input id="kg" name="kg" type="text" />
             <label for="kg">Số kg</label>
         </div>
         <div class="input-field">
-            <input id="amount" name="amount" type="number" />
+            <input id="amount" name="amount" type="text" />
             <label for="amount">Giá Tiền</label>
         </div>
     </div>
@@ -93,6 +93,7 @@
         <button id="btn-cancel" class="waves-effect waves-light btn btn-cancel grey darken-2">Hủy</button>
     </div>
 </div>
+<input type="hidden" name="_messages" value='@json($messages)' />
 @endsection
 @section('fix-btn')
 <div class="row">

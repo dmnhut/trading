@@ -276,4 +276,19 @@ class Messages
         ];
         return $__[$key];
     }
+
+    /**
+     * prices
+     *
+     * @param  $key
+     * @return string
+     */
+    public function prices($key)
+    {
+        $__ = [
+          'amount' => 'Giá tiền không được rỗng',
+          'kg'     => 'Số kg không được rỗng'
+        ];
+        return $__[$key];
+    }
 }

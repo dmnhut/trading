@@ -59,7 +59,8 @@ class DetailShipperController extends Controller
                                                'data'            => $query->paginate(__::TAKE_ITEM),
                                                'page_number'     => $page_number,
                                                'page_active'     => $page,
-                                               'detail_shippers' => $detail_shippers
+                                               'detail_shippers' => $detail_shippers,
+                                               'captions'        => ['add' => __::ADD, 'update' => __::UPDATE]
                                              ]);
     }
 

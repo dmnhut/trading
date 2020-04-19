@@ -336,3 +336,5 @@ document.querySelector("#btn-add").addEventListener("click", event => {
         console.log(error);
     });
 });
+
+onFocusOutInputNumber(["#phone", "#quantity"]);

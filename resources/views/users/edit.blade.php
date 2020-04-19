@@ -20,7 +20,7 @@
             </div>
             <div class="col s6">
                 <div class="input-field">
-                    <input id="identity_card" name="identity_card" type="number" value={{$data->identity_card}} />
+                    <input id="identity_card" name="identity_card" type="text" value={{$data->identity_card}} />
                     <label for="identity_card">Số chứng minh nhân dân</label>
                 </div>
             </div>
@@ -65,7 +65,7 @@
             </div>
             <div class="col s6">
                 <div class="input-field">
-                    <input id="phone" name="phone" type="number" value="{{$data->phone}}" />
+                    <input id="phone" name="phone" type="text" value="{{$data->phone}}" />
                     <label for="phone">Số điện thoại</label>
                 </div>
             </div>
@@ -95,6 +95,7 @@
         </form>
     </div>
 </div>
+<input type="hidden" name="_text" value='@json($text)' />
 @endsection
 @section('script')
 <script src="{{url('app/users/edit.js')}}"></script>

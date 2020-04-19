@@ -169,6 +169,7 @@
 <input type="hidden" name="_id" />
 <input type="hidden" name="_mode" />
 <input type="hidden" name="_id_shipper" />
+<input type="hidden" name="_captions" value='@json($captions)' />
 @endsection
 @section('script')
 <script src="{{url('app/detail-shippers/index.js')}}"></script>

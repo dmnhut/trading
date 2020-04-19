@@ -22,10 +22,15 @@ class PricesController extends Controller
         $query = Prices::select('id', 'kg', 'amount', 'turn_on')->where('del_flag', 0);
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
+        $messages = [
+          'kg'     => Messages::errors()->prices('kg'),
+          'amount' => Messages::errors()->prices('amount')
+        ];
         return view('prices.index', [
                                       'data'        => $query->paginate(__::TAKE_ITEM),
                                       'page_number' => $page_number,
-                                      'page_active' => $page
+                                      'page_active' => $page,
+                                      'messages'    => $messages
                                     ]);
     }
 

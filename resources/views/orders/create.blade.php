@@ -105,7 +105,7 @@
                             <label for="receiver">Họ tên người nhận</label>
                         </div>
                         <div class="input-field">
-                            <input id="phone" name="phone" type="number" />
+                            <input id="phone" name="phone" type="text" />
                             <label for="phone">Số điện thoại người nhận</label>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                             </div>
                             <div class="col s6">
                                 <div class="input-field">
-                                    <input id="quantity" name="quantity" type="number" class="validate" />
+                                    <input id="quantity" name="quantity" type="text" class="validate" />
                                     <label for="quantity">Số lượng</label>
                                 </div>
                             </div>
