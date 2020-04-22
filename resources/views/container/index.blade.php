@@ -22,6 +22,7 @@
         <div class="container">
             <div class="nav-wrapper">
                 <a href="{{route('dashboard')}}" class="brand-logo center hide-on-med-and-down">Quản lý chuyển hàng</a>
+                @if(Auth::check())
                 <a href="#" title="Danh sách điều hướng" data-target="slide-out" class="sidenav-trigger button-collapse show-on-large right">
                     <i class="material-icons">menu</i>
                 </a>
@@ -95,6 +96,7 @@
                         </a>
                     </li>
                 </ul>
+                @endif
             </div>
         </div>
     </nav>
