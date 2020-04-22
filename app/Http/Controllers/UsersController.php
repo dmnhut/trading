@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Auth;
 use Session;
 use App\User;
 use App\Status;
@@ -203,6 +204,16 @@ class UsersController extends Controller
                                                 'monthsShort'    => __::MONTHS_SHORT
                                               ]
                                   ]);
+    }
+
+    /**
+     * info
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function info()
+    {
+        return view('users.info', ['data' => User::find(Auth::user()->id)]);
     }
 
     /**

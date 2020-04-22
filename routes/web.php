@@ -23,5 +23,6 @@ Route::get('wards', 'WardController@index')->name('wards.index')->middleware('au
 Route::resource('orders', 'OrdersController')->middleware('auth');
 Route::post('orders/code', 'OrdersController@code')->name('orders.code')->middleware('auth');
 Route::resource('units', 'UnitsController')->middleware('admin');
+Route::get('info', 'UsersController@info')->name('info')->middleware('auth');
 Auth::routes();
 Route::get('logout', 'HomeController@logout')->name('logout');

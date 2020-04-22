@@ -27,7 +27,7 @@
                 </a>
                 <ul class="right hide-on-med-and-down">
                     <li>
-                        <a href="" title="Thông tin tài khoản"><i class="material-icons">account_circle</i></a>
+                        <a href="{{route('info')}}" title="Thông tin tài khoản"><i class="material-icons">account_circle</i></a>
                     </li>
                 </ul>
                 <ul id="slide-out" class="sidenav grey darken-3">

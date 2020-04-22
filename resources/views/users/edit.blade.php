@@ -14,13 +14,13 @@
         <div class="row">
             <div class="col s6">
                 <div class="input-field">
-                    <input id="name" name="name" type="text" value={{$data->name}} />
+                    <input id="name" name="name" type="text" value="{{$data->name}}" />
                     <label for="name">Họ và tên</label>
                 </div>
             </div>
             <div class="col s6">
                 <div class="input-field">
-                    <input id="identity_card" name="identity_card" type="text" value={{$data->identity_card}} />
+                    <input id="identity_card" name="identity_card" type="text" value="{{$data->identity_card}}" />
                     <label for="identity_card">Số chứng minh nhân dân</label>
                 </div>
             </div>
