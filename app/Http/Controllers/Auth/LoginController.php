@@ -35,11 +35,11 @@ class LoginController extends Controller
                         ->where('del_flag', 0)
                         ->first();
         if (Auth::check() && $role->id_role == __::ROLES['ADMIN']) {
-            return '/';
+            return 'portal';
         } elseif (Auth::check() && $role->id_role == __::ROLES['USER']) {
-            return '/panel';
+            return '/';
         } else {
-            return '/logout';
+            return 'logout';
         }
     }
 

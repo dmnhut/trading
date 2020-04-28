@@ -28,6 +28,16 @@ class HomeController extends Controller
     }
 
     /**
+     * dashboard
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function dashboard()
+    {
+        return view('dashboard.index');
+    }
+
+    /**
      * logout
      *
      * @return \Illuminate\Http\Response

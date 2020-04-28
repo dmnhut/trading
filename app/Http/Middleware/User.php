@@ -21,8 +21,10 @@ class User
         $role = RoleUser::where('id_user', Auth::user()->id)
                         ->where('del_flag', 0)
                         ->first();
-        if (Auth::check() && $role->id_role == __::ROLES['USER']) {
-            return $next($request);
+        if (Auth::check()) {
+            if ($role->id_role == __::ROLES['USER'] || $role->id_role == __::ROLES['ADMIN']) {
+                return $next($request);
+            }
         } else {
             return redirect('logout');
         }
