@@ -1,6 +1,14 @@
 @extends('container.index')
 @section('content')
 <div class="container">
+    @if(!empty(Session::get('message')))
+    @if(Session::get('error') == true)
+    <div class="alert">
+        <span class="closebtn">&times;</span>
+        {{Session::get('message')}}
+    </div>
+    @endif
+    @endif
     <div class="card-panel grey darken-3 white-text">
         <form method="POST" action="{{ route('login') }}">
             @csrf

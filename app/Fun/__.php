@@ -2,6 +2,8 @@
 
 namespace App\Fun;
 
+use App\RoleUser;
+
 class __
 {
 
@@ -223,5 +225,23 @@ class __
             $num = $num-($a * pow($base, $t));
         }
         return $out.date('YmdHis');
+    }
+
+    /**
+     * get_role_id description
+     *
+     * @param  $id_user
+     * @return integer
+     */
+    public static function get_role_code($id_user)
+    {
+        $role = RoleUser::where('id_user', $id_user)
+                        ->where('del_flag', 0)
+                        ->first();
+        if (empty($role)) {
+            return '';
+        } else {
+            return $role->id_role;
+        }
     }
 }

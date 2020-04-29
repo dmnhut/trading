@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
 use App\Fun\__;
-use App\RoleUser;
 
 class LoginController extends Controller
 {
@@ -31,12 +30,10 @@ class LoginController extends Controller
 
     protected function redirectTo()
     {
-        $role = RoleUser::where('id_user', Auth::user()->id)
-                        ->where('del_flag', 0)
-                        ->first();
-        if (Auth::check() && $role->id_role == __::ROLES['ADMIN']) {
+        $role = __::get_role_code(Auth::user()->id);
+        if (Auth::check() && $role == __::ROLES['ADMIN']) {
             return 'portal';
-        } elseif (Auth::check() && $role->id_role == __::ROLES['USER']) {
+        } elseif (Auth::check() && $role == __::ROLES['USER']) {
             return '/';
         } else {
             return 'logout';

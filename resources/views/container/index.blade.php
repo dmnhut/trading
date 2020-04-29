@@ -26,7 +26,7 @@
                 <a href="#" title="Danh sách điều hướng" data-target="slide-out" class="sidenav-trigger button-collapse show-on-large right">
                     <i class="material-icons">menu</i>
                 </a>
-                <ul class="right hide-on-med-and-down">
+                <ul class="right">
                     <li>
                         <a href="{{route('info')}}" title="Thông tin tài khoản"><i class="material-icons">account_circle</i></a>
                     </li>
@@ -52,49 +52,57 @@
                             Portal
                         </a>
                     </li>
-                    <li class="{{Request::is('roles*') ? 'active' : ''}}">
-                        <a href="{{route('roles.index')}}" class="white-text">
-                            Nhóm người dùng
-                        </a>
-                    </li>
-                    <li class="{{Request::is('users*') ? 'active' : ''}}">
-                        <a href="{{route('users.index')}}" class="white-text">
-                            Người dùng
-                        </a>
-                    </li>
-                    <li class="{{Request::is('prices*') ? 'active' : ''}}">
-                        <a href="{{route('prices.index')}}" class="white-text">
-                            Cài đặt giá
-                        </a>
-                    </li>
-                    <li class="{{Request::is('pays*') ? 'active' : ''}}">
-                        <a href="{{route('pays.index')}}" class="white-text">
-                            Cài đặt phần trăm
-                        </a>
-                    </li>
-                    <li class="{{Request::is('detail-shippers*') ? 'active' : ''}}">
-                        <a href="{{route('detail-shippers.index')}}" class="white-text">
-                            Cài đặt shipper
-                        </a>
-                    </li>
-                    <li class="{{Request::is('orders*') ? 'active' : ''}}">
-                        <a href="{{route('orders.index')}}" class="white-text">
-                            Đơn hàng
-                        </a>
-                    </li>
-                    <li class="{{Request::is('units*') ? 'active' : ''}}">
-                        <a href="{{route('units.index')}}" class="white-text">
-                            Đơn vị tính
-                        </a>
-                    </li>
-                    <li>
-                        <div class="divider"></div>
-                    </li>
-                    <li>
-                        <a href="{{route('logout')}}" class="white-text"><i class="material-icons white-text">exit_to_app</i>
-                            Đăng xuất
-                        </a>
-                    </li>
+                    @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+                        <li class="{{Request::is('roles*') ? 'active' : ''}}">
+                            <a href="{{route('roles.index')}}" class="white-text">
+                                Nhóm người dùng
+                            </a>
+                        </li>
+                        @endif
+                        <li class="{{Request::is('users*') ? 'active' : ''}}">
+                            <a href="{{route('users.index')}}" class="white-text">
+                                Người dùng
+                            </a>
+                        </li>
+                        @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+                            <li class="{{Request::is('prices*') ? 'active' : ''}}">
+                                <a href="{{route('prices.index')}}" class="white-text">
+                                    Cài đặt giá
+                                </a>
+                            </li>
+                            @endif
+                            @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+                                <li class="{{Request::is('pays*') ? 'active' : ''}}">
+                                    <a href="{{route('pays.index')}}" class="white-text">
+                                        Cài đặt phần trăm
+                                    </a>
+                                </li>
+                                @endif
+                                <li class="{{Request::is('detail-shippers*') ? 'active' : ''}}">
+                                    <a href="{{route('detail-shippers.index')}}" class="white-text">
+                                        Cài đặt shipper
+                                    </a>
+                                </li>
+                                <li class="{{Request::is('orders*') ? 'active' : ''}}">
+                                    <a href="{{route('orders.index')}}" class="white-text">
+                                        Đơn hàng
+                                    </a>
+                                </li>
+                                @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+                                    <li class="{{Request::is('units*') ? 'active' : ''}}">
+                                        <a href="{{route('units.index')}}" class="white-text">
+                                            Đơn vị tính
+                                        </a>
+                                    </li>
+                                    @endif
+                                    <li>
+                                        <div class="divider"></div>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('logout')}}" class="white-text"><i class="material-icons white-text">exit_to_app</i>
+                                            Đăng xuất
+                                        </a>
+                                    </li>
                 </ul>
                 @endif
             </div>

@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 use App\Fun\__;
-use App\RoleUser;
 
 class User
 {
@@ -18,11 +17,9 @@ class User
      */
     public function handle($request, Closure $next)
     {
-        $role = RoleUser::where('id_user', Auth::user()->id)
-                        ->where('del_flag', 0)
-                        ->first();
+        $role = __::get_role_code(Auth::user()->id);
         if (Auth::check()) {
-            if ($role->id_role == __::ROLES['USER'] || $role->id_role == __::ROLES['ADMIN']) {
+            if ($role == __::ROLES['USER'] || $role == __::ROLES['ADMIN']) {
                 return $next($request);
             }
         } else {

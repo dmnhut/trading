@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Fun\__;
+use App\Fun\Messages;
 
 class HomeController extends Controller
 {
@@ -34,17 +36,25 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
-        return view('dashboard.index');
+        return view('dashboard.index', ['role' => __::get_role_code(Auth::user()->id)]);
     }
 
     /**
      * logout
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect('login');
+        if ($request->error) {
+            return redirect('login')->with([
+              'message' => Messages::errors()->permission(),
+              'error'   => true
+            ]);
+        } else {
+            return redirect('login');
+        }
     }
 }

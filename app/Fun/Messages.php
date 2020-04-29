@@ -162,6 +162,16 @@ class Messages
     }
 
     /**
+     * permission
+     *
+     * @return string
+     */
+    public function permission()
+    {
+        return 'Yêu cầu tài khoản người dùng quản trị để truy cập';
+    }
+
+    /**
      * users
      *
      * @param  $key
