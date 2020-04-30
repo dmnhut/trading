@@ -26,7 +26,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return redirect()->route('portal.index');
+        $role = __::get_role_code(Auth::user()->id);
+        if (Auth::check() && $role == __::ROLES['ADMIN']) {
+            return redirect()->route('portal.index');
+        } elseif (Auth::check() && $role == __::ROLES['USER']) {
+            return redirect()->route('dashboard');
+        }
     }
 
     /**

@@ -34,7 +34,7 @@ class LoginController extends Controller
         if (Auth::check() && $role == __::ROLES['ADMIN']) {
             return 'portal';
         } elseif (Auth::check() && $role == __::ROLES['USER']) {
-            return '/';
+            return 'dashboard';
         } else {
             return 'logout';
         }

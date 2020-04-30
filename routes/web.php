@@ -1,6 +1,7 @@
 <?php
-Route::get('/', 'HomeController@dashboard')->name('dashboard')->middleware('user');
+Route::get('/', 'HomeController@index')->middleware('auth');
 Route::get('tables', '__@getTables')->middleware('admin');
+Route::get('dashboard', 'HomeController@dashboard')->name('dashboard')->middleware('user');
 Route::get('portal', 'PortalController@index')->name('portal.index')->middleware('user');
 Route::post('portal/assign', 'PortalController@assign')->name('portal.assign')->middleware('admin');
 Route::get('portal/shippers', 'PortalController@get_shippers')->name('portal.shippers')->middleware('admin');
