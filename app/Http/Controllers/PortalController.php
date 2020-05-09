@@ -30,11 +30,33 @@ class PortalController extends Controller
      */
     public function index(Request $request)
     {
-        $tab = empty($request->tab) ? __::get_tab('ASSIGN') : $request->tab;
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['ADMIN']) {
+            $tab = empty($request->tab) ? __::get_tab('ASSIGN') : $request->tab;
+            $status_not_show = [
+                                 __::status('create'),
+                                 __::status('active'),
+                                 __::status('locked'),
+                                 __::status('updated'),
+                                 __::status('pay'),
+                                 __::status('transfers')
+                               ];
+        } elseif ($role === __::ROLES['USER']) {
+            $tab = __::get_tab('SHIPPING');
+            $status_not_show = [
+                                 __::status('create'),
+                                 __::status('active'),
+                                 __::status('locked'),
+                                 __::status('updated'),
+                                 __::status('pay'),
+                                 __::status('transfers'),
+                                 __::status('cancel')
+                               ];
+        }
         $page = empty($request->page) ? 1 : $request->page;
         $status = Status::select('id', 'name')
                         ->where('del_flag', 0)
-                        ->whereNotIn('id', [__::status('create'), __::status('active'), __::status('locked'), __::status('updated'), __::status('pay'), __::status('transfers')])
+                        ->whereNotIn('id', $status_not_show)
                         ->get();
         foreach ($status as $value) {
             $value->name = __::status_name($value->name);
@@ -69,9 +91,13 @@ class PortalController extends Controller
                            ->where('shipper.del_flag', 0)
                            ->where('status_shipper.id_status', 1)
                            ->where('status_shipper.del_flag', 0)
-                           ->whereIn('status_order.id_status', [__::status('pack'), __::status('assign'), __::status('shipping'), __::status('pending')])
                            ->where('status_order.del_flag', 0)
                            ->where('status.del_flag', 0);
+            if ($role === __::ROLES['USER']) {
+                $query = $query->where('orders.id_user', Auth::user()->id)
+                                              ->orWhere('detail_shipper.id_user', Auth::user()->id);
+            }
+            $query->whereIn('status_order.id_status', [__::status('pack'), __::status('assign'), __::status('shipping'), __::status('pending')]);
         } elseif ($tab === __::get_tab('TRANSFERS')) {
             $query = Orders::select('orders.id as id', 'orders.code as code', 'users.name as user_name', 'users.phone as user_phone', 'orders.address as ship_address', 'status_order.id_status as id_status', 'status.name as name_status', 'orders.note as note', 'shipper.name as shipper_name', 'shipper.phone as shipper_phone')
                            ->leftjoin('users', 'users.id', '=', 'orders.id_user')
@@ -100,7 +126,8 @@ class PortalController extends Controller
                                       'page_number' => $page_number,
                                       'page_active' => $page,
                                       'tab'         => $tab,
-                                      'status'      => $status
+                                      'status'      => $status,
+                                      'role'        => $role
                                     ]);
     }
 
@@ -169,7 +196,7 @@ class PortalController extends Controller
                                     ->first();
             $order             = Orders::find($request->order);
             $order->id_shipper = $request->shipper;
-            $order->note       = Notes::order('assign', $order->code, __::get_text('admin'), $date_time, $shipper->name.' - '.$shipper->phone);
+            $order->note       = Notes::order('assign', $order->code, Auth::user()->name, $date_time, $shipper->name.' - '.$shipper->phone);
             $order->version_no = $order->version_no + 1;
             $order->save();
             $status_order = StatusOrder::where('id_order', $order->id)
@@ -240,7 +267,7 @@ class PortalController extends Controller
                                       ]);
             }
             $order             = Orders::find($request->id);
-            $order->note       = Notes::order($status, $order->code, __::get_text('admin'), $date_time);
+            $order->note       = Notes::order($status, $order->code, Auth::user()->name, $date_time);
             $order->version_no = $order->version_no + 1;
             $order->save();
             $traces = Traces::where('id_order', $order->id)
@@ -295,7 +322,7 @@ class PortalController extends Controller
             DB::beginTransaction();
             $date_time = date_format(new DateTime('NOW'), 'd/m/Y H:i:s');
             $order             = Orders::find($request->id);
-            $order->note       = Notes::order('transfers', $order->code, __::get_text('admin'), $date_time);
+            $order->note       = Notes::order('transfers', $order->code, Auth::user()->name, $date_time);
             $order->version_no = $order->version_no + 1;
             $order->save();
             $status_order = StatusOrder::where('id_order', $order->id)

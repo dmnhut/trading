@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
-    <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@4.5.1/dist/css/tabulator.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="{{url('css/index.css')}}" />
     @yield('style')
@@ -52,7 +51,7 @@
                             Portal
                         </a>
                     </li>
-                    @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+                    @if(App\Fun\__::get_role_code(Auth::user()->id) === App\Fun\__::ROLES['ADMIN'])
                         <li class="{{Request::is('roles*') ? 'active' : ''}}">
                             <a href="{{route('roles.index')}}" class="white-text">
                                 Nhóm người dùng
@@ -64,14 +63,14 @@
                                 Người dùng
                             </a>
                         </li>
-                        @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+                        @if(App\Fun\__::get_role_code(Auth::user()->id) === App\Fun\__::ROLES['ADMIN'])
                             <li class="{{Request::is('prices*') ? 'active' : ''}}">
                                 <a href="{{route('prices.index')}}" class="white-text">
                                     Cài đặt giá
                                 </a>
                             </li>
                             @endif
-                            @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+                            @if(App\Fun\__::get_role_code(Auth::user()->id) === App\Fun\__::ROLES['ADMIN'])
                                 <li class="{{Request::is('pays*') ? 'active' : ''}}">
                                     <a href="{{route('pays.index')}}" class="white-text">
                                         Cài đặt phần trăm
@@ -88,7 +87,7 @@
                                         Đơn hàng
                                     </a>
                                 </li>
-                                @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+                                @if(App\Fun\__::get_role_code(Auth::user()->id) === App\Fun\__::ROLES['ADMIN'])
                                     <li class="{{Request::is('units*') ? 'active' : ''}}">
                                         <a href="{{route('units.index')}}" class="white-text">
                                             Đơn vị tính

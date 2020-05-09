@@ -171,7 +171,12 @@ document.querySelectorAll(".btn-detail").forEach(element => {
             id: id
         }
         axios.post(document.querySelector("#modal-detail").getAttribute("url"), data).then(response => {
-            if (response.data != 0) {
+            if (response.data.error) {
+                $(".btn-close").click();
+                document.querySelector("#message").innerHTML = response.data.message;
+                document.querySelector(".main-loader").style.display = "none";
+                $("#modal-message").modal("open");
+            } else {
                 document.querySelector("#detail-name").innerHTML = response.data.name;
                 document.querySelector("#detail-birthdate").innerHTML = response.data.birthdate;
                 document.querySelector("#detail-email").innerHTML = response.data.email;
@@ -206,11 +211,10 @@ document.querySelector("#btn-modal-cu").addEventListener("click", () => {
     axios.post([document.querySelector("#url").value, "/", document.querySelector("input[name=_id_shipper]").value].join(""), data).then(response => {
         if (response.data.error) {
             $(".btn-close").click();
-        } else {
-            document.querySelector("#message").innerHTML = response.data.message;
-            document.querySelector(".main-loader").style.display = "none";
-            $("#modal-message").modal("open");
         }
+        document.querySelector("#message").innerHTML = response.data.message;
+        document.querySelector(".main-loader").style.display = "none";
+        $("#modal-message").modal("open");
     }).catch(error => {
         console.log(error);
     });

@@ -31,7 +31,7 @@ class Sql
      * @param  $count_flag
      * @return string
      */
-    public static function getUsers4IndexUser($count_flag = false)
+    public static function getUsers4IndexUser($count_flag = false, $id = null)
     {
         $sql = "select users.id                                                                   as id,
                        users.name                                                                 as name,
@@ -47,8 +47,11 @@ class Sql
                     on status_user.id_user                                                        = users.id
                   left join status
                     on status.id                                                                  = status_user.id_status
-                 where users.del_flag                                                             = 0
-                 order by users.name asc";
+                 where users.del_flag                                                             = 0";
+        if (!empty($id)) {
+            $sql .= " " . "and users.id = " .$id;
+        }
+        $sql .= " " . "order by users.name asc";
         return $count_flag ? $sql : $sql . " " . "limit :limit offset :offset";
     }
 }

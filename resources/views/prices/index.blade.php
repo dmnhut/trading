@@ -21,50 +21,52 @@
     </div>
 </div>
 <div class="card-panel grey darken-3 white-text">
-    <table class="highlight responsive-table activated">
-        <thead>
-            <tr>
-                <th>Số Kg &le;</th>
-                <th>Giá Tiền</th>
-                <th>Trạng Thái</th>
-                <th>Xóa</th>
-            </tr>
-        </thead>
-        <tbody id="tbl">
-            @foreach ($data as $value)
-            <tr>
-                <td>{{$value->kg}}</td>
-                <td>{{$value->amount}}</td>
-                <td>
-                    <form method="POST" action="{{route('prices.status')}}">
-                        @csrf
-                        <input type="hidden" name="id" value="{{$value->id}}" />
-                        @if($value->turn_on == 0)
-                            <button class="waves-effect waves-light btn btn-small green darken-3">bật</button>
-                            @elseif($value->turn_on == 1)
-                                <button class="waves-effect waves-light btn btn-small green darken-3">tắt</button>
-                                @endif
-                    </form>
-                </td>
-                <td>
-                    <form method="POST" action="{{route('prices.destroy', [$value->id])}}">
-                        @method('DELETE')
-                        @csrf
-                        <button class="waves-effect waves-light btn btn-small grey darken-2">xóa</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-            @if($data->count() == 0)
+    <div style="overflow-x:auto;">
+        <table class="highlight activated">
+            <thead>
                 <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <th>Số Kg &le;</th>
+                    <th>Giá Tiền</th>
+                    <th>Trạng Thái</th>
+                    <th>Xóa</th>
                 </tr>
-                @endif
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="tbl">
+                @foreach ($data as $value)
+                <tr>
+                    <td>{{$value->kg}}</td>
+                    <td>{{$value->amount}}</td>
+                    <td>
+                        <form method="POST" action="{{route('prices.status')}}">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$value->id}}" />
+                            @if($value->turn_on == 0)
+                                <button class="waves-effect waves-light btn btn-small green darken-3">bật</button>
+                                @elseif($value->turn_on == 1)
+                                    <button class="waves-effect waves-light btn btn-small green darken-3">tắt</button>
+                                    @endif
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{route('prices.destroy', [$value->id])}}">
+                            @method('DELETE')
+                            @csrf
+                            <button class="waves-effect waves-light btn btn-small grey darken-2">xóa</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+                @if($data->count() == 0)
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    @endif
+            </tbody>
+        </table>
+    </div>
 </div>
 <ul class="pagination">
     @for ($i = 1; $i

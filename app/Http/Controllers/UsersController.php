@@ -31,10 +31,21 @@ class UsersController extends Controller
         $page = empty($request->page) ? 1 : $request->page;
         $limit = __::TAKE_ITEM;
         $offset = ($page-1)*$limit;
-        $data = DB::select(DB::raw(Sql::getUsers4IndexUser()), ['limit' => $limit, 'offset' => $offset]);
-        $total = collect(DB::select(Sql::getUsers4IndexUser(true)))->count();
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            $data = DB::select(DB::raw(Sql::getUsers4IndexUser(false, Auth::user()->id)), ['limit' => $limit, 'offset' => $offset]);
+            $total = collect(DB::select(Sql::getUsers4IndexUser(true, Auth::user()->id)))->count();
+        } elseif ($role === __::ROLES['ADMIN']) {
+            $data = DB::select(DB::raw(Sql::getUsers4IndexUser()), ['limit' => $limit, 'offset' => $offset]);
+            $total = collect(DB::select(Sql::getUsers4IndexUser(true, null)))->count();
+        }
         $page_number = ceil($total/__::TAKE_ITEM);
-        return view('users.index', ['data' => $data, 'page_number' => $page_number, 'page_active' => $page]);
+        return view('users.index', [
+          'data'        => $data,
+          'page_number' => $page_number,
+          'page_active' => $page,
+          'role'        => $role
+        ]);
     }
 
     /**
@@ -65,6 +76,14 @@ class UsersController extends Controller
      */
     public function status(Request $request)
     {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            Auth::logout();
+            return redirect('login')->with([
+              'message' => Messages::errors()->permission(),
+              'error'   => true
+            ]);
+        }
         $data = Status::select('id', 'name')
                       ->wherein('name', __::STATUS)
                       ->get();
@@ -95,6 +114,14 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            Auth::logout();
+            return redirect('login')->with([
+              'message' => Messages::errors()->permission(),
+              'error'   => true
+            ]);
+        }
         $validator = Validator::make($request->all(), [
           'email'         => 'unique:users',
           'identity_card' => 'unique:users',
@@ -191,6 +218,16 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            if ($id != Auth::user()->id) {
+                Auth::logout();
+                return redirect('login')->with([
+                  'message' => Messages::errors()->permission(),
+                  'error'   => true
+                ]);
+            }
+        }
         return view('users.edit', [
                                     'data' => User::find($id),
                                     'text' => [
@@ -225,6 +262,16 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            if ($id != Auth::user()->id) {
+                Auth::logout();
+                return redirect('login')->with([
+                  'message' => Messages::errors()->permission(),
+                  'error'   => true
+                ]);
+            }
+        }
         $validator = Validator::make($request->all(), [
             'email'         => 'unique:users,email,'.$id,
             'identity_card' => 'unique:users,identity_card,'.$id,
@@ -299,6 +346,14 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            Auth::logout();
+            return redirect('login')->with([
+              'message' => Messages::errors()->permission(),
+              'error'   => true
+            ]);
+        }
         User::find($id)
             ->update(['del_flag'=> 1, DB::raw('version_no + 1')]);
         return redirect(route('users.index'))->with([

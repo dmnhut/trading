@@ -34,28 +34,30 @@
 @endif
 @endif
 <div class="card-panel grey darken-3 white-text">
-    <table class="highlight responsive-table activated">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tên</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $value)
-            <tr>
-                <td>{{$value->id}}</td>
-                <td>{{$value->name}}</td>
-            </tr>
-            @endforeach
-            @if($data->count() == 0)
+    <div style="overflow-x:auto;">
+        <table class="highlight activated">
+            <thead>
                 <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <th>ID</th>
+                    <th>Tên</th>
                 </tr>
-                @endif
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($data as $value)
+                <tr>
+                    <td>{{$value->id}}</td>
+                    <td>{{$value->name}}</td>
+                </tr>
+                @endforeach
+                @if($data->count() == 0)
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    @endif
+            </tbody>
+        </table>
+    </div>
 </div>
 <ul class="pagination">
     @for ($i = 1; $i

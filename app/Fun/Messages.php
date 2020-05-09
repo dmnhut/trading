@@ -168,7 +168,7 @@ class Messages
      */
     public function permission()
     {
-        return 'Yêu cầu tài khoản người dùng quản trị để truy cập';
+        return 'Yêu cầu tài khoản người dùng quản trị để thực thi';
     }
 
     /**

@@ -25,6 +25,7 @@ use App\Fun\Messages;
 use App\Fun\Notes;
 use App\Fun\Sql;
 use App\Fun\Validate;
+use Auth;
 
 class OrdersController extends Controller
 {
@@ -133,7 +134,7 @@ class OrdersController extends Controller
               'address'      => $request->address,
               'receiver'     => $request->receiver,
               'phone'        => $request->phone,
-              'note'         => Notes::order('create', $request->code, __::get_text('admin'), $date_time)
+              'note'         => Notes::order('create', $request->code, Auth::user()->name, $date_time)
             ]);
             $items = json_decode($request->items);
             foreach ($items as $value) {
@@ -317,7 +318,7 @@ class OrdersController extends Controller
             $order->address      = $request->address;
             $order->receiver     = $request->receiver;
             $order->phone        = $request->phone;
-            $order->note         = Notes::order('updated', $request->code, __::get_text('admin'), $date_time);
+            $order->note         = Notes::order('updated', $request->code, Auth::user()->name, $date_time);
             $order->version_no   = $order->version_no + 1;
             $order->save();
             $items = OrderDetail::select('id')

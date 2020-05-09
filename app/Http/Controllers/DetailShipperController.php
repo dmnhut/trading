@@ -9,6 +9,7 @@ use App\DetailShipper;
 use App\Balances;
 use App\Fun\__;
 use App\Fun\Messages;
+use Auth;
 
 class DetailShipperController extends Controller
 {
@@ -26,6 +27,10 @@ class DetailShipperController extends Controller
                      ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
                      ->where('users.del_flag', 0)
                      ->where('status.id', __::status('active'));
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            $query = $query->where('users.id', Auth::user()->id);
+        }
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         $shippers = DetailShipper::select('users.id as id', 'detail_shipper.id as id_shipper', 'provinces.id as id_province', 'provinces.name as province', 'districts.id as id_district', 'districts.name as district', 'wards.id as id_ward', 'wards.name as ward')
@@ -60,7 +65,8 @@ class DetailShipperController extends Controller
                                                'page_number'     => $page_number,
                                                'page_active'     => $page,
                                                'detail_shippers' => $detail_shippers,
-                                               'captions'        => ['add' => __::ADD, 'update' => __::UPDATE]
+                                               'captions'        => ['add' => __::ADD, 'update' => __::UPDATE],
+                                               'role'            => $role
                                              ]);
     }
 
@@ -72,7 +78,14 @@ class DetailShipperController extends Controller
      */
     public function detail(Request $request)
     {
-        $data = User::find($request->get('id'));
+        if ($request->id != Auth::user()->id) {
+            Auth::logout();
+            return [
+              'message' => Messages::errors()->permission(),
+              'error'   => true
+            ];
+        }
+        $data = User::find($request->id);
         if (empty($data)) {
             $data = [];
         } else {
@@ -104,6 +117,14 @@ class DetailShipperController extends Controller
      */
     public function store(Request $request)
     {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            Auth::logout();
+            return [
+              'message' => Messages::errors()->permission(),
+              'error'   => true
+            ];
+        }
         DetailShipper::create([
           'id_user'     => $request->user,
           'id_province' => $request->province,
@@ -151,6 +172,16 @@ class DetailShipperController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            if ($id != Auth::user()->id) {
+                Auth::logout();
+                return [
+                  'message' => Messages::errors()->permission(),
+                  'error'   => true
+                ];
+            }
+        }
         $detail_shippers = DetailShipper::find($id);
         $detail_shippers->update([
                             'id_province' => $request->province,
@@ -172,6 +203,14 @@ class DetailShipperController extends Controller
      */
     public function destroy($id)
     {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            Auth::logout();
+            return redirect('login')->with([
+            'message' => Messages::errors()->permission(),
+            'error'   => true
+          ]);
+        }
         $detail_shippers = DetailShipper::find($id);
         $balances = Balances::where('id_shipper', $detail_shippers->id_user);
         $detail_shippers->delete();

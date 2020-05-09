@@ -55,7 +55,7 @@ class PaysController extends Controller
         } else {
             $percent = Pays::where('percent', $request->percent)
                            ->get();
-            if (empty($percent)) {
+            if ($percent->isEmpty()) {
                 Pays::create([
                   'percent' => $request->percent
                 ]);
@@ -65,7 +65,7 @@ class PaysController extends Controller
                 ]);
             } else {
                 return redirect(route('pays.index'))->with([
-                  'message' => Messages::errors()->pays(percent.unique),
+                  'message' => Messages::errors()->pays('percent.unique'),
                   'error'   => true
                 ]);
             }

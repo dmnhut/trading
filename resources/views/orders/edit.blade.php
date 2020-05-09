@@ -176,26 +176,28 @@
                         <button id="btn-add-item" class="btn-floating btn-large waves-effect waves-light grey darken-3 right">
                             <i class="material-icons">add</i>
                         </button>
-                        <table class="highlight responsive-table centered">
-                            <thead>
-                                <tr style="width:120px">
-                                    <th>Tên sản phẩm / dịch vụ</th>
-                                    <th>Đơn vị tính</th>
-                                    <th>Số lượng</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="items">
-                                @foreach ($details as $value)
-                                <tr>
-                                    <td data="{{$value->item_name}}">{{$value->item_name}}</td>
-                                    <td data="{{$value->id_unit}}">{{$value->name_unit}}</td>
-                                    <td data="{{$value->quantity}}">{{$value->quantity}}</td>
-                                    <td><button class="waves-effect waves-light btn red" onclick="removeRow($(this))"><i class="small material-icons">close</i></button></td>
-                                </tr>
-                                @endforeach()
-                            </tbody>
-                        </table>
+                        <div style="overflow-x:auto;">
+                            <table class="highlight centered">
+                                <thead>
+                                    <tr>
+                                        <th>Tên sản phẩm / dịch vụ</th>
+                                        <th>Đơn vị tính</th>
+                                        <th>Số lượng</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="items">
+                                    @foreach ($details as $value)
+                                    <tr>
+                                        <td data="{{$value->item_name}}">{{$value->item_name}}</td>
+                                        <td data="{{$value->id_unit}}">{{$value->name_unit}}</td>
+                                        <td data="{{$value->quantity}}">{{$value->quantity}}</td>
+                                        <td><button class="waves-effect waves-light btn red" onclick="removeRow($(this))"><i class="small material-icons">close</i></button></td>
+                                    </tr>
+                                    @endforeach()
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

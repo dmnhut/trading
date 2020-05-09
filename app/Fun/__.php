@@ -111,7 +111,7 @@ class __
      *
      * @var integer
      */
-    const TAKE_ITEM = 10;
+    const TAKE_ITEM = 15;
 
     /**
      * take_item

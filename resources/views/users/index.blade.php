@@ -34,77 +34,85 @@
 @endif
 @endif
 <div class="card-panel grey darken-3 white-text">
-    <table class="highlight responsive-table activated">
-        <thead>
-            <tr>
-                <th>Họ tên</th>
-                <th>Ảnh đại diện</th>
-                <th>Email</th>
-                <th>Giớ tính</th>
-                <th>Ngày sinh</th>
-                <th>Số điện thoại</th>
-                <th>Số CMND</th>
-                <th>Cập nhật</th>
-                <th>Trạng thái</th>
-                <th>Xóa</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if(!empty($data))
-            @foreach ($data as $value)
-            <tr>
-                <td>{{$value->name}}</td>
-                <td>
-                    @if(empty($value->path))
-                        <img class="materialboxed" width="100" src="https://via.placeholder.com/100" />
-                        @else
-                        <img class="materialboxed" width="100" src="{{url('img') . '/' .$value->path}}" />
-                        @endif
-                </td>
-                <td>{{$value->email}}</td>
-                <td>{{$value->gender}}</td>
-                <td>{{$value->birthdate}}</td>
-                <td>{{$value->phone}}</td>
-                <td>{{$value->identity_card}}</td>
-                <td>
-                    <form method="GET" action="{{route('users.edit', [$value->id])}}">
-                        <button class="waves-effect waves-light btn btn-small green darken-3">cập nhật</button>
-                    </form>
-                </td>
-                <td>
-                    <form method="POST" action="{{route('users.status')}}">
-                        @csrf
-                        <input type="hidden" name="id" value="{{$value->id}}" />
-                        @if($value->status == App\Fun\__::STATUS[0])<button class="waves-effect waves-light btn btn-small light-green darken-3">khóa</button>
-                            @elseif($value->status == App\Fun\__::STATUS[1])<button class="waves-effect waves-light btn btn-small light-green darken-3">mở khóa</button>
-                                @endif
-                    </form>
-                </td>
-                <td>
-                    <form method="POST" action="{{route('users.destroy', [$value->id])}}">
-                        @method('DELETE')
-                        @csrf
-                        <button class="waves-effect waves-light btn btn-small grey darken-2">xóa</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-            @else
-            <tr>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-            </tr>
-            @endif
-        </tbody>
-    </table>
+    <div style="overflow-x:auto;">
+        <table class="highlight activated">
+            <thead>
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Ảnh đại diện</th>
+                    <th>Email</th>
+                    <th>Giớ tính</th>
+                    <th>Ngày sinh</th>
+                    <th>Số điện thoại</th>
+                    <th>Số CMND</th>
+                    <th>Cập nhật</th>
+                    @if($role === App\Fun\__::ROLES['ADMIN'])
+                    <th>Trạng thái</th>
+                    <th>Xóa</th>
+                    @endif
+                </tr>
+            </thead>
+            <tbody>
+                @if(!empty($data))
+                @foreach ($data as $value)
+                <tr>
+                    <td>{{$value->name}}</td>
+                    <td>
+                        @if(empty($value->path))
+                            <img class="materialboxed" width="100" src="https://via.placeholder.com/100" />
+                            @else
+                            <img class="materialboxed" width="100" src="{{url('img') . '/' .$value->path}}" />
+                            @endif
+                    </td>
+                    <td>{{$value->email}}</td>
+                    <td>{{$value->gender}}</td>
+                    <td>{{$value->birthdate}}</td>
+                    <td>{{$value->phone}}</td>
+                    <td>{{$value->identity_card}}</td>
+                    <td>
+                        <form method="GET" action="{{route('users.edit', [$value->id])}}">
+                            <button class="waves-effect waves-light btn btn-small green darken-3">cập nhật</button>
+                        </form>
+                    </td>
+                    @if($role === App\Fun\__::ROLES['ADMIN'])
+                    <td>
+                        <form method="POST" action="{{route('users.status')}}">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$value->id}}" />
+                            @if($value->status == App\Fun\__::STATUS[0])<button class="waves-effect waves-light btn btn-small light-green darken-3">khóa</button>
+                                @elseif($value->status == App\Fun\__::STATUS[1])<button class="waves-effect waves-light btn btn-small light-green darken-3">mở khóa</button>
+                                    @endif
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{route('users.destroy', [$value->id])}}">
+                            @method('DELETE')
+                            @csrf
+                            <button class="waves-effect waves-light btn btn-small grey darken-2">xóa</button>
+                        </form>
+                    </td>
+                    @endif
+                </tr>
+                @endforeach
+                @else
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    @if($role === App\Fun\__::ROLES['ADMIN'])
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    @endif
+                </tr>
+                @endif
+            </tbody>
+        </table>
+    </div>
 </div>
 <ul class="pagination">
     @for ($i = 1; $i
@@ -116,6 +124,7 @@
     @endfor
 </ul>
 @endsection
+@if($role === App\Fun\__::ROLES['ADMIN'])
 @section('fix-btn')
 <div class="row">
     <div class="fixed-action-btn">
@@ -125,3 +134,4 @@
     </div>
 </div>
 @endsection
+@endif

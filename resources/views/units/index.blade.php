@@ -35,36 +35,38 @@
 @endif
 <div class="card-panel grey darken-3 white-text">
     @if(!empty($data))
-    <table class="highlight responsive-table activated">
-        <thead>
-            <tr>
-                <th>Tên</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $value)
-            <tr>
-                <td>{{$value->name}}</td>
-                <td>
-                    <form method="POST" action="{{route('units.destroy', [$value->id])}}">
-                        @method('DELETE')
-                        @csrf
-                        <button class="waves-effect waves-light btn btn-small right grey darken-2">Xóa</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div style="overflow-x:auto;">
+        <table class="highlight activated">
+            <thead>
+                <tr>
+                    <th>Tên</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $value)
+                <tr>
+                    <td>{{$value->name}}</td>
+                    <td>
+                        <form method="POST" action="{{route('units.destroy', [$value->id])}}">
+                            @method('DELETE')
+                            @csrf
+                            <button class="waves-effect waves-light btn btn-small right grey darken-2">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     @endif
 </div>
 <ul class="pagination">
     @for ($i = 1; $i
     <= $page_number; $i++) @if($page_active == $i)
-    <li class="active"><a href="{{route('roles.index', ['page' => $i])}}">{{$i}}</a></li>
+    <li class="active"><a href="{{route('units.index', ['page' => $i])}}">{{$i}}</a></li>
     @else
-    <li class="waves-effect"><a href="{{route('roles.index', ['page' => $i])}}">{{$i}}</a></li>
+    <li class="waves-effect"><a href="{{route('units.index', ['page' => $i])}}">{{$i}}</a></li>
     @endif
     @endfor
 </ul>

@@ -34,69 +34,77 @@
 @endif
 @endif
 <div class="card-panel grey darken-3 white-text">
-    <table class="highlight responsive-table activated">
-        <thead>
-            <tr>
-                <th>Họ tên</th>
-                <th>Email</th>
-                <th>Số điện thoại</th>
-                <th>Tỉnh thành</th>
-                <th>Quận huyện</th>
-                <th>Phường xã</th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if(!empty($data))
-            @foreach ($data as $value)
-            <tr>
-                <td>{{$value->name}}</td>
-                <td>{{$value->email}}</td>
-                <td>{{$value->phone}}</td>
-                <td>{{$detail_shippers[$value->id]['province']['name']}}</td>
-                <td>{{$detail_shippers[$value->id]['district']['name']}}</td>
-                <td>{{$detail_shippers[$value->id]['ward']['name']}}</td>
-                @if(empty($detail_shippers[$value->id]['id_shipper']))
-                    <td>
-                        <button class="waves-effect waves-light btn btn-small btn-cu green darken-3" mode="add" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="">chọn</button>
-                    </td>
-                    @else
-                    <td>
-                        <button class="waves-effect waves-light btn btn-small btn-cu green darken-3" mode="update" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="{{$detail_shippers[$value->id]['id_shipper']}}"
-                          province="{{$detail_shippers[$value->id]['province']['id']}}" district="{{$detail_shippers[$value->id]['district']['id']}}" ward="{{$detail_shippers[$value->id]['ward']['id']}}">cài đặt</button>
-                    </td>
+    <div style="overflow-x:auto;">
+        <table class="highlight activated">
+            <thead>
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Tỉnh thành</th>
+                    <th>Quận huyện</th>
+                    <th>Phường xã</th>
+                    <th></th>
+                    @if($role === App\Fun\__::ROLES['ADMIN'])
+                    <th></th>
+                    <th></th>
                     @endif
-                    <td>
-                        <button class="waves-effect waves-light btn btn-small btn-detail light-green darken-3" data="{{$value->id}}">chi tiết</button>
-                    </td>
-                    <td>
-                        @if(!empty($detail_shippers[$value->id]['id_shipper']))
-                            <form method="POST" action="{{route('detail-shippers.destroy', [$detail_shippers[$value->id]['id_shipper']])}}">
-                                @method('DELETE')
-                                @csrf
-                                <button class="waves-effect waves-light btn btn-small grey darken-2">Xóa cài đặt</button>
-                            </form>
+                </tr>
+            </thead>
+            <tbody>
+                @if(!empty($data))
+                @foreach ($data as $value)
+                <tr>
+                    <td>{{$value->name}}</td>
+                    <td>{{$value->email}}</td>
+                    <td>{{$value->phone}}</td>
+                    <td>{{$detail_shippers[$value->id]['province']['name']}}</td>
+                    <td>{{$detail_shippers[$value->id]['district']['name']}}</td>
+                    <td>{{$detail_shippers[$value->id]['ward']['name']}}</td>
+                    @if(empty($detail_shippers[$value->id]['id_shipper']))
+                        <td>
+                            @if($role === App\Fun\__::ROLES['ADMIN'])
+                            <button class="waves-effect waves-light btn btn-small btn-cu green darken-3" mode="add" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="">chọn</button>
                             @endif
-                    </td>
-            </tr>
-            @endforeach
-            @else
-            <tr>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-            </tr>
-            @endif
-        </tbody>
-    </table>
+                        </td>
+                        @else
+                        <td>
+                            <button class="waves-effect waves-light btn btn-small btn-cu green darken-3" mode="update" usrname="{{$value->name}}" data="{{$value->id}}" id_shipper="{{$detail_shippers[$value->id]['id_shipper']}}"
+                              province="{{$detail_shippers[$value->id]['province']['id']}}" district="{{$detail_shippers[$value->id]['district']['id']}}" ward="{{$detail_shippers[$value->id]['ward']['id']}}">cài đặt</button>
+                        </td>
+                        @endif
+                        @if($role === App\Fun\__::ROLES['ADMIN'])
+                        <td>
+                            <button class="waves-effect waves-light btn btn-small btn-detail light-green darken-3" data="{{$value->id}}">chi tiết</button>
+                        </td>
+                        <td>
+                            @if(!empty($detail_shippers[$value->id]['id_shipper']))
+                                <form method="POST" action="{{route('detail-shippers.destroy', [$detail_shippers[$value->id]['id_shipper']])}}">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button class="waves-effect waves-light btn btn-small grey darken-2">Xóa cài đặt</button>
+                                </form>
+                                @endif
+                        </td>
+                        @endif
+                </tr>
+                @endforeach
+                @else
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+                @endif
+            </tbody>
+        </table>
+    </div>
 </div>
 <ul class="pagination">
     @for ($i = 1; $i

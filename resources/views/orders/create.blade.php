@@ -149,18 +149,20 @@
                         <button id="btn-add-item" class="btn-floating btn-large waves-effect waves-light grey darken-3 right">
                             <i class="material-icons">add</i>
                         </button>
-                        <table class="highlight responsive-table centered" style="display:none">
-                            <thead>
-                                <tr style="width:120px">
-                                    <th>Tên sản phẩm / dịch vụ</th>
-                                    <th>Đơn vị tính</th>
-                                    <th>Số lượng</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="items">
-                            </tbody>
-                        </table>
+                        <div style="overflow-x:auto;">
+                            <table class="highlight centered" style="display:none">
+                                <thead>
+                                    <tr>
+                                        <th>Tên sản phẩm / dịch vụ</th>
+                                        <th>Đơn vị tính</th>
+                                        <th>Số lượng</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="items">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

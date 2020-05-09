@@ -3,7 +3,7 @@
 <nav class="nav-top teal darken-3">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
-        <a href="{{route('info')}}" class="breadcrumb hide-on-med-and-down">Thông tin người dùng</a>
+        <a href="{{route('info')}}" class="breadcrumb hide-on-med-and-down">Thông tin tài khoản</a>
     </div>
 </nav>
 <div class="card-panel grey darken-3 white-text">

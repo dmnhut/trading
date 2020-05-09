@@ -1,5 +1,9 @@
 $(document).ready(() => {
-    document.querySelector("#" + document.querySelector("input[name=_tab_active").value + ">table").classList.add("activated");
+    document.querySelector("#tbl-assign").style.display = "none";
+    document.querySelector("#tbl-shipping").style.display = "none";
+    document.querySelector("#tbl-transfers").style.display = "none";
+    document.querySelector("#" + document.querySelector("input[name=_tab_active").value + ">div>table").classList.add("activated");
+    document.querySelector("#" + document.querySelector("input[name=_tab_active").value + ">div>table").style.display = "";
 });
 
 const removeMessage = node => {

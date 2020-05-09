@@ -12,7 +12,7 @@
         </div>
     </a>
 </div>
-@if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+@if(App\Fun\__::get_role_code(Auth::user()->id) === App\Fun\__::ROLES['ADMIN'])
     <div class="col s12 m4 l4 pointer">
         <a href="{{route('roles.index')}}">
             <div class="hoverable card-panel cyan darken-3 white-text center">
@@ -28,7 +28,7 @@
             </div>
         </a>
     </div>
-    @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+    @if(App\Fun\__::get_role_code(Auth::user()->id) === App\Fun\__::ROLES['ADMIN'])
         <div class="col s12 m4 l4 pointer">
             <a href="{{route('prices.index')}}">
                 <div class="hoverable card-panel cyan darken-3 white-text center">
@@ -37,7 +37,7 @@
             </a>
         </div>
         @endif
-        @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+        @if(App\Fun\__::get_role_code(Auth::user()->id) === App\Fun\__::ROLES['ADMIN'])
             <div class="col s12 m4 l4 pointer">
                 <a href="{{route('pays.index')}}">
                     <div class="hoverable card-panel cyan darken-3 white-text center">
@@ -60,7 +60,7 @@
                     </div>
                 </a>
             </div>
-            @if(App\Fun\__::get_role_code(Auth::user()->id) == App\Fun\__::ROLES['ADMIN'])
+            @if(App\Fun\__::get_role_code(Auth::user()->id) === App\Fun\__::ROLES['ADMIN'])
                 <div class="col s12 m4 l4 pointer">
                     <a href="{{route('units.index')}}">
                         <div class="hoverable card-panel cyan darken-3 white-text center">
