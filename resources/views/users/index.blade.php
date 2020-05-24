@@ -35,13 +35,13 @@
 @endif
 <div class="card-panel grey darken-3 white-text">
     <div style="overflow-x:auto;">
-        <table class="highlight activated">
+        <table class="activated">
             <thead>
                 <tr>
                     <th>Họ tên</th>
                     <th>Ảnh đại diện</th>
                     <th>Email</th>
-                    <th>Giớ tính</th>
+                    <th>Giới tính</th>
                     <th>Ngày sinh</th>
                     <th>Số điện thoại</th>
                     <th>Số CMND</th>
@@ -56,26 +56,26 @@
                 @if(!empty($data))
                 @foreach ($data as $value)
                 <tr>
-                    <td>{{$value->name}}</td>
-                    <td>
+                    <td data-label="Họ tên">{{$value->name}}</td>
+                    <td data-label="Ảnh đại diện">
                         @if(empty($value->path))
                             <img class="materialboxed" width="100" src="https://via.placeholder.com/100" />
                             @else
                             <img class="materialboxed" width="100" src="{{url('img') . '/' .$value->path}}" />
                             @endif
                     </td>
-                    <td>{{$value->email}}</td>
-                    <td>{{$value->gender}}</td>
-                    <td>{{$value->birthdate}}</td>
-                    <td>{{$value->phone}}</td>
-                    <td>{{$value->identity_card}}</td>
-                    <td>
+                    <td data-label="Email">{{$value->email}}</td>
+                    <td data-label="Giới tính">{{$value->gender}}</td>
+                    <td data-label="Ngày sinh">{{$value->birthdate}}</td>
+                    <td data-label="Số điện thoại">{{$value->phone}}</td>
+                    <td data-label="Số CMND">{{$value->identity_card}}</td>
+                    <td data-label="Trạng thái">
                         <form method="GET" action="{{route('users.edit', [$value->id])}}">
                             <button class="waves-effect waves-light btn btn-small green darken-3">cập nhật</button>
                         </form>
                     </td>
                     @if($role === App\Fun\__::ROLES['ADMIN'])
-                    <td>
+                    <td data-label="">
                         <form method="POST" action="{{route('users.status')}}">
                             @csrf
                             <input type="hidden" name="id" value="{{$value->id}}" />
@@ -84,7 +84,7 @@
                                     @endif
                         </form>
                     </td>
-                    <td>
+                    <td data-label="Xóa">
                         <form method="POST" action="{{route('users.destroy', [$value->id])}}">
                             @method('DELETE')
                             @csrf

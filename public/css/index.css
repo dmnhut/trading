@@ -105,3 +105,60 @@ div>.input-field>#txt {
 .pagination li>a {
     color: #fff !important;
 }
+
+table {
+    width: 100%;
+}
+
+/* tr, th, td {
+    border: 0.125em solid;
+} */
+
+@media (max-width: 40em) {
+    thead tr {
+        position: absolute;
+        top: -9999em;
+        left: -9999em;
+    }
+
+    tr {
+        border: 0.125em solid;
+        border-bottom: 0;
+    }
+
+    tr+tr {
+        margin-top: 1.5em;
+    }
+
+    tr, td {
+        display: block;
+    }
+
+    td {
+        border: none;
+        border-bottom: 0.125em solid;
+        padding-left: 50%;
+    }
+
+    td:before {
+        content: attr(data-label);
+        display: inline-block;
+        line-height: 1.5;
+        margin-left: -100%;
+        width: 100%;
+        float: left;
+        font-weight: bold;
+    }
+}
+
+@media (max-width: 20em) {
+    td {
+        padding-left: 0.75em;
+    }
+
+    td:before {
+        display: block;
+        margin-bottom: 0.75em;
+        margin-left: 0;
+    }
+}

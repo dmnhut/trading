@@ -92,12 +92,15 @@ class PortalController extends Controller
                            ->where('status_shipper.id_status', 1)
                            ->where('status_shipper.del_flag', 0)
                            ->where('status_order.del_flag', 0)
-                           ->where('status.del_flag', 0);
+                           ->where('status.del_flag', 0)
+                           ->whereIn('status_order.id_status', [__::status('pack'), __::status('assign'), __::status('shipping'), __::status('pending')]);
             if ($role === __::ROLES['USER']) {
-                $query = $query->where('orders.id_user', Auth::user()->id)
-                                              ->orWhere('detail_shipper.id_user', Auth::user()->id);
+                $id = Auth::user()->id;
+                $query = $query->where(function ($query) use ($id) {
+                    $query->orWhere('orders.id_user', $id)
+                          ->orWhere('detail_shipper.id_user', $id);
+                });
             }
-            $query->whereIn('status_order.id_status', [__::status('pack'), __::status('assign'), __::status('shipping'), __::status('pending')]);
         } elseif ($tab === __::get_tab('TRANSFERS')) {
             $query = Orders::select('orders.id as id', 'orders.code as code', 'users.name as user_name', 'users.phone as user_phone', 'orders.address as ship_address', 'status_order.id_status as id_status', 'status.name as name_status', 'orders.note as note', 'shipper.name as shipper_name', 'shipper.phone as shipper_phone')
                            ->leftjoin('users', 'users.id', '=', 'orders.id_user')

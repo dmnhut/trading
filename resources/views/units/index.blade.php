@@ -36,7 +36,7 @@
 <div class="card-panel grey darken-3 white-text">
     @if(!empty($data))
     <div style="overflow-x:auto;">
-        <table class="highlight activated">
+        <table class="activated">
             <thead>
                 <tr>
                     <th>Tên</th>
@@ -46,12 +46,12 @@
             <tbody>
                 @foreach ($data as $value)
                 <tr>
-                    <td>{{$value->name}}</td>
+                    <td data-label="Tên">{{$value->name}}</td>
                     <td>
                         <form method="POST" action="{{route('units.destroy', [$value->id])}}">
                             @method('DELETE')
                             @csrf
-                            <button class="waves-effect waves-light btn btn-small right grey darken-2">Xóa</button>
+                            <button class="waves-effect waves-light btn btn-small grey darken-2">Xóa</button>
                         </form>
                     </td>
                 </tr>

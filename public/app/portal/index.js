@@ -1,7 +1,4 @@
 $(document).ready(() => {
-    document.querySelector("#tbl-assign").style.display = "none";
-    document.querySelector("#tbl-shipping").style.display = "none";
-    document.querySelector("#tbl-transfers").style.display = "none";
     document.querySelector("#" + document.querySelector("input[name=_tab_active").value + ">div>table").classList.add("activated");
     document.querySelector("#" + document.querySelector("input[name=_tab_active").value + ">div>table").style.display = "";
 });
@@ -33,13 +30,13 @@ document.querySelectorAll(".btn-assign").forEach(element => {
                 let html = "";
                 response.data.data.forEach(val => {
                     html += "<tr>";
-                    html += "<td>" + val.name + "</td>";
-                    html += "<td>" + val.email + "</td>";
-                    html += "<td>" + val.phone + "</td>";
-                    html += "<td>" + val.province + "</td>";
-                    html += "<td>" + val.district + "</td>";
-                    html += "<td>" + val.ward + "</td>";
-                    html += "<td>";
+                    html += "<td data-label='" + document.querySelector("#th-shippers-name").textContent + "'>" + val.name + "</td>";
+                    html += "<td data-label='" + document.querySelector("#th-shippers-email").textContent + "'>" + val.email + "</td>";
+                    html += "<td data-label='" + document.querySelector("#th-shippers-phone").textContent + "'>" + val.phone + "</td>";
+                    html += "<td data-label='" + document.querySelector("#th-shippers-province").textContent + "'>" + val.province + "</td>";
+                    html += "<td data-label='" + document.querySelector("#th-shippers-district").textContent + "'>" + val.district + "</td>";
+                    html += "<td data-label='" + document.querySelector("#th-shippers-ward").textContent + "'>" + val.ward + "</td>";
+                    html += "<td data-label='" + document.querySelector("#th-shippers-assign").textContent + "'>";
                     html += "<button class='waves-effect waves-light btn btn-small green darken-3 tooltipped btn-modal-assign' data-position='top' data-tooltip='Chọn' data-order='" + element.getAttribute("data") + "' data-shipper='" + val.id_shipper + "'>";
                     html += "<i class='material-icons'>done</i>";
                     html += "</button>";
@@ -103,6 +100,13 @@ document.querySelectorAll(".btn-change-status").forEach(element => {
         event.preventDefault();
         document.querySelector("#modal-shipping").style["max-height"] = "100%";
         document.querySelector("#modal-shipping>div>h5>div>.code").innerHTML = element.getAttribute("code");
+        document.querySelectorAll("input[name=status]").forEach(radio => {
+            if (document.querySelector("input[name=_radio_assign]").value == radio.value) {
+                radio.disabled = true;
+            } else {
+                radio.disabled = false;
+            }
+        });
         let radio = document.querySelector("input[name=status][value='" + element.getAttribute("status") + "']");
         radio.checked = true;
         radio.setAttribute("disabled", "disabled");
@@ -223,6 +227,46 @@ document.querySelectorAll(".btn-shipping").forEach(element => {
                 document.querySelector("input[name=tab]").value = tab;
                 document.querySelector("input[name=page]").value = page;
                 $("#modal-message").modal("open");
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    });
+});
+
+document.querySelectorAll(".btn-map").forEach(element => {
+    element.addEventListener("click", () => {
+        axios.post(document.querySelector("input[name=_url_map_check]").value, {
+            _token: document.querySelector("input[name=_token]").value,
+            btn: "map",
+            id: element.getAttribute("data")
+        }).then(response => {
+            if (response.data.error) {
+                toastr.error(response.data.message);
+            } else {
+                document.querySelector("input[name=order]").value = element.getAttribute("data");
+                document.querySelector("form[name=frm-map]").action = document.querySelector("input[name=_url_map]").value;
+                document.querySelector("#btn-map-submit").click();
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    });
+});
+
+document.querySelectorAll(".btn-location").forEach(element => {
+    element.addEventListener("click", () => {
+        axios.post(document.querySelector("input[name=_url_map_check]").value, {
+            _token: document.querySelector("input[name=_token]").value,
+            btn: "location",
+            id: element.getAttribute("data")
+        }).then(response => {
+            if (response.data.error) {
+                toastr.error(response.data.message);
+            } else {
+                document.querySelector("input[name=order]").value = element.getAttribute("data");
+                document.querySelector("form[name=frm-map]").action = document.querySelector("input[name=_url_map_location]").value;
+                document.querySelector("#btn-map-submit").click();
             }
         }).catch(error => {
             console.log(error);

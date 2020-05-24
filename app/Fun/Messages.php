@@ -301,4 +301,20 @@ class Messages
         ];
         return $__[$key];
     }
+
+    /**
+     * map
+     *
+     * @param  $key
+     * @return string
+     */
+    public function map($key)
+    {
+        $__ = [
+          'map'      => 'Bạn không quan sát được đơn hàng này',
+          'location' => 'Đơn hàng này không phải do bạn vận chuyển',
+          'shipping' => 'Đơn hàng chưa được vận chuyển'
+        ];
+        return $__[$key];
+    }
 }

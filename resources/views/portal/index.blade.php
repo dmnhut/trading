@@ -39,7 +39,7 @@
         @if($role === App\Fun\__::ROLES['ADMIN'])
         <div id="tab-assign" class="col s12">
             <div style="overflow-x:auto;">
-                <table id="tbl-assign" class="highlight">
+                <table id="tbl-assign">
                     <thead>
                         <tr>
                             <th>Mã đơn hàng</th>
@@ -54,25 +54,25 @@
                     <tbody>
                         @foreach ($data as $key => $value)
                         <tr>
-                            <td>
-                                {{substr($value->code, 0, 24)}}
+                            <td data-label="Mã đơn hàng">
+                                {{$value->code}}
                             </td>
-                            <td>
-                                {{substr($value->user_name, 0, 24)}}
+                            <td data-label="Tên khách hàng">
+                                {{$value->user_name}}
                             </td>
-                            <td>
-                                {{substr($value->user_phone, 0, 24)}}
+                            <td data-label="Số điện thoại khách hàng">
+                                {{$value->user_phone}}
                             </td>
-                            <td>
-                                {{substr($value->ship_address, 0, 24)}} ...
+                            <td data-label="Địa chỉ chuyển đến">
+                                {{$value->ship_address}}
                             </td>
-                            <td>
+                            <td data-label="Trạng thái đơn hàng">
                                 {{\App\Fun\__::status_name($value->name_status)}}
                             </td>
-                            <td>
-                                {{substr($value->note, 0, 24)}}
+                            <td data-label="Ghi chú">
+                                {{$value->note}}
                             </td>
-                            <td>
+                            <td data-label="Phân công đơn hàng">
                                 <button class="waves-effect waves-light btn btn-small green darken-3 tooltipped btn-assign" data-position="top" data-tooltip="Phân Công" data="{{$value->id}}" code="{{$value->code}}">
                                     <i class="material-icons">assignment</i>
                                 </button>
@@ -86,7 +86,7 @@
         @endif
         <div id="tab-shipping" class="col s12">
             <div style="overflow-x:auto;">
-                <table id="tbl-shipping" class="highlight">
+                <table id="tbl-shipping">
                     <thead>
                         <tr>
                             <th>Mã đơn hàng</th>
@@ -96,37 +96,49 @@
                             <th>Người chuyển</th>
                             <th>Ghi chú</th>
                             <th>Cập nhật trạng thái</th>
+                            <th>Quan sát chuyển hàng</th>
+                            <th>Chuyển hàng</th>
                             <th>Theo dõi đơn hàng</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $key => $value)
                         <tr>
-                            <td>
+                            <td data-label="Mã đơn hàng">
                                 {{$value->code}}
                             </td>
-                            <td>
+                            <td data-label="Khách hàng">
                                 {{$value->user_name}} - {{$value->user_phone}}
                             </td>
-                            <td>
+                            <td data-label="Địa chỉ chuyển đến">
                                 {{$value->ship_address}}
                             </td>
-                            <td>
+                            <td data-label="Trạng thái đơn hàng">
                                 {{\App\Fun\__::status_name($value->name_status)}}
                             </td>
-                            <td>
+                            <td data-label="Người chuyển">
                                 {{$value->shipper_name}} - {{$value->shipper_phone}}
                             </td>
-                            <td>
+                            <td data-label="Ghi chú">
                                 {{$value->note}}
                             </td>
-                            <td>
+                            <td data-label="Cập nhật trạng thái">
                                 <button class="waves-effect waves-light btn btn-small green darken-3 tooltipped btn-change-status" data-position="top" data-tooltip="Cập nhật trạng thái" data="{{$value->id}}" code="{{$value->code}}"
-                                  status="{{$value->id_status}}">
+                                    status="{{$value->id_status}}">
                                     <i class="material-icons">edit</i>
                                 </button>
                             </td>
-                            <td>
+                            <td data-label="Quan sát chuyển hàng">
+                                <button class="waves-effect waves-light btn btn-small green darken-3 tooltipped btn-map" data-position="top" data-tooltip="Quan sát chuyển hàng" data="{{$value->id}}">
+                                    <i class="material-icons">explore</i>
+                                </button>
+                            </td>
+                            <td data-label="Chuyển hàng">
+                                <button class="waves-effect waves-light btn btn-small green darken-3 tooltipped btn-location" data-position="top" data-tooltip="Chuyển hàng" data="{{$value->id}}">
+                                    <i class="material-icons">gps_fixed</i>
+                                </button>
+                            </td>
+                            <td data-label="Theo dõi đơn hàng">
                                 <button class="waves-effect waves-light btn btn-small green darken-3 tooltipped btn-traces" data-position="top" data-tooltip="Theo dõi đơn hàng" data="{{$value->id}}" code="{{$value->code}}">
                                     <i class="material-icons">forward</i>
                                 </button>
@@ -147,7 +159,7 @@
                 </div>
             </div>
             <div style="overflow-x:auto;">
-                <table id="tbl-transfers" class="highlight">
+                <table id="tbl-transfers">
                     <thead>
                         <tr>
                             <th>Mã đơn hàng</th>
@@ -164,35 +176,35 @@
                     <tbody>
                         @foreach ($data as $key => $value)
                         <tr>
-                            <td>
+                            <td data-label="Mã đơn hàng">
                                 {{$value->code}}
                             </td>
-                            <td>
+                            <td data-label="Khách hàng">
                                 {{$value->user_name}} - {{$value->user_phone}}
                             </td>
-                            <td>
+                            <td data-label="Địa chỉ chuyển đến">
                                 {{$value->ship_address}}
                             </td>
-                            <td>
+                            <td data-label="Trạng thái đơn hàng">
                                 {{\App\Fun\__::status_name($value->name_status)}}
                             </td>
-                            <td>
+                            <td data-label="Người chuyển">
                                 {{$value->shipper_name}} - {{$value->shipper_phone}}
                             </td>
-                            <td>
+                            <td data-label="Ghi chú">
                                 {{$value->note}}
                             </td>
-                            <td>
+                            <td data-label="Chuyển tiền shipper">
                                 <button class="waves-effect waves-light btn btn-small green darken-3 tooltipped btn-transfers" data-position="top" data-tooltip="Chuyển tiền" data="{{$value->id}}">
                                     <i class="material-icons">attach_money</i>
                                 </button>
                             </td>
-                            <td>
+                            <td data-label="Cập nhật đang vận chuyển">
                                 <button class="waves-effect waves-light btn btn-small green darken-3 tooltipped btn-shipping" data-position="top" data-tooltip="Trả về trạng thái đơn hàng đang vận chuyển" data="{{$value->id}}">
                                     <i class="material-icons">arrow_back</i>
                                 </button>
                             </td>
-                            <td>
+                            <td data-label="Theo dõi đơn hàng">
                                 <button class="waves-effect waves-light btn btn-small green darken-3 tooltipped btn-traces" data-position="top" data-tooltip="Theo dõi đơn hàng" data="{{$value->id}}" code="{{$value->code}}">
                                     <i class="material-icons">forward</i>
                                 </button>
@@ -232,16 +244,16 @@
         </h5>
         <div class="row">
             <div style="overflow-x:auto;">
-                <table class="highlight activated">
+                <table class="activated">
                     <thead>
                         <tr>
-                            <th>Họ tên</th>
-                            <th>Email</th>
-                            <th>Số điện thoại</th>
-                            <th>Tỉnh thành</th>
-                            <th>Quận huyện</th>
-                            <th>Phường xã</th>
-                            <th></th>
+                            <th id="th-shippers-name">Họ tên</th>
+                            <th id="th-shippers-email">Email</th>
+                            <th id="th-shippers-phone">Số điện thoại</th>
+                            <th id="th-shippers-province">Tỉnh thành</th>
+                            <th id="th-shippers-district">Quận huyện</th>
+                            <th id="th-shippers-ward">Phường xã</th>
+                            <th id="th-shippers-assign">Phân công</th>
                         </tr>
                     </thead>
                     <tbody id="tbl-shippers">
@@ -307,6 +319,11 @@
         </form>
     </div>
 </div>
+<form method="POST" action="" name="frm-map">
+    @csrf
+    <input type="hidden" name="order" />
+    <button type="submit" style="display:none" id="btn-map-submit"></button>
+</form>
 <input type="hidden" name="_tab_active" value="{{$tab}}" />
 <input type="hidden" name="_order" />
 <input type="hidden" name="_url" value="{{route('portal.index')}}" />
@@ -314,8 +331,19 @@
 <input type="hidden" name="_url_assign" value="{{route('portal.assign')}}" />
 <input type="hidden" name="_url_status" value="{{route('portal.status')}}" />
 <input type="hidden" name="_url_transfers" value="{{route('portal.transfers')}}" />
+<input type="hidden" name="_url_map_check" value="{{route('map.check')}}" />
+<input type="hidden" name="_url_map" value="{{route('map.index')}}" />
+<input type="hidden" name="_url_map_location" value="{{route('map.location')}}" />
+<input type="hidden" name="_radio_assign" value="{{\App\Fun\__::status('assign')}}" />
 @csrf
 @endsection
 @section('script')
+@if($role === App\Fun\__::ROLES['ADMIN'])
+<script>
+    document.querySelector("#tbl-assign").style.display = "none";
+    document.querySelector("#tbl-shipping").style.display = "none";
+    document.querySelector("#tbl-transfers").style.display = "none";
+</script>
+@endif
 <script src="{{url('app/portal/index.js')}}"></script>
 @endsection

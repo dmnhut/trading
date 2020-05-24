@@ -35,7 +35,7 @@
 @endif
 <div class="card-panel grey darken-3 white-text">
     <div style="overflow-x:auto;">
-        <table class="highlight activated">
+        <table class="activated">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -45,8 +45,8 @@
             <tbody>
                 @foreach ($data as $value)
                 <tr>
-                    <td>{{$value->id}}</td>
-                    <td>{{$value->name}}</td>
+                    <td data-label="ID">{{$value->id}}</td>
+                    <td data-label="Tên">{{$value->name}}</td>
                 </tr>
                 @endforeach
                 @if($data->count() == 0)

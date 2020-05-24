@@ -40,9 +40,9 @@ document.querySelector("#btn-add").addEventListener("click", () => {
         let tbody = "";
         response.data.data.map(val => {
             tbody += "<tr>";
-            tbody += "<td>" + val.kg + "</td>";
-            tbody += "<td>" + val.amount + "</td>";
-            tbody += "<td>";
+            tbody += "<td data-label='" + document.querySelector("#th-kg").textContent + "'>" + val.kg + "</td>";
+            tbody += "<td data-label='" + document.querySelector("#th-amount").textContent + "'>" + val.amount + "</td>";
+            tbody += "<td data-label='" + document.querySelector("#th-status").textContent + "'>";
             tbody += "<form method='POST' action='" + location + "/status'>";
             tbody += "<input type='hidden' name='_token' value='" + document.querySelector("input[name='_token']").value + "'>";
             tbody += "<input type='hidden' name='id' value='" + val.id + "'></input>";
@@ -53,7 +53,7 @@ document.querySelector("#btn-add").addEventListener("click", () => {
             }
             tbody += "</form>";
             tbody += "</td>";
-            tbody += "<td>";
+            tbody += "<td data-label='" + document.querySelector("#th-delete").textContent + "'>";
             tbody += "<form method='POST' action='" + val.url + "'>";
             tbody += "<input type='hidden' name='_method' value='DELETE'>";
             tbody += "<input type='hidden' name='_token' value='" + document.querySelector("input[name='_token']").value + "'>";

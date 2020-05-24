@@ -23,5 +23,8 @@ Route::resource('orders', 'OrdersController')->middleware('user');
 Route::post('orders/code', 'OrdersController@code')->name('orders.code')->middleware('user');
 Route::resource('units', 'UnitsController')->middleware('admin');
 Route::get('info', 'UsersController@info')->name('info')->middleware('user');
+Route::post('map', 'MapController@index')->name('map.index')->middleware('user');
+Route::post('map/location', 'MapController@location')->name('map.location')->middleware('user');
+Route::post('map/check', 'MapController@check_shipping')->name('map.check')->middleware('user');
 Auth::routes();
 Route::get('logout', 'HomeController@logout')->name('logout');

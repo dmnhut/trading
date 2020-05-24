@@ -35,7 +35,7 @@
 @endif
 <div class="card-panel grey darken-3 white-text">
     <div style="overflow-x:auto;">
-        <table class="highlight activated">
+        <table class="activated">
             <thead>
                 <tr>
                     <th>Phần Trăm %</th>
@@ -46,8 +46,8 @@
             <tbody>
                 @foreach ($data as $value)
                 <tr>
-                    <td>{{$value->percent}}</td>
-                    <td>
+                    <td data-label="Phần Trăm %">{{$value->percent}}</td>
+                    <td data-label="Trạng Thái">
                         <form method="POST" action="{{route('pays.status')}}">
                             @csrf
                             <input type="hidden" name="id" value="{{$value->id}}" />
@@ -58,7 +58,7 @@
                                     @endif
                         </form>
                     </td>
-                    <td>
+                    <td data-label="Xóa">
                         <form method="POST" action="{{route('pays.destroy', [$value->id])}}">
                             @method('DELETE')
                             @csrf

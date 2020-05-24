@@ -36,7 +36,7 @@
 <div class="card-panel grey darken-3 white-text">
     @if(!empty($data))
     <div style="overflow-x:auto;">
-        <table class="highlight activated">
+        <table class="activated">
             <thead>
                 <tr>
                     <th>Mã đơn hàng</th>
@@ -52,22 +52,22 @@
             <tbody>
                 @foreach ($data as $key => $value)
                 <tr>
-                    <td>
+                    <td data-label="Mã đơn hàng">
                         {{$value->code}}
                     </td>
-                    <td>
+                    <td data-label="Tên khách hàng">
                         {{$value->user_name}}
                     </td>
-                    <td>
+                    <td data-label="Số điện thoại khách hàng">
                         {{$value->user_phone}}
                     </td>
-                    <td>
+                    <td data-label="Địa chỉ chuyển đến">
                         {{$value->ship_address}}
                     </td>
-                    <td>
+                    <td data-label="Trạng thái đơn hàng">
                         {{\App\Fun\__::status_name($value->name_status)}}
                     </td>
-                    <td>
+                    <td data-label="Ghi chú">
                         {{$value->note}}
                     </td>
                     <td>

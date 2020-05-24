@@ -150,7 +150,7 @@
                             <i class="material-icons">add</i>
                         </button>
                         <div style="overflow-x:auto;">
-                            <table class="highlight centered" style="display:none">
+                            <table class="centered" style="display:none">
                                 <thead>
                                     <tr>
                                         <th>Tên sản phẩm / dịch vụ</th>

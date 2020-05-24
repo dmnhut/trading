@@ -22,21 +22,21 @@
 </div>
 <div class="card-panel grey darken-3 white-text">
     <div style="overflow-x:auto;">
-        <table class="highlight activated">
+        <table class="activated">
             <thead>
                 <tr>
-                    <th>Số Kg &le;</th>
-                    <th>Giá Tiền</th>
-                    <th>Trạng Thái</th>
-                    <th>Xóa</th>
+                    <th id="th-kg">Số Kg &le;</th>
+                    <th id="th-amount">Giá Tiền</th>
+                    <th id="th-status">Trạng Thái</th>
+                    <th id="th-delete">Xóa</th>
                 </tr>
             </thead>
             <tbody id="tbl">
                 @foreach ($data as $value)
                 <tr>
-                    <td>{{$value->kg}}</td>
-                    <td>{{$value->amount}}</td>
-                    <td>
+                    <td data-label="Số Kg &le;">{{$value->kg}}</td>
+                    <td data-label="Giá Tiền">{{$value->amount}}</td>
+                    <td data-label="Trạng Thái">
                         <form method="POST" action="{{route('prices.status')}}">
                             @csrf
                             <input type="hidden" name="id" value="{{$value->id}}" />
@@ -47,7 +47,7 @@
                                     @endif
                         </form>
                     </td>
-                    <td>
+                    <td data-label="Xóa">
                         <form method="POST" action="{{route('prices.destroy', [$value->id])}}">
                             @method('DELETE')
                             @csrf

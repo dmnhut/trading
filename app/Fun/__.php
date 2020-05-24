@@ -213,17 +213,17 @@ class __
      */
     public static function uuid()
     {
-        $entropy = false;
-        $s = uniqid('', $entropy);
-        $num = hexdec(str_replace('.', '', (string)$s));
-        $index = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $base = strlen($index);
+        // $entropy = false;
+        // $s = uniqid('', $entropy);
+        // $num = hexdec(str_replace('.', '', (string)$s));
+        // $index = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        // $base = strlen($index);
+        // for ($t = floor(log10($num) / log10($base)); $t >= 0; $t--) {
         $out = '';
-        for ($t = floor(log10($num) / log10($base)); $t >= 0; $t--) {
-            $a = floor($num / pow($base, $t));
-            $out = $out.substr($index, $a, 1);
-            $num = $num-($a * pow($base, $t));
-        }
+        //     $a = floor($num / pow($base, $t));
+        //     $out = $out.substr($index, $a, 1);
+        //     $num = $num-($a * pow($base, $t));
+        // }
         return $out.date('YmdHis');
     }
 
@@ -243,5 +243,20 @@ class __
         } else {
             return $role->id_role;
         }
+    }
+
+    /**
+     * map
+     *
+     * @param  $key
+     * @return string
+     */
+    public static function map($key)
+    {
+        $__ = [
+          'location' => 'Vị trí người chuyển hàng',
+          'address' => 'Địa chỉ người nhận'
+        ];
+        return $__[$key];
     }
 }
