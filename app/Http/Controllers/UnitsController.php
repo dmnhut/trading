@@ -26,10 +26,10 @@ class UnitsController extends Controller
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         return view('units.index', [
-                                     'data'        => $query->paginate(__::TAKE_ITEM),
-                                     'page_number' => $page_number,
-                                     'page_active' => $page
-                                   ]);
+            'data'        => $query->paginate(__::TAKE_ITEM),
+            'page_number' => $page_number,
+            'page_active' => $page
+        ]);
     }
 
     /**
@@ -56,16 +56,16 @@ class UnitsController extends Controller
         }
         if (empty($validate)) {
             Units::create([
-              'name' => $request->name
+                'name' => $request->name
             ]);
             return [
-              'messages' => [Messages::success()],
-              'error'    => false
+                'messages' => [Messages::success()],
+                'error'    => false
             ];
         } else {
             return [
-              'messages' => $validate,
-              'error'    => true
+                'messages' => $validate,
+                'error'    => true
             ];
         }
     }
@@ -113,10 +113,13 @@ class UnitsController extends Controller
     public function destroy($id)
     {
         Units::find($id)
-             ->update(['del_flag' => 1, DB::raw('version_no + 1')]);
+             ->update([
+                 'del_flag' => 1,
+                 DB::raw('version_no + 1')
+             ]);
         return redirect(route('units.index'))->with([
-          'message' => Messages::delete(),
-          'error'   => false
+            'message' => Messages::delete(),
+            'error'   => false
         ]);
     }
 }

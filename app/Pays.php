@@ -10,6 +10,9 @@ class Pays extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'percent','turn_on','del_flag','version_no'
+        'percent',
+        'turn_on',
+        'del_flag',
+        'version_no'
     ];
 }

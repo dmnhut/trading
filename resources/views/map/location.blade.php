@@ -11,13 +11,18 @@
     <div class="row">
         <p id="status"></p>
         <p>
-            Vĩ độ (Latitude): <span id="lat"></span>
+            Vĩ độ (Latitude): <div id="lat"></div>
         </p>
         <p>
-            Kinh độ (Longitude): <span id="lng"></span>
+            Kinh độ (Longitude): <div id="lng"></div>
         </p>
     </div>
 </div>
+@method('PUT')
+@csrf
+<input name="_url_location_store" type="hidden" value="{{route('map.store')}}" />
+<input name="order" type="hidden" value="{{$order}}" />
+<input name="shipper" type="hidden" value="{{$shipper}}" />
 @endsection
 @section('script')
 <script src="{{url('app/map/location.js')}}"></script>

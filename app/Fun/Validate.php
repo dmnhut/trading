@@ -13,10 +13,10 @@ class Validate
     public static function message($key)
     {
         $__ = [
-          'email'         => 'Email không sẵn sàn vì nó đã được sử dụng',
-          'identity_card' => 'CMND không sẵn sàn vì nó đã được sử dụng',
-          'phone'         => 'Số điện thoại không sẵn sàn vì nó đã được sử dụng',
-          'quantity'      => 'Số lượng phải là số nguyên dương'
+            'email'         => 'Email không sẵn sàn vì nó đã được sử dụng',
+            'identity_card' => 'CMND không sẵn sàn vì nó đã được sử dụng',
+            'phone'         => 'Số điện thoại không sẵn sàn vì nó đã được sử dụng',
+            'quantity'      => 'Số lượng phải là số nguyên dương'
         ];
         return $__[$key];
     }

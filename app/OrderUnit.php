@@ -10,6 +10,9 @@ class OrderUnit extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id','id_item','id_unit','del_flag','version_no'
+        'id_item',
+        'id_unit',
+        'del_flag',
+        'version_no'
     ];
 }

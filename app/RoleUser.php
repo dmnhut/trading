@@ -10,6 +10,9 @@ class RoleUser extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id_role','id_user','del_flag','version_no'
+        'id_role',
+        'id_user',
+        'del_flag',
+        'version_no'
     ];
 }

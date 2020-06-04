@@ -5,14 +5,14 @@ $(document).ready(() => {
         changeMonth: true,
         changeYear: true,
         i18n: {
-            cancel: text['cancel'],
-            clear: text['clear'],
-            done: text['done'],
-            months: text['months'],
-            monthsShort: text['monthsShort'],
-            weekdays: text['weekdays'],
-            weekdaysShort: text['weekdaysShort'],
-            weekdaysAbbrev: text['weekdaysAbbrev']
+            cancel: text["cancel"],
+            clear: text["clear"],
+            done: text["done"],
+            months: text["months"],
+            monthsShort: text["monthsShort"],
+            weekdays: text["weekdays"],
+            weekdaysShort: text["weekdaysShort"],
+            weekdaysAbbrev: text["weekdaysAbbrev"]
         }
     });
     document.querySelector(".datepicker-calendar-container").classList.add(...["grey", "darken-3", "white-text"]);

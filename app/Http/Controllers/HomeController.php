@@ -41,7 +41,9 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
-        return view('dashboard.index', ['role' => __::get_role_code(Auth::user()->id)]);
+        return view('dashboard.index', [
+            'role' => __::get_role_code(Auth::user()->id)
+        ]);
     }
 
     /**
@@ -55,8 +57,8 @@ class HomeController extends Controller
         Auth::logout();
         if ($request->error) {
             return redirect('login')->with([
-              'message' => Messages::errors()->permission(),
-              'error'   => true
+                'message' => Messages::errors()->permission(),
+                'error'   => true
             ]);
         } else {
             return redirect('login');

@@ -22,10 +22,10 @@ class RolesController extends Controller
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         return view('roles.index', [
-                                     'data'        => $query->paginate(__::TAKE_ITEM),
-                                     'page_number' => $page_number,
-                                     'page_active' => $page
-                                   ]);
+            'data'        => $query->paginate(__::TAKE_ITEM),
+            'page_number' => $page_number,
+            'page_active' => $page
+        ]);
     }
 
     /**
@@ -48,14 +48,16 @@ class RolesController extends Controller
     {
         if (empty($request->name)) {
             return redirect(route('roles.index'))->with([
-              'message' => Messages::errors()->roles('name'),
-              'error'   => true
+                'message' => Messages::errors()->roles('name'),
+                'error'   => true
             ]);
         } else {
-            Roles::create(['name' => $request->name]);
+            Roles::create([
+                'name' => $request->name
+            ]);
             return redirect(route('roles.index'))->with([
-              'message' => Messages::success(),
-              'error'   => false
+                'message' => Messages::success(),
+                'error'   => false
             ]);
         }
     }

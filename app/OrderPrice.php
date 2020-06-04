@@ -10,6 +10,9 @@ class OrderPrice extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id_order', 'id_price','del_flag','version_no'
+        'id_order',
+        'id_price',
+        'del_flag',
+        'version_no'
     ];
 }

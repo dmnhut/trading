@@ -23,10 +23,10 @@ class PaysController extends Controller
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         return view('pays.index', [
-                                    'data'        => $query->paginate(__::TAKE_ITEM),
-                                    'page_number' => $page_number,
-                                    'page_active' => $page
-                                   ]);
+            'data'        => $query->paginate(__::TAKE_ITEM),
+            'page_number' => $page_number,
+            'page_active' => $page
+        ]);
     }
 
     /**
@@ -49,24 +49,24 @@ class PaysController extends Controller
     {
         if (empty($request->percent)) {
             return redirect(route('pays.index'))->with([
-              'message' => Messages::errors()->pays('percent.require'),
-              'error'   => true
+                'message' => Messages::errors()->pays('percent.require'),
+                'error'   => true
             ]);
         } else {
             $percent = Pays::where('percent', $request->percent)
                            ->get();
             if ($percent->isEmpty()) {
                 Pays::create([
-                  'percent' => $request->percent
+                    'percent' => $request->percent
                 ]);
                 return redirect(route('pays.index'))->with([
-                  'message' => Messages::success(),
-                  'error'   => false
+                    'message' => Messages::success(),
+                    'error'   => false
                 ]);
             } else {
                 return redirect(route('pays.index'))->with([
-                  'message' => Messages::errors()->pays('percent.unique'),
-                  'error'   => true
+                    'message' => Messages::errors()->pays('percent.unique'),
+                    'error'   => true
                 ]);
             }
         }
@@ -92,10 +92,10 @@ class PaysController extends Controller
             ->update([
                 'turn_on'    => 0,
                 'version_no' => DB::raw('version_no + 1')
-              ]);
+            ]);
         return redirect(route('pays.index'))->with([
-          'message' => Messages::status(),
-          'error'   => false
+            'message' => Messages::status(),
+            'error'   => false
         ]);
     }
 
@@ -144,16 +144,16 @@ class PaysController extends Controller
         $model = Pays::find($id);
         if ($model->turn_on == 1) {
             return redirect(route('pays.index'))->with([
-              'message' => Messages::errors()->pays('percent.use'),
-              'error'   => true
+                'message' => Messages::errors()->pays('percent.use'),
+                'error'   => true
             ]);
         } else {
             $model->del_flag = 1;
             $model->version_no = $model->version_no + 1;
             $model->save();
             return redirect(route('pays.index'))->with([
-              'message' => Messages::delete(),
-              'error'   => false
+                'message' => Messages::delete(),
+                'error'   => false
             ]);
         }
     }

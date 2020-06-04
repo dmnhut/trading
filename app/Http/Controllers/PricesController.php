@@ -23,15 +23,15 @@ class PricesController extends Controller
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         $messages = [
-          'kg'     => Messages::errors()->prices('kg'),
-          'amount' => Messages::errors()->prices('amount')
+            'kg'     => Messages::errors()->prices('kg'),
+            'amount' => Messages::errors()->prices('amount')
         ];
         return view('prices.index', [
-                                      'data'        => $query->paginate(__::TAKE_ITEM),
-                                      'page_number' => $page_number,
-                                      'page_active' => $page,
-                                      'messages'    => $messages
-                                    ]);
+            'data'        => $query->paginate(__::TAKE_ITEM),
+            'page_number' => $page_number,
+            'page_active' => $page,
+            'messages'    => $messages
+        ]);
     }
 
     /**
@@ -72,18 +72,20 @@ class PricesController extends Controller
     public function store(Request $request)
     {
         Prices::create([
-          'kg'     => $request->kg,
-          'amount' => $request->amount
+            'kg'     => $request->kg,
+            'amount' => $request->amount
         ]);
         $data = Prices::select('id', 'kg', 'amount', 'turn_on')
                       ->where('del_flag', 0)
                       ->get();
         foreach ($data as $value) {
-            $value->url = route('prices.destroy', [$value->id]);
+            $value->url = route('prices.destroy', [
+                $value->id
+            ]);
         }
         return [
-          'message' => Messages::success(),
-          'data'    => $data
+            'message' => Messages::success(),
+            'data'    => $data
         ];
     }
 
@@ -130,7 +132,10 @@ class PricesController extends Controller
     public function destroy($id)
     {
         Prices::find($id)
-              ->update(['del_flag' => 1, DB::raw('version_no + 1')]);
+              ->update([
+                  'del_flag' => 1,
+                  DB::raw('version_no + 1')
+              ]);
         return redirect(route('prices.index'));
     }
 }

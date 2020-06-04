@@ -45,29 +45,29 @@ class DetailShipperController extends Controller
         $detail_shippers = [];
         foreach ($shippers as $val) {
             $detail_shippers[$val->id] = [
-                                       'id_shipper' => $val->id_shipper,
-                                       'province'   => [
-                                          'id'      => $val->id_province,
-                                          'name'    => $val->province
-                                       ],
-                                       'district'   => [
-                                          'id'      => $val->id_district,
-                                          'name'    => $val->district
-                                       ],
-                                       'ward'       => [
-                                          'id'      => $val->id_ward,
-                                          'name'    => $val->ward
-                                       ]
+                'id_shipper' => $val->id_shipper,
+                'province'   => [
+                    'id'     => $val->id_province,
+                    'name'   => $val->province
+                ],
+                'district'   => [
+                    'id'     => $val->id_district,
+                    'name'   => $val->district
+                ],
+                'ward'       => [
+                    'id'     => $val->id_ward,
+                    'name'   => $val->ward
+                ]
             ];
         }
         return view('detail-shippers.index', [
-                                               'data'            => $query->paginate(__::TAKE_ITEM),
-                                               'page_number'     => $page_number,
-                                               'page_active'     => $page,
-                                               'detail_shippers' => $detail_shippers,
-                                               'captions'        => ['add' => __::ADD, 'update' => __::UPDATE],
-                                               'role'            => $role
-                                             ]);
+            'data'            => $query->paginate(__::TAKE_ITEM),
+            'page_number'     => $page_number,
+            'page_active'     => $page,
+            'detail_shippers' => $detail_shippers,
+            'captions'        => ['add' => __::ADD, 'update' => __::UPDATE],
+            'role'            => $role
+        ]);
     }
 
     /**
@@ -81,8 +81,8 @@ class DetailShipperController extends Controller
         if ($request->id != Auth::user()->id) {
             Auth::logout();
             return [
-              'message' => Messages::errors()->permission(),
-              'error'   => true
+                'message' => Messages::errors()->permission(),
+                'error'   => true
             ];
         }
         $data = User::find($request->id);
@@ -121,23 +121,23 @@ class DetailShipperController extends Controller
         if ($role === __::ROLES['USER']) {
             Auth::logout();
             return [
-              'message' => Messages::errors()->permission(),
-              'error'   => true
+                'message' => Messages::errors()->permission(),
+                'error'   => true
             ];
         }
         DetailShipper::create([
-          'id_user'     => $request->user,
-          'id_province' => $request->province,
-          'id_district' => $request->district,
-          'id_ward'     => $request->ward
+            'id_user'     => $request->user,
+            'id_province' => $request->province,
+            'id_district' => $request->district,
+            'id_ward'     => $request->ward
         ]);
         Balances::create([
-          'id_shipper' => $request->user,
-          'total'      => '0'
+            'id_shipper' => $request->user,
+            'total'      => '0'
         ]);
         return [
-          'message' => Messages::success(),
-          'error'   => false
+            'message' => Messages::success(),
+            'error'   => false
         ];
     }
 
@@ -177,21 +177,21 @@ class DetailShipperController extends Controller
             if ($id != Auth::user()->id) {
                 Auth::logout();
                 return [
-                  'message' => Messages::errors()->permission(),
-                  'error'   => true
+                    'message' => Messages::errors()->permission(),
+                    'error'   => true
                 ];
             }
         }
         $detail_shippers = DetailShipper::find($id);
         $detail_shippers->update([
-                            'id_province' => $request->province,
-                            'id_district' => $request->district,
-                            'id_ward'     => $request->ward,
-                            'version_no'  => $detail_shippers->version_no + 1
-                          ]);
+            'id_province' => $request->province,
+            'id_district' => $request->district,
+            'id_ward'     => $request->ward,
+            'version_no'  => $detail_shippers->version_no + 1
+        ]);
         return [
-          'message' => Messages::update(),
-          'error'   => false
+            'message' => Messages::update(),
+            'error'   => false
         ];
     }
 
@@ -207,14 +207,17 @@ class DetailShipperController extends Controller
         if ($role === __::ROLES['USER']) {
             Auth::logout();
             return redirect('login')->with([
-            'message' => Messages::errors()->permission(),
-            'error'   => true
-          ]);
+                'message' => Messages::errors()->permission(),
+                'error'   => true
+            ]);
         }
         $detail_shippers = DetailShipper::find($id);
         $balances = Balances::where('id_shipper', $detail_shippers->id_user);
         $detail_shippers->delete();
-        $balances->update(['del_flag' => 1, 'version_no' => DB::raw('version_no + 1')]);
+        $balances->update([
+            'del_flag'   => 1,
+            'version_no' => DB::raw('version_no + 1')
+        ]);
         return redirect(route('detail-shippers.index'));
     }
 }

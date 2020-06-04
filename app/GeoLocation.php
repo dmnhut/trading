@@ -10,6 +10,12 @@ class GeoLocation extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'varchar';
     protected $fillable = [
-      'id_user', 'id_order', 'lat', 'lng', 'datetime', 'del_flag', 'version_no'
+        'id_user',
+        'id_order',
+        'lat',
+        'lng',
+        'datetime',
+        'del_flag',
+        'version_no'
     ];
 }

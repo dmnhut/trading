@@ -34,24 +34,24 @@ class PortalController extends Controller
         if ($role === __::ROLES['ADMIN']) {
             $tab = empty($request->tab) ? __::get_tab('ASSIGN') : $request->tab;
             $status_not_show = [
-                                 __::status('create'),
-                                 __::status('active'),
-                                 __::status('locked'),
-                                 __::status('updated'),
-                                 __::status('pay'),
-                                 __::status('transfers')
-                               ];
+                __::status('create'),
+                __::status('active'),
+                __::status('locked'),
+                __::status('updated'),
+                __::status('pay'),
+                __::status('transfers')
+            ];
         } elseif ($role === __::ROLES['USER']) {
             $tab = __::get_tab('SHIPPING');
             $status_not_show = [
-                                 __::status('create'),
-                                 __::status('active'),
-                                 __::status('locked'),
-                                 __::status('updated'),
-                                 __::status('pay'),
-                                 __::status('transfers'),
-                                 __::status('cancel')
-                               ];
+                __::status('create'),
+                __::status('active'),
+                __::status('locked'),
+                __::status('updated'),
+                __::status('pay'),
+                __::status('transfers'),
+                __::status('cancel')
+            ];
         }
         $page = empty($request->page) ? 1 : $request->page;
         $status = Status::select('id', 'name')
@@ -71,7 +71,11 @@ class PortalController extends Controller
                            ->where('users.del_flag', 0)
                            ->where('status_user.id_status', 1)
                            ->where('status_user.del_flag', 0)
-                           ->whereIn('status_order.id_status', [__::status('create'), __::status('updated'), __::status('rollback')])
+                           ->whereIn('status_order.id_status', [
+                               __::status('create'),
+                               __::status('updated'),
+                               __::status('rollback')
+                           ])
                            ->where('status_order.del_flag', 0)
                            ->where('status.del_flag', 0);
         } elseif ($tab === __::get_tab('SHIPPING')) {
@@ -93,7 +97,12 @@ class PortalController extends Controller
                            ->where('status_shipper.del_flag', 0)
                            ->where('status_order.del_flag', 0)
                            ->where('status.del_flag', 0)
-                           ->whereIn('status_order.id_status', [__::status('pack'), __::status('assign'), __::status('shipping'), __::status('pending')]);
+                           ->whereIn('status_order.id_status', [
+                               __::status('pack'),
+                               __::status('assign'),
+                               __::status('shipping'),
+                               __::status('pending')
+                           ]);
             if ($role === __::ROLES['USER']) {
                 $id = Auth::user()->id;
                 $query = $query->where(function ($query) use ($id) {
@@ -118,20 +127,22 @@ class PortalController extends Controller
                            ->where('shipper.del_flag', 0)
                            ->where('status_shipper.id_status', 1)
                            ->where('status_shipper.del_flag', 0)
-                           ->whereIn('status_order.id_status', [__::status('success')])
+                           ->whereIn('status_order.id_status', [
+                               __::status('success')
+                           ])
                            ->where('status_order.del_flag', 0)
                            ->where('status.del_flag', 0);
         }
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         return view('portal.index', [
-                                      'data'        => $query->paginate(__::TAKE_ITEM),
-                                      'page_number' => $page_number,
-                                      'page_active' => $page,
-                                      'tab'         => $tab,
-                                      'status'      => $status,
-                                      'role'        => $role
-                                    ]);
+            'data'        => $query->paginate(__::TAKE_ITEM),
+            'page_number' => $page_number,
+            'page_active' => $page,
+            'tab'         => $tab,
+            'status'      => $status,
+            'role'        => $role
+        ]);
     }
 
     /**
@@ -164,15 +175,15 @@ class PortalController extends Controller
          ->get();
         if ($data->isEmpty()) {
             return [
-              'error'   => true,
-              'message' => Messages::errors()->detail_shipper('empty'),
-              'data'    => []
+                'error'   => true,
+                'message' => Messages::errors()->detail_shipper('empty'),
+                'data'    => []
             ];
         } else {
             return [
-              'error'   => false,
-              'message' => '',
-              'data'    => $data
+                'error'   => false,
+                'message' => '',
+                'data'    => $data
             ];
         }
     }
@@ -205,33 +216,33 @@ class PortalController extends Controller
             $status_order = StatusOrder::where('id_order', $order->id)
                                        ->where('del_flag', 0)
                                        ->update([
-                                                  'id_status'  => __::status('assign'),
-                                                  'version_no' => DB::raw('version_no + 1')
-                                                ]);
+                                           'id_status'  => __::status('assign'),
+                                           'version_no' => DB::raw('version_no + 1')
+                                       ]);
             $traces = Traces::where('id_order', $order->id)
                             ->where('del_flag', 0);
             $traces->update([
-                              'id_status'  => __::status('assign'),
-                              'time'       => $date_time,
-                              'note'       => Notes::trace('assign', $order->code, $date_time, $shipper->name.' - '.$shipper->phone),
-                              'version_no' => DB::raw('version_no + 1')
-                            ]);
+                'id_status'  => __::status('assign'),
+                'time'       => $date_time,
+                'note'       => Notes::trace('assign', $order->code, $date_time, $shipper->name.' - '.$shipper->phone),
+                'version_no' => DB::raw('version_no + 1')
+            ]);
             $traces_log = TracesLog::create([
-              'id_trace'  => $traces->first()->id,
-              'id_status' => __::status('assign'),
-              'time'      => $date_time,
-              'note'      => Notes::trace('assign', $order->code, $date_time, $shipper->name.' - '.$shipper->phone)
+                'id_trace'  => $traces->first()->id,
+                'id_status' => __::status('assign'),
+                'time'      => $date_time,
+                'note'      => Notes::trace('assign', $order->code, $date_time, $shipper->name.' - '.$shipper->phone)
             ]);
             DB::commit();
             return [
-              'message' => Messages::assign($order->code, $shipper->name.' - '.$shipper->phone),
-              'error'   => false
+                'message' => Messages::assign($order->code, $shipper->name.' - '.$shipper->phone),
+                'error'   => false
             ];
         } catch (Exception $e) {
             DB::rollBack();
             return [
-              'message' => Messages::errors()->_500(),
-              'error'   => true
+                'message' => Messages::errors()->_500(),
+                'error'   => true
             ];
         }
     }
@@ -265,9 +276,9 @@ class PortalController extends Controller
             } else {
                 $status_order->where('del_flag', 0)
                              ->update([
-                                        'id_status'  => __::status($status),
-                                        'version_no' => DB::raw('version_no + 1')
-                                      ]);
+                                 'id_status'  => __::status($status),
+                                 'version_no' => DB::raw('version_no + 1')
+                             ]);
             }
             $order             = Orders::find($request->id);
             $order->note       = Notes::order($status, $order->code, Auth::user()->name, $date_time);
@@ -276,39 +287,39 @@ class PortalController extends Controller
             $traces = Traces::where('id_order', $order->id)
                             ->where('del_flag', 0);
             $traces->update([
-                              'id_status'  => __::status($status),
-                              'time'       => $date_time,
-                              'note'       => Notes::trace($status, $order->code, $date_time),
-                              'version_no' => DB::raw('version_no + 1')
-                           ]);
+                'id_status'  => __::status($status),
+                'time'       => $date_time,
+                'note'       => Notes::trace($status, $order->code, $date_time),
+                'version_no' => DB::raw('version_no + 1')
+            ]);
             $traces_log = TracesLog::create([
-              'id_trace'  => $traces->first()->id,
-              'id_status' => __::status($status),
-              'time'      => $date_time,
-              'note'      => Notes::trace($status, $order->code, $date_time)
+                'id_trace'  => $traces->first()->id,
+                'id_status' => __::status($status),
+                'time'      => $date_time,
+                'note'      => Notes::trace($status, $order->code, $date_time)
             ]);
             DB::commit();
             if ($request->status == __::status('cancel')) {
                 return [
-                  'message' => Messages::cancel('', $order->code),
-                  'error'   => false
+                    'message' => Messages::cancel('', $order->code),
+                    'error'   => false
                 ];
             } elseif ($request->status == __::status('success')) {
                 return [
-                  'message' => Messages::success($order->code),
-                  'error'   => false
+                    'message' => Messages::success($order->code),
+                    'error'   => false
                 ];
             } else {
                 return [
-                  'message' => Messages::$status($order->code),
-                  'error'   => false
+                    'message' => Messages::$status($order->code),
+                    'error'   => false
                 ];
             }
         } catch (Exception $e) {
             DB::rollBack();
             return [
-              'message' => Messages::errors()->_500(),
-              'error'   => true
+                'message' => Messages::errors()->_500(),
+                'error'   => true
             ];
         }
     }
@@ -331,22 +342,22 @@ class PortalController extends Controller
             $status_order = StatusOrder::where('id_order', $order->id)
                                        ->where('del_flag', 0)
                                        ->update([
-                                                  'id_status'  => __::status('transfers'),
-                                                  'version_no' => DB::raw('version_no + 1')
-                                                ]);
+                                           'id_status'  => __::status('transfers'),
+                                           'version_no' => DB::raw('version_no + 1')
+                                       ]);
             $traces = Traces::where('id_order', $order->id)
                             ->where('del_flag', 0);
             $traces->update([
-                              'id_status'  => __::status('transfers'),
-                              'time'       => $date_time,
-                              'note'       => Notes::trace('transfers', $order->code, $date_time),
-                              'version_no' => DB::raw('version_no + 1')
-                            ]);
+                'id_status'  => __::status('transfers'),
+                'time'       => $date_time,
+                'note'       => Notes::trace('transfers', $order->code, $date_time),
+                'version_no' => DB::raw('version_no + 1')
+             ]);
             $traces_log = TracesLog::create([
-              'id_trace'  => $traces->first()->id,
-              'id_status' => __::status('transfers'),
-              'time'      => $date_time,
-              'note'      => Notes::trace('transfers', $order->code, $date_time)
+                'id_trace'  => $traces->first()->id,
+                'id_status' => __::status('transfers'),
+                'time'      => $date_time,
+                'note'      => Notes::trace('transfers', $order->code, $date_time)
             ]);
             $percent = Pays::select('percent')
                            ->leftjoin('order_pay', 'order_pay.id_pay', '=', 'pays.id')
@@ -366,24 +377,43 @@ class PortalController extends Controller
                         ->where('del_flag', 0)
                         ->first();
             $balance_log = BalanceLog::create([
-              'id_order'    => $order->id,
-              'id_user'     => $order->id_user,
-              'id_shipper'  => $order->id_shipper,
-              'amount'      => $order->total_amount,
-              'pay_shipper' => (int) $order->total_amount*$percent/100,
-              'note'        => Notes::balance_log('create', $order->code, $date_time, $user->name.' - '.$user->phone, $order->total_amount*$percent/100)
+                'id_order'    => $order->id,
+                'id_user'     => $order->id_user,
+                'id_shipper'  => $order->id_shipper,
+                'amount'      => $order->total_amount,
+                'pay_shipper' => (int) $order->total_amount*$percent/100,
+                'note'        => Notes::balance_log('create', $order->code, $date_time, $user->name.' - '.$user->phone, $order->total_amount*$percent/100)
             ]);
             DB::commit();
             return [
-              'message' => Messages::transfers($order->code),
-              'error'   => false
+                'message' => Messages::transfers($order->code),
+                'error'   => false
             ];
         } catch (Exception $e) {
             DB::rollBack();
             return [
-              'message' => Messages::errors()->_500(),
-              'error'   => true
+                'message' => Messages::errors()->_500(),
+                'error'   => true
             ];
         }
+    }
+
+    /**
+     * timeline
+     *
+     * @param  Request
+     * @return \Illuminate\Http\Response
+     */
+    public static function timeline(Request $request)
+    {
+        $logs = Traces::select('traces_log.note as note')
+                      ->leftjoin('traces_log', 'traces_log.id_trace', '=', 'traces.id')
+                      ->where('traces.id_order', $request->id)
+                      ->where('traces.del_flag', 0)
+                      ->where('traces_log.del_flag', 0)
+                      ->get();
+        return view('portal.timeline', [
+            'logs' => $logs
+        ]);
     }
 }

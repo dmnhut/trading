@@ -10,6 +10,8 @@ class Provinces extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'varchar';
     protected $fillable = [
-      'name','del_flag','version_no'
+        'name',
+        'del_flag',
+        'version_no'
     ];
 }

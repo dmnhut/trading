@@ -237,5 +237,7 @@
 <input type="hidden" name="_url_wards" value="{{route('wards.index')}}" />
 @endsection
 @section('script')
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
 <script src="{{url('app/orders/edit.js')}}"></script>
 @endsection

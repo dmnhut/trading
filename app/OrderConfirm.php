@@ -10,6 +10,10 @@ class OrderConfirm extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id_order','id_shipper','path','del_flag','version_no'
+        'id_order',
+        'id_shipper',
+        'path',
+        'del_flag',
+        'version_no'
     ];
 }

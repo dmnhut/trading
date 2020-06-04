@@ -33,18 +33,24 @@ class UsersController extends Controller
         $offset = ($page-1)*$limit;
         $role = __::get_role_code(Auth::user()->id);
         if ($role === __::ROLES['USER']) {
-            $data = DB::select(DB::raw(Sql::getUsers4IndexUser(false, Auth::user()->id)), ['limit' => $limit, 'offset' => $offset]);
+            $data = DB::select(DB::raw(Sql::getUsers4IndexUser(false, Auth::user()->id)), [
+                'limit' => $limit,
+                'offset' => $offset
+            ]);
             $total = collect(DB::select(Sql::getUsers4IndexUser(true, Auth::user()->id)))->count();
         } elseif ($role === __::ROLES['ADMIN']) {
-            $data = DB::select(DB::raw(Sql::getUsers4IndexUser()), ['limit' => $limit, 'offset' => $offset]);
+            $data = DB::select(DB::raw(Sql::getUsers4IndexUser()), [
+                'limit' => $limit,
+                'offset' => $offset
+            ]);
             $total = collect(DB::select(Sql::getUsers4IndexUser(true, null)))->count();
         }
         $page_number = ceil($total/__::TAKE_ITEM);
         return view('users.index', [
-          'data'        => $data,
-          'page_number' => $page_number,
-          'page_active' => $page,
-          'role'        => $role
+            'data'        => $data,
+            'page_number' => $page_number,
+            'page_active' => $page,
+            'role'        => $role
         ]);
     }
 
@@ -55,17 +61,18 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('users.create', ['text' => [
-                                               'cancel'         => __::CANCEL,
-                                               'clear'          => __::CLEAR,
-                                               'done'           => __::DONE,
-                                               'weekdays'       => __::WEEKDAYS,
-                                               'weekdaysShort'  => __::WEEKDAYS,
-                                               'weekdaysAbbrev' => __::WEEKDAYS_ABBREV,
-                                               'months'         => __::MONTHS,
-                                               'monthsShort'    => __::MONTHS_SHORT
-                                               ]
-                                    ]);
+        return view('users.create', [
+            'text' => [
+                'cancel'         => __::CANCEL,
+                'clear'          => __::CLEAR,
+                'done'           => __::DONE,
+                'weekdays'       => __::WEEKDAYS,
+                'weekdaysShort'  => __::WEEKDAYS,
+                'weekdaysAbbrev' => __::WEEKDAYS_ABBREV,
+                'months'         => __::MONTHS,
+                'monthsShort'    => __::MONTHS_SHORT
+            ]
+        ]);
     }
 
     /**
@@ -80,8 +87,8 @@ class UsersController extends Controller
         if ($role === __::ROLES['USER']) {
             Auth::logout();
             return redirect('login')->with([
-              'message' => Messages::errors()->permission(),
-              'error'   => true
+                'message' => Messages::errors()->permission(),
+                'error'   => true
             ]);
         }
         $data = Status::select('id', 'name')
@@ -101,8 +108,8 @@ class UsersController extends Controller
             $value->save();
         }
         return redirect(route('users.index'))->with([
-          'message' => Messages::status(),
-          'error'   => false
+            'message' => Messages::status(),
+            'error'   => false
         ]);
     }
 
@@ -118,23 +125,23 @@ class UsersController extends Controller
         if ($role === __::ROLES['USER']) {
             Auth::logout();
             return redirect('login')->with([
-              'message' => Messages::errors()->permission(),
-              'error'   => true
+                'message' => Messages::errors()->permission(),
+                'error'   => true
             ]);
         }
         $validator = Validator::make($request->all(), [
-          'email'         => 'unique:users',
-          'identity_card' => 'unique:users',
-          'phone'         => 'unique:users'
+            'email'         => 'unique:users',
+            'identity_card' => 'unique:users',
+            'phone'         => 'unique:users'
         ], [
-          'email.unique'         => Validate::message('email'),
-          'identity_card.unique' => Validate::message('identity_card'),
-          'phone.unique'         => Validate::message('phone')
+            'email.unique'         => Validate::message('email'),
+            'identity_card.unique' => Validate::message('identity_card'),
+            'phone.unique'         => Validate::message('phone')
         ]);
         if ($validator->fails()) {
             return [
-              'messages' => $validator->messages()->all(),
-              'error'    => true
+                'messages' => $validator->messages()->all(),
+                'error'    => true
             ];
         }
         $validate = [];
@@ -180,21 +187,23 @@ class UsersController extends Controller
             $user->email = $request->email;
             $user->save();
             StatusUser::create([
-              'id_status' => 1,
-              'id_user'   => $user->id
+                'id_status' => 1,
+                'id_user'   => $user->id
             ]);
             RoleUser::create([
-              'id_role' => __::ROLES['USER'],
-              'id_user' => $user->id
+                'id_role' => __::ROLES['USER'],
+                'id_user' => $user->id
             ]);
             return [
-              'messages' => [Messages::success()],
-              'error'    => false
+                'messages' => [
+                    Messages::success()
+                ],
+                'error'    => false
             ];
         } else {
             return [
-              'messages' => $validate,
-              'error'    => true
+                'messages' => $validate,
+                'error'    => true
             ];
         }
     }
@@ -223,24 +232,24 @@ class UsersController extends Controller
             if ($id != Auth::user()->id) {
                 Auth::logout();
                 return redirect('login')->with([
-                  'message' => Messages::errors()->permission(),
-                  'error'   => true
+                    'message' => Messages::errors()->permission(),
+                    'error'   => true
                 ]);
             }
         }
         return view('users.edit', [
-                                    'data' => User::find($id),
-                                    'text' => [
-                                                'cancel'         => __::CANCEL,
-                                                'clear'          => __::CLEAR,
-                                                'done'           => __::DONE,
-                                                'weekdays'       => __::WEEKDAYS,
-                                                'weekdaysShort'  => __::WEEKDAYS,
-                                                'weekdaysAbbrev' => __::WEEKDAYS_ABBREV,
-                                                'months'         => __::MONTHS,
-                                                'monthsShort'    => __::MONTHS_SHORT
-                                              ]
-                                  ]);
+            'data' => User::find($id),
+            'text' => [
+                'cancel'         => __::CANCEL,
+                'clear'          => __::CLEAR,
+                'done'           => __::DONE,
+                'weekdays'       => __::WEEKDAYS,
+                'weekdaysShort'  => __::WEEKDAYS,
+                'weekdaysAbbrev' => __::WEEKDAYS_ABBREV,
+                'months'         => __::MONTHS,
+                'monthsShort'    => __::MONTHS_SHORT
+            ]
+        ]);
     }
 
     /**
@@ -250,7 +259,9 @@ class UsersController extends Controller
      */
     public function info()
     {
-        return view('users.info', ['data' => User::find(Auth::user()->id)]);
+        return view('users.info', [
+            'data' => User::find(Auth::user()->id)
+        ]);
     }
 
     /**
@@ -267,8 +278,8 @@ class UsersController extends Controller
             if ($id != Auth::user()->id) {
                 Auth::logout();
                 return redirect('login')->with([
-                  'message' => Messages::errors()->permission(),
-                  'error'   => true
+                    'message' => Messages::errors()->permission(),
+                    'error'   => true
                 ]);
             }
         }
@@ -277,14 +288,14 @@ class UsersController extends Controller
             'identity_card' => 'unique:users,identity_card,'.$id,
             'phone'         => 'unique:users,phone,'.$id
           ], [
-            'email.unique'         => Messages::errors()->users('email'),
-            'identity_card.unique' => Messages::errors()->users('identity_card'),
-            'phone.unique'         => Messages::errors()->users('phone')
+              'email.unique'         => Messages::errors()->users('email'),
+              'identity_card.unique' => Messages::errors()->users('identity_card'),
+              'phone.unique'         => Messages::errors()->users('phone')
           ]);
         if ($validator->fails()) {
             return [
-              'messages' => $validator->messages()->all(),
-              'error'    => true
+                'messages' => $validator->messages()->all(),
+                'error'    => true
             ];
         }
         $validate = [];
@@ -327,13 +338,13 @@ class UsersController extends Controller
             $user->version_no = $user->version_no + 1;
             $user->save();
             return [
-              'messages' => [Messages::update()],
-              'error'    => false
+                'messages' => [Messages::update()],
+                'error'    => false
             ];
         } else {
             return [
-              'messages' => $validate,
-              'error'    => true
+                'messages' => $validate,
+                'error'    => true
             ];
         }
     }
@@ -350,15 +361,18 @@ class UsersController extends Controller
         if ($role === __::ROLES['USER']) {
             Auth::logout();
             return redirect('login')->with([
-              'message' => Messages::errors()->permission(),
-              'error'   => true
+                'message' => Messages::errors()->permission(),
+                'error'   => true
             ]);
         }
         User::find($id)
-            ->update(['del_flag'=> 1, DB::raw('version_no + 1')]);
+            ->update([
+                'del_flag'=> 1,
+                DB::raw('version_no + 1')
+            ]);
         return redirect(route('users.index'))->with([
-          'message' => Messages::delete(),
-          'error'   => false
+            'message' => Messages::delete(),
+            'error'   => false
         ]);
     }
 }

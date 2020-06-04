@@ -10,6 +10,9 @@ class StatusUser extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'id_status','id_user','del_flag','version_no'
+        'id_status',
+        'id_user',
+        'del_flag',
+        'version_no'
     ];
 }

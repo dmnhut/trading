@@ -1,13 +1,5 @@
 @extends('container.index')
 @section('style')
-<style>
-    #map {
-        width: 100%;
-        height: 450px;
-        background: grey;
-        overflow-x: auto;
-    }
-</style>
 <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
 @endsection
 @section('content')
@@ -25,6 +17,9 @@
 </div>
 <input type="hidden" id="title-location" value="{{$title['location']}}" />
 <input type="hidden" id="title-address" value="{{$title['address']}}" />
+<input type="hidden" id="destination" value='@json($destination)' />
+<input type="hidden" name="order" value="{{$order}}" />
+<input type="hidden" name="_url_map_get" value="{{route('map.get')}}" />
 @endsection
 @section('script')
 <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>

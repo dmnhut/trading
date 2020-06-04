@@ -10,6 +10,10 @@ class Prices extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'bigint';
     protected $fillable = [
-      'kg','amount','turn_on','del_flag','version_no'
+        'kg',
+        'amount',
+        'turn_on',
+        'del_flag',
+        'version_no'
     ];
 }

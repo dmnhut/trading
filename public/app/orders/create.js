@@ -147,6 +147,29 @@ const getDataItems = () => {
     return result;
 };
 
+const geocode = async text => {
+    window.apikey = "rdPtJTe3tAU-3NtGSN8ZaPeJGm63EsYwqSFwxEzmBYg";
+    let platform = new H.service.Platform({
+        apikey: window.apikey
+    });
+    let geocoder = platform.getGeocodingService(),
+        geocodingParameters = {
+            searchText: text,
+            jsonattributes: 1
+        };
+    let locations = {};
+    await geocoder.geocode(
+        geocodingParameters,
+        result => {
+            locations = result.response.view[0].result[0].location.displayPosition;
+        },
+        error => {
+            console.log(error);
+        }
+    );
+    return locations;
+};
+
 document.querySelector("#kg").addEventListener("change", () => {
     document.querySelector("#total-amount").value = $("#kg").formSelect()[0].selectedOptions[0].value.split("-")[1] + " VND";
     document.querySelector("#total-amount").setAttribute("data", $("#kg").formSelect()[0].selectedOptions[0].value.split("-")[0]);
@@ -304,36 +327,40 @@ document.querySelector("#btn-add").addEventListener("click", event => {
     params.phone = document.querySelector("#phone").value;
     params.kg = $("#kg").formSelect()[0].selectedOptions[0].value.split("-")[0];
     params.total_amount = document.querySelector("#total-amount").value.split(" ")[0];
-    document.querySelector(".main-loader").style.display = "";
-    axios.post(document.querySelector("#orders-create").getAttribute("action"), params).then(response => {
-        if (response.data.error == true) {
-            axios.post(document.querySelector("input[name=_url_code]").value, {
-                _token: document.querySelector("input[name=_token]").value
-            }).then(response => {
-                document.querySelector("#code").value = response.data.code;
-                printCode();
-            }).catch(error => {
-                console.log(error);
-            });
-            document.querySelector(".message.form").style.display = "";
-            document.querySelector(".message.items").style.display = "none";
-            $(".alert").html("<span class='closebtn' type='form' onclick='removeMessage($(this))'>&times;</span>");
-            $(".alert").append(response.data.message);
-            document.querySelector(".alert").style.display = "";
-            document.querySelector(".section.error").style.display = "";
-            document.querySelector(".main-loader").style.display = "none";
-        } else {
-            document.querySelector("#message").innerHTML = response.data.message;
-            document.querySelector(".main-loader").style.display = "none";
-            document.querySelector(".alert").style.display = "none";
-            document.querySelector(".section.error").style.display = "none";
-            document.querySelector(".message.form").style.display = "none";
-            document.querySelector(".message.items").style.display = "none";
-            document.querySelector(".main-loader").style.display = "none";
-            $("#modal-message").modal("open");
-        }
-    }).catch(error => {
-        console.log(error);
+    geocode(params.address).then(value => {
+        params.lat = String(value.latitude);
+        params.lng = String(value.longitude);
+        document.querySelector(".main-loader").style.display = "";
+        axios.post(document.querySelector("#orders-create").getAttribute("action"), params).then(response => {
+            if (response.data.error == true) {
+                axios.post(document.querySelector("input[name=_url_code]").value, {
+                    _token: document.querySelector("input[name=_token]").value
+                }).then(response => {
+                    document.querySelector("#code").value = response.data.code;
+                    printCode();
+                }).catch(error => {
+                    console.log(error);
+                });
+                document.querySelector(".message.form").style.display = "";
+                document.querySelector(".message.items").style.display = "none";
+                $(".alert").html("<span class='closebtn' type='form' onclick='removeMessage($(this))'>&times;</span>");
+                $(".alert").append(response.data.message);
+                document.querySelector(".alert").style.display = "";
+                document.querySelector(".section.error").style.display = "";
+                document.querySelector(".main-loader").style.display = "none";
+            } else {
+                document.querySelector("#message").innerHTML = response.data.message;
+                document.querySelector(".main-loader").style.display = "none";
+                document.querySelector(".alert").style.display = "none";
+                document.querySelector(".section.error").style.display = "none";
+                document.querySelector(".message.form").style.display = "none";
+                document.querySelector(".message.items").style.display = "none";
+                document.querySelector(".main-loader").style.display = "none";
+                $("#modal-message").modal("open");
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     });
 });
 

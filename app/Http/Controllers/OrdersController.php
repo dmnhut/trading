@@ -36,7 +36,9 @@ class OrdersController extends Controller
      */
     public function code()
     {
-        return ['code' => __::uuid()];
+        return [
+            'code' => __::uuid()
+        ];
     }
 
     /**
@@ -62,10 +64,10 @@ class OrdersController extends Controller
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         return view('orders.index', [
-                                      'data'        => $query->paginate(__::TAKE_ITEM),
-                                      'page_number' => $page_number,
-                                      'page_active' => $page
-                                    ]);
+            'data'        => $query->paginate(__::TAKE_ITEM),
+            'page_number' => $page_number,
+            'page_active' => $page
+        ]);
     }
 
     /**
@@ -88,29 +90,33 @@ class OrdersController extends Controller
                         ->where('turn_on', 1)
                         ->get();
         $messages = [
-          'item'     => Messages::errors()->items('item'),
-          'unit'     => Messages::errors()->items('unit'),
-          'quantity' => Messages::errors()->items('quantity'),
-          'items'    => Messages::errors()->orders('items'),
-          'province' => Messages::errors()->orders('province'),
-          'district' => Messages::errors()->orders('district'),
-          'ward'     => Messages::errors()->orders('ward'),
-          'address'  => Messages::errors()->orders('address'),
-          'receiver' => Messages::errors()->orders('receiver'),
-          'phone'    => Messages::errors()->orders('phone'),
-          'kg'       => Messages::errors()->orders('kg')
+            'item'     => Messages::errors()->items('item'),
+            'unit'     => Messages::errors()->items('unit'),
+            'quantity' => Messages::errors()->items('quantity'),
+            'items'    => Messages::errors()->orders('items'),
+            'province' => Messages::errors()->orders('province'),
+            'district' => Messages::errors()->orders('district'),
+            'ward'     => Messages::errors()->orders('ward'),
+            'address'  => Messages::errors()->orders('address'),
+            'receiver' => Messages::errors()->orders('receiver'),
+            'phone'    => Messages::errors()->orders('phone'),
+            'kg'       => Messages::errors()->orders('kg')
         ];
         $validator = [
-          'quantity' => ['re'    => substr(Validate::reg('QUANTITY'), 1, 6),
-                         'error' => Validate::message('quantity')]
+            'quantity' => [
+                're'    => substr(Validate::reg('QUANTITY'), 1, 6),
+                'error' => Validate::message('quantity')
+            ]
         ];
-        return view('orders.create', ['code'      => __::uuid(),
-                                      'users'     => $users,
-                                      'provinces' => $provinces,
-                                      'units'     => $units,
-                                      'prices'    => $prices,
-                                      'messages'  => $messages,
-                                      'validator' => $validator]);
+        return view('orders.create', [
+            'code'      => __::uuid(),
+            'users'     => $users,
+            'provinces' => $provinces,
+            'units'     => $units,
+            'prices'    => $prices,
+            'messages'  => $messages,
+            'validator' => $validator
+        ]);
     }
 
     /**
@@ -125,67 +131,69 @@ class OrdersController extends Controller
             DB::beginTransaction();
             $date_time = date_format(new DateTime('NOW'), 'd/m/Y H:i:s');
             $order = Orders::create([
-              'code'         => $request->code,
-              'id_user'      => $request->user,
-              'id_province'  => $request->province,
-              'id_district'  => $request->district,
-              'id_ward'      => $request->ward,
-              'total_amount' => $request->total_amount,
-              'address'      => $request->address,
-              'receiver'     => $request->receiver,
-              'phone'        => $request->phone,
-              'note'         => Notes::order('create', $request->code, Auth::user()->name, $date_time)
+                'code'         => $request->code,
+                'id_user'      => $request->user,
+                'id_province'  => $request->province,
+                'id_district'  => $request->district,
+                'id_ward'      => $request->ward,
+                'total_amount' => $request->total_amount,
+                'address'      => $request->address,
+                'lat'          => $request->lat,
+                'lng'          => $request->lng,
+                'receiver'     => $request->receiver,
+                'phone'        => $request->phone,
+                'note'         => Notes::order('create', $request->code, Auth::user()->name, $date_time)
             ]);
             $items = json_decode($request->items);
             foreach ($items as $value) {
                 $order_detail = OrderDetail::create([
-                  'id_order'  => $order->id,
-                  'item_name' => $value->item_name,
-                  'quantity'  => $value->quantity
+                    'id_order'  => $order->id,
+                    'item_name' => $value->item_name,
+                    'quantity'  => $value->quantity
                 ]);
                 $order_unit = OrderUnit::create([
-                  'id_item' => $order_detail->id,
-                  'id_unit' => $value->id_unit
+                    'id_item' => $order_detail->id,
+                    'id_unit' => $value->id_unit
                 ]);
             }
             $order_pay = OrderPay::create([
-              'id_order' => $order->id,
-              'id_pay'   => Pays::select('id')
-                                ->where('turn_on', 1)
-                                ->where('del_flag', 0)
-                                ->first()
-                                ->id
+                'id_order' => $order->id,
+                'id_pay'   => Pays::select('id')
+                                  ->where('turn_on', 1)
+                                  ->where('del_flag', 0)
+                                  ->first()
+                                  ->id
             ]);
             $order_price = OrderPrice::create([
-              'id_order' => $order->id,
-              'id_price' =>  $request->kg
+                'id_order' => $order->id,
+                'id_price' =>  $request->kg
             ]);
             $status_order = StatusOrder::create([
-              'id_status' => __::status('create'),
-              'id_order'  => $order->id
+                'id_status' => __::status('create'),
+                'id_order'  => $order->id
             ]);
             $traces = Traces::create([
-              'id_order'  => $order->id,
-              'id_status' => __::status('create'),
-              'time'      => $date_time,
-              'note'      => Notes::trace('create', $request->code, $date_time)
+                'id_order'  => $order->id,
+                'id_status' => __::status('create'),
+                'time'      => $date_time,
+                'note'      => Notes::trace('create', $request->code, $date_time)
             ]);
             $traces_log = TracesLog::create([
-              'id_trace'  => $traces->id,
-              'id_status' => __::status('create'),
-              'time'      => $date_time,
-              'note'      => Notes::trace('create', $request->code, $date_time)
+                'id_trace'  => $traces->id,
+                'id_status' => __::status('create'),
+                'time'      => $date_time,
+                'note'      => Notes::trace('create', $request->code, $date_time)
             ]);
             DB::commit();
             return [
-              'message' => Messages::success(),
-              'error'   => false
+                'message' => Messages::success(),
+                'error'   => false
             ];
         } catch (Exception $e) {
             DB::rollBack();
             return [
-              'message' => Messages::errors()->_500(),
-              'error'   => true
+                'message' => Messages::errors()->_500(),
+                'error'   => true
             ];
         }
     }
@@ -219,21 +227,23 @@ class OrdersController extends Controller
                         ->where('turn_on', 1)
                         ->get();
         $messages = [
-          'item'     => Messages::errors()->items('item'),
-          'unit'     => Messages::errors()->items('unit'),
-          'quantity' => Messages::errors()->items('quantity'),
-          'items'    => Messages::errors()->orders('items'),
-          'province' => Messages::errors()->orders('province'),
-          'district' => Messages::errors()->orders('district'),
-          'ward'     => Messages::errors()->orders('ward'),
-          'address'  => Messages::errors()->orders('address'),
-          'receiver' => Messages::errors()->orders('receiver'),
-          'phone'    => Messages::errors()->orders('phone'),
-          'kg'       => Messages::errors()->orders('kg')
+            'item'     => Messages::errors()->items('item'),
+            'unit'     => Messages::errors()->items('unit'),
+            'quantity' => Messages::errors()->items('quantity'),
+            'items'    => Messages::errors()->orders('items'),
+            'province' => Messages::errors()->orders('province'),
+            'district' => Messages::errors()->orders('district'),
+            'ward'     => Messages::errors()->orders('ward'),
+            'address'  => Messages::errors()->orders('address'),
+            'receiver' => Messages::errors()->orders('receiver'),
+            'phone'    => Messages::errors()->orders('phone'),
+            'kg'       => Messages::errors()->orders('kg')
         ];
         $validator = [
-          'quantity' => ['re'    => substr(Validate::reg('QUANTITY'), 1, 6),
-                         'error' => Validate::message('quantity')]
+            'quantity' => [
+                're'    => substr(Validate::reg('QUANTITY'), 1, 6),
+                'error' => Validate::message('quantity')
+            ]
         ];
         $order = Orders::select(
             'orders.id as id',
@@ -283,18 +293,20 @@ class OrdersController extends Controller
                       ->where('id_district', $order->id_district)
                       ->orderBy('text')
                       ->get();
-        return view('orders.edit', ['id'        => $id,
-                                    'code'      => $order->code,
-                                    'users'     => $users,
-                                    'provinces' => $provinces,
-                                    'districts' => $districts,
-                                    'wards'     => $wards,
-                                    'units'     => $units,
-                                    'prices'    => $prices,
-                                    'messages'  => $messages,
-                                    'validator' => $validator,
-                                    'data'      => $order,
-                                    'details'   => $order_detail]);
+        return view('orders.edit', [
+            'id'        => $id,
+            'code'      => $order->code,
+            'users'     => $users,
+            'provinces' => $provinces,
+            'districts' => $districts,
+            'wards'     => $wards,
+            'units'     => $units,
+            'prices'    => $prices,
+            'messages'  => $messages,
+            'validator' => $validator,
+            'data'      => $order,
+            'details'   => $order_detail
+        ]);
     }
 
     /**
@@ -316,6 +328,8 @@ class OrdersController extends Controller
             $order->id_ward      = $request->ward;
             $order->total_amount = $request->total_amount;
             $order->address      = $request->address;
+            $order->lat          = $request->lat;
+            $order->lng          = $request->lng;
             $order->receiver     = $request->receiver;
             $order->phone        = $request->phone;
             $order->note         = Notes::order('updated', $request->code, Auth::user()->name, $date_time);
@@ -327,73 +341,73 @@ class OrdersController extends Controller
             foreach ($items as $value) {
                 OrderDetail::find($value->id)
                            ->update([
-                                      'del_flag'   => 1,
-                                      'version_no' => DB::raw('version_no + 1')
-                                    ]);
+                               'del_flag'   => 1,
+                               'version_no' => DB::raw('version_no + 1')
+                           ]);
                 OrderUnit::find($value->id)
                          ->update([
-                                    'del_flag'   => 1,
-                                    'version_no' => DB::raw('version_no + 1')
-                                  ]);
+                             'del_flag'   => 1,
+                             'version_no' => DB::raw('version_no + 1')
+                         ]);
             }
             $items = json_decode($request->items);
             foreach ($items as $value) {
                 $order_detail = OrderDetail::create([
-                  'id_order'  => $order->id,
-                  'item_name' => $value->item_name,
-                  'quantity'  => $value->quantity
+                    'id_order'  => $order->id,
+                    'item_name' => $value->item_name,
+                    'quantity'  => $value->quantity
                 ]);
                 $order_unit = OrderUnit::create([
-                  'id_item' => $order_detail->id,
-                  'id_unit' => $value->id_unit
+                    'id_item' => $order_detail->id,
+                    'id_unit' => $value->id_unit
                 ]);
             }
             $order_pay = OrderPay::where('id_order', $order->id)
                                  ->where('del_flag', 0)
                                  ->update([
-                                            'id_pay'    => Pays::select('id')
-                                                               ->where('turn_on', 1)
-                                                               ->where('del_flag', 0)
-                                                               ->first()
-                                                               ->id,
-                                            'version_no' => DB::raw('version_no + 1')
-                                          ]);
+                                     'id_pay'    => Pays::select('id')
+                                                        ->where('turn_on', 1)
+                                                        ->where('del_flag', 0)
+                                                        ->first()
+                                                        ->id,
+                                     'version_no' => DB::raw('version_no + 1')
+                                 ]);
             $order_price = OrderPrice::where('id_order', $order->id)
                                      ->where('del_flag', 0)
                                      ->update([
-                                                'id_price'   => $request->kg,
-                                                'version_no' => DB::raw('version_no + 1')
-                                              ]);
+                                         'id_price'   => $request->kg,
+                                         'version_no' => DB::raw('version_no + 1')
+                                     ]);
             $status_order = StatusOrder::where('id_order', $order->id)
                                        ->where('del_flag', 0)
                                        ->update([
-                                                  'id_status'  => __::status('updated'),
-                                                  'version_no' => DB::raw('version_no + 1')
-                                                ]);
+                                           'id_status'  => __::status('updated'),
+                                           'version_no' => DB::raw('version_no + 1')
+                                       ]);
             $traces = Traces::where('id_order', $order->id)
                             ->where('del_flag', 0);
             $traces->update([
-                              'id_status'  => __::status('updated'),
-                              'time'       => $date_time,
-                              'note'       => Notes::trace('updated', $request->code, $date_time),
-                              'version_no' => DB::raw('version_no + 1')
-                            ]);
+                'id_status'  => __::status('updated'),
+                'time'       => $date_time,
+                'note'       => Notes::trace('updated', $request->code, $date_time),
+                'version_no' => DB::raw('version_no + 1')
+            ]);
             $traces_log = TracesLog::create([
-              'id_trace' => $traces->first()->id,
-              'id_status' => __::status('updated'),
-              'time'      => $date_time,
-              'note'      => Notes::trace('updated', $request->code, $date_time)
+                'id_trace'  => $traces->first()->id,
+                'id_status' => __::status('updated'),
+                'time'      => $date_time,
+                'note'      => Notes::trace('updated', $request->code, $date_time)
             ]);
             DB::commit();
             return [
-              'message' => Messages::update(),
-              'error'   => false
+                'message' => Messages::update(),
+                'error'   => false
             ];
         } catch (Exception $e) {
             DB::rollBack();
             return [
-              'message' => Messages::errors()->_500(),
-              'error'   => true
+                'message' => Messages::errors()->_500(),
+                'error'   => true
             ];
         }
     }
@@ -407,10 +421,13 @@ class OrdersController extends Controller
     public function destroy($id)
     {
         Orders::find($id)
-              ->update(['del_flag' => 1, DB::raw('version_no + 1')]);
+              ->update([
+                  'del_flag' => 1,
+                  DB::raw('version_no + 1')
+              ]);
         return redirect(route('orders.index'))->with([
-          'message' => Messages::cancel(__::get_text('order')),
-          'error'   => false
+            'message' => Messages::cancel(__::get_text('order')),
+            'error'   => false
         ]);
     }
 }

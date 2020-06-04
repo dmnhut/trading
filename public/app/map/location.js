@@ -8,8 +8,25 @@ const geoGet = () => {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         status.textContent = "";
-        lat.textContent = latitude;
-        lng.textContent = longitude
+        lat.innerHTML = latitude;
+        lng.innerHTML = longitude;
+        axios.post(document.querySelector("input[name=_url_location_store]").value, {
+            _token: document.querySelector("input[name=_token]").value,
+            _method: document.querySelector("input[name=_method]").value,
+            order: document.querySelector("input[name=order]").value,
+            shipper: document.querySelector("input[name=shipper]").value,
+            lat: latitude,
+            lng: longitude
+        }).then(response => {
+            console.log(response.data);
+            if (response.data.error) {
+                // TODO
+            } else {
+                // TODO
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     }
     const error = () => {
         status.textContent = "Unable to retrieve your location";
@@ -21,4 +38,10 @@ const geoGet = () => {
         navigator.geolocation.getCurrentPosition(success, error);
     }
 }
-geoGet();
+
+setInterval(
+    () => {
+        geoGet();
+    },
+    10000
+);

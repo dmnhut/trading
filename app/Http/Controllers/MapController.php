@@ -8,6 +8,7 @@ use App\Orders;
 use App\Fun\Messages;
 use App\FUn\__;
 use Auth;
+use Carbon\Carbon;
 
 class MapController extends Controller
 {
@@ -19,13 +20,43 @@ class MapController extends Controller
      */
     public function index(Request $request)
     {
+        $destination = Orders::select('lat', 'lng')
+                             ->where('id', $request->order)
+                             ->where('del_flag', 0)
+                             ->first();
         $title = [
             'location' => __::map('location'),
-            'address' => __::map('address')
+            'address'  => __::map('address')
         ];
         return view('map.index', [
-            'title' => $title
+            'title'       => $title,
+            'order'       => $request->order,
+            'destination' => $destination
         ]);
+    }
+
+    /**
+     * get
+     *
+     * @param  Request
+     * @return \Illuminate\Http\Response
+     */
+    public function get(Request $request)
+    {
+        $data = GeoLocation::select('lat', 'lng')
+                           ->where('id_order', $request->order)
+                           ->where('id', GeoLocation::max('id'))
+                           ->first();
+        if (empty($data)) {
+            return [
+                'error' => true,
+                'data'  => []
+            ];
+        }
+        return [
+            'error' => false,
+            'data'  => $data
+        ];
     }
 
     /**
@@ -36,8 +67,35 @@ class MapController extends Controller
      */
     public function location(Request $request)
     {
-        dd($request->all());
-        return view('map.location');
+        $shipper = Orders::select('id_shipper as id')
+                         ->where('id', $request->order)
+                         ->where('del_flag', 0)
+                         ->first();
+        return view('map.location', [
+            'order'   => $request->order,
+            'shipper' => $shipper->id
+        ]);
+    }
+
+    /**
+     * store
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $location = GeoLocation::create([
+            'id_user'  => $request->shipper,
+            'id_order' => $request->order,
+            'lat'      => $request->lat,
+            'lng'      => $request->lng,
+            'datetime' => Carbon::now()->toDateTimeString()
+        ]);
+        return [
+            'error' => false,
+            'data'  => $location
+        ];
     }
 
     /**
@@ -70,8 +128,8 @@ class MapController extends Controller
                        ->where('status.del_flag', 0);
         if ($query->count() == 0) {
             return [
-              'message' => Messages::errors()->map('shipping'),
-              'error'   => true
+                'message' => Messages::errors()->map('shipping'),
+                'error'   => true
             ];
         }
         if ($request->btn == 'map') {
@@ -83,13 +141,13 @@ class MapController extends Controller
         }
         if ($query->count() > 0) {
             return [
-              'message' => '',
-              'error'   => false
+                'message' => '',
+                'error'   => false
             ];
         }
         return [
-          'message' => Messages::errors()->map($request->btn),
-          'error'   => true
+            'message' => Messages::errors()->map($request->btn),
+            'error'   => true
         ];
     }
 }

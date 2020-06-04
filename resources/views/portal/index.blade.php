@@ -319,8 +319,7 @@
         </form>
     </div>
 </div>
-<form method="POST" action="" name="frm-map">
-    @csrf
+<form method="GET" action="" name="frm-map">
     <input type="hidden" name="order" />
     <button type="submit" style="display:none" id="btn-map-submit"></button>
 </form>
@@ -334,6 +333,7 @@
 <input type="hidden" name="_url_map_check" value="{{route('map.check')}}" />
 <input type="hidden" name="_url_map" value="{{route('map.index')}}" />
 <input type="hidden" name="_url_map_location" value="{{route('map.location')}}" />
+<input type="hidden" name="_url_timeline" value="{{route('portal.timeline')}}" />
 <input type="hidden" name="_radio_assign" value="{{\App\Fun\__::status('assign')}}" />
 @csrf
 @endsection

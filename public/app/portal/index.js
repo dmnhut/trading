@@ -273,3 +273,10 @@ document.querySelectorAll(".btn-location").forEach(element => {
         });
     });
 });
+
+document.querySelectorAll(".btn-traces").forEach(element => {
+    element.addEventListener("click", event => {
+        event.preventDefault();
+        window.location.href = document.querySelector("input[name=_url_timeline]").value + "?id=" + element.getAttribute("data");
+    });
+});

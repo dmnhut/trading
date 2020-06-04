@@ -203,5 +203,7 @@
 <input type="hidden" name="_url_code" value="{{route('orders.code')}}" />
 @endsection
 @section('script')
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
 <script src="{{url('app/orders/create.js')}}"></script>
 @endsection
