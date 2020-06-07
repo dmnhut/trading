@@ -49,7 +49,7 @@
                     </li>
                     <li class="{{Request::is('portal*') ? 'active' : ''}}">
                         <a href="{{route('portal.index')}}" class="white-text">
-                            Portal
+                            Xử lý đơn hàng
                         </a>
                     </li>
                     @if(App\Fun\__::get_role_code(Auth::user()->id) === App\Fun\__::ROLES['ADMIN'])
@@ -110,7 +110,7 @@
     </nav>
     <section class="section section-visitors lighten-4">
         <div class="row">
-            <div class="col s12 m12 l12">
+            <div class="col s12 m12 l12" id="content">
                 @yield('content')
             </div>
         </div>
@@ -139,6 +139,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/JsBarcode.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
     <script src="{{url('app/qrcode.js')}}"></script>
     <script src="{{url('app/container/index.js')}}"></script>
     @yield('script')

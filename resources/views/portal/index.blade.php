@@ -3,7 +3,7 @@
 <nav class="nav-top teal darken-3">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
-        <a href="{{route('portal.index')}}" class="breadcrumb hide-on-med-and-down">Trạng thái đơn hàng</a>
+        <a href="{{route('portal.index')}}" class="breadcrumb hide-on-med-and-down">Xử lý đơn hàng</a>
     </div>
 </nav>
 <div class="section">

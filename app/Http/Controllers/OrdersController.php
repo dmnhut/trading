@@ -61,6 +61,10 @@ class OrdersController extends Controller
                        ->where('status_user.del_flag', 0)
                        ->where('status_order.del_flag', 0)
                        ->where('status.del_flag', 0);
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            $query = $query->where('orders.id_user', Auth::user()->id);
+        }
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         return view('orders.index', [
@@ -77,7 +81,12 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        $users = DB::select(Sql::getUsers2CreateOrder(true));
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            $users = DB::select(Sql::getUsers2CreateOrder(true, Auth::user()->id));
+        } elseif ($role === __::ROLES['ADMIN']) {
+            $users = DB::select(Sql::getUsers2CreateOrder(true, null));
+        }
         $provinces = Provinces::select('id as id', 'name as text')
                               ->orderBy('text')
                               ->get();
@@ -127,6 +136,16 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            if ($request->user != Auth::user()->id) {
+                Auth::logout();
+                return redirect('login')->with([
+                    'message' => Messages::errors()->permission(),
+                    'error'   => true
+                ]);
+            }
+        }
         try {
             DB::beginTransaction();
             $date_time = date_format(new DateTime('NOW'), 'd/m/Y H:i:s');
@@ -217,7 +236,45 @@ class OrdersController extends Controller
      */
     public function edit($id)
     {
-        $users = DB::select(Sql::getUsers2CreateOrder(true));
+        $order = Orders::select(
+            'orders.id as id',
+            'orders.code as code',
+            'orders.id_user as id_user',
+            'orders.id_province as id_province',
+            'orders.id_district as id_district',
+            'orders.id_ward as id_ward',
+            'orders.total_amount as total_amount',
+            'orders.address as address',
+            'orders.receiver as receiver',
+            'orders.phone as phone',
+            'order_price.id_price as id_price',
+            'prices.amount as amount',
+            'order_pay.id_pay as id_pay'
+        )
+                       ->leftjoin('order_price', 'order_price.id_order', '=', 'orders.id')
+                       ->leftjoin('order_pay', 'order_pay.id_order', '=', 'orders.id')
+                       ->leftjoin('prices', 'prices.id', '=', 'order_price.id_price')
+                       ->where('orders.id', $id)
+                       ->where('orders.del_flag', 0)
+                       ->where('order_price.del_flag', 0)
+                       ->where('order_pay.del_flag', 0)
+                       ->where('prices.del_flag', 0)
+                       ->first();
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            if ($order->id_user != Auth::user()->id) {
+                Auth::logout();
+                return redirect('login')->with([
+                    'message' => Messages::errors()->permission(),
+                    'error'   => true
+                ]);
+            }
+        }
+        if ($role === __::ROLES['USER']) {
+            $users = DB::select(Sql::getUsers2CreateOrder(true, Auth::user()->id));
+        } elseif ($role === __::ROLES['ADMIN']) {
+            $users = DB::select(Sql::getUsers2CreateOrder(true, null));
+        }
         $units = Units::select('id', 'name')
                       ->where('del_flag', 0)
                       ->orderBy('name')
@@ -245,30 +302,6 @@ class OrdersController extends Controller
                 'error' => Validate::message('quantity')
             ]
         ];
-        $order = Orders::select(
-            'orders.id as id',
-            'orders.code as code',
-            'orders.id_user as id_user',
-            'orders.id_province as id_province',
-            'orders.id_district as id_district',
-            'orders.id_ward as id_ward',
-            'orders.total_amount as total_amount',
-            'orders.address as address',
-            'orders.receiver as receiver',
-            'orders.phone as phone',
-            'order_price.id_price as id_price',
-            'prices.amount as amount',
-            'order_pay.id_pay as id_pay'
-        )
-                       ->leftjoin('order_price', 'order_price.id_order', '=', 'orders.id')
-                       ->leftjoin('order_pay', 'order_pay.id_order', '=', 'orders.id')
-                       ->leftjoin('prices', 'prices.id', '=', 'order_price.id_price')
-                       ->where('orders.id', $id)
-                       ->where('orders.del_flag', 0)
-                       ->where('order_price.del_flag', 0)
-                       ->where('order_pay.del_flag', 0)
-                       ->where('prices.del_flag', 0)
-                       ->first();
         $order_detail = OrderDetail::select(
             'order_detail.item_name as item_name',
             'order_detail.quantity as quantity',
@@ -318,6 +351,16 @@ class OrdersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            if ($request->user != Auth::user()->id) {
+                Auth::logout();
+                return redirect('login')->with([
+                    'message' => Messages::errors()->permission(),
+                    'error'   => true
+                ]);
+            }
+        }
         try {
             DB::beginTransaction();
             $date_time = date_format(new DateTime('NOW'), 'd/m/Y H:i:s');
@@ -420,11 +463,21 @@ class OrdersController extends Controller
      */
     public function destroy($id)
     {
-        Orders::find($id)
-              ->update([
-                  'del_flag' => 1,
-                  DB::raw('version_no + 1')
-              ]);
+        $order = Orders::find($id);
+        $role = __::get_role_code(Auth::user()->id);
+        if ($role === __::ROLES['USER']) {
+            if ($order->id_user != Auth::user()->id) {
+                Auth::logout();
+                return redirect('login')->with([
+                    'message' => Messages::errors()->permission(),
+                    'error'   => true
+                ]);
+            }
+        }
+        $order->update([
+            'del_flag' => 1,
+            DB::raw('version_no + 1')
+        ]);
         return redirect(route('orders.index'))->with([
             'message' => Messages::cancel(__::get_text('order')),
             'error'   => false

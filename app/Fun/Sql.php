@@ -9,10 +9,11 @@ class Sql
     /**
      * getUsers2CreateOrder
      *
+     * @param  $id
      * @param  $count_flag
      * @return string
      */
-    public static function getUsers2CreateOrder($count_flag = false)
+    public static function getUsers2CreateOrder($count_flag = false, $id = null)
     {
         $sql = "select CONCAT(name, ' - ', phone) as name,
                        users.id                   as id
@@ -20,14 +21,18 @@ class Sql
                   left join status_user
                     on status_user.id_user        = users.id
                  where users.del_flag             = 0
-                   and status_user.id_status      = 1
-                 order by users.name";
+                   and status_user.id_status      = 1";
+        if (!empty($id)) {
+            $sql .= " " . "and users.id = " .$id;
+        }
+        $sql .= " " . "order by users.name asc";
         return $count_flag ? $sql : $sql . " " . "limit :limit offset :offset";
     }
 
     /**
      * getUsers4IndexUser
      *
+     * @param  $id
      * @param  $count_flag
      * @return string
      */

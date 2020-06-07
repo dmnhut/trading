@@ -8,7 +8,7 @@
 <div class="col s12 m4 l4 pointer">
     <a href="{{route('portal.index')}}">
         <div class="hoverable card-panel cyan darken-3 white-text center">
-            <h5>Portal</h5>
+            <h5>Xử lý đơn hàng</h5>
         </div>
     </a>
 </div>

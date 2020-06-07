@@ -6,8 +6,8 @@
 <nav class="nav-top teal darken-3">
     <div class="nav-wrapper">
         <a href="{{route('dashboard')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Bảng điều khiển</a>
-        <a href="{{route('portal.index')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Portal</a>
-        <a href="{{route('portal.index')}}" class="breadcrumb hide-on-med-and-down">Quan sát giao hàng</a>
+        <a href="{{route('portal.index')}}" class="breadcrumb hide-on-med-and-down">&nbsp;&nbsp;Xử lý đơn hàng</a>
+        <a href="{{route('map.index')}}" class="breadcrumb hide-on-med-and-down">Quan sát giao hàng</a>
     </div>
 </nav>
 <div class="card-panel grey darken-3 white-text">
