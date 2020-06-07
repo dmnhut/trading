@@ -27,8 +27,8 @@ $(document).ready(() => {
         window.history.pushState(null, "", window.location.href);
     };
 
-    $(document).pjax("a", "#content");
-    $(document).pjax("button", "#content");
+    $(document).pjax("a", "#content#slide-out");
+    $(document).pjax("button", "#content#slide-out");
     $("select").formSelect();
     $(".sidenav").sidenav();
     $(".modal").modal({

@@ -40,14 +40,14 @@
                             </div>
                         </div>
                     </li>
-                    <li class="{{Request::is('/*') ? 'active' : ''}}">
+                    <li class="{{Request::is('dashboard*') ? 'active' : ''}}">
                         <a href="{{route('dashboard')}}" title="Bảng điều khiển" class="white-text"><i class="material-icons white-text">dashboard</i>Quản
                             lý chuyển hàng</a>
                     </li>
                     <li>
                         <div class="divider"></div>
                     </li>
-                    <li class="{{Request::is('portal*') ? 'active' : ''}}">
+                    <li class="{{Request::is('portal*') || Request::is('map*') ? 'active' : ''}}">
                         <a href="{{route('portal.index')}}" class="white-text">
                             Xử lý đơn hàng
                         </a>
