@@ -65,7 +65,7 @@
     </div>
     <div class="row">
         <div class="input-field col s6">
-            <button id="btn-back" class="waves-effect waves-light btn green darken-3">Trở lại</button>
+            <button id="btn-back" class="waves-effect waves-light btn grey darken-2">Trở lại</button>
         </div>
     </div>
 </div>

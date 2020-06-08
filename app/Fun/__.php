@@ -162,7 +162,7 @@ class __
      *
      * @var integer
      */
-    const TAKE_ITEM = 15;
+    const TAKE_ITEM = 10;
 
     /**
      * take_item
