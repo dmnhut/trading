@@ -18,7 +18,10 @@ class RolesController extends Controller
     public function index(Request $request)
     {
         $page = empty($request->page) ? 1 : $request->page;
-        $query = Roles::select('id', 'name')->where('del_flag', 0);
+        $query = Roles::select(
+            'id',
+            'name'
+        )->where('del_flag', 0);
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         return view('roles.index', [

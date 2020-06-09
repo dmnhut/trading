@@ -57,15 +57,14 @@ $(document).ready(() => {
         "hideMethod": "fadeOut"
     }
 
-    for (let i = 0; i < document.querySelectorAll(".closebtn").length; i++) {
-        document.querySelectorAll(".closebtn")[i].addEventListener("click", () => {
-            onClickCloseBtn(document.querySelectorAll(".closebtn")[i]);
+    document.querySelectorAll(".closebtn").forEach(element => {
+        element.addEventListener("click", () => {
+            onClickCloseBtn(element);
         });
-    }
+    });
 
-    let searchBox = document.querySelector("#txt");
-    if (searchBox != null) {
-        searchBox.addEventListener("input", () => {
+    document.querySelector("#txt").addEventListener("input", () => {
+        if (document.querySelector("#txt").value != null) {
             let count = 0;
             let rows = document.querySelector("table.activated").rows;
             for (let i = 1; i < rows.length; i++) {
@@ -91,6 +90,6 @@ $(document).ready(() => {
             } else {
                 rows[0].style.display = "";
             }
-        });
-    }
+        }
+    });
 });

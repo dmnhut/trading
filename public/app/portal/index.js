@@ -91,7 +91,7 @@ document.querySelectorAll(".tabs>li").forEach(element => {
         if (document.querySelector(".pagination>li.active>a") !== NULL) {
             let page = Number(document.querySelector(".pagination>li.active>a").innerText);
         }
-        location.href = document.querySelector("input[name=_url]").value + "?page=" + page + "&tab=" + tab;
+        location.href = document.querySelector("input[name=_url]").value + "?tab=" + tab + "&page=" + page;
     });
 });
 

@@ -54,55 +54,75 @@ class PortalController extends Controller
             ];
         }
         $page = empty($request->page) ? 1 : $request->page;
-        $status = Status::select('id', 'name')
-                        ->where('del_flag', 0)
-                        ->whereNotIn('id', $status_not_show)
-                        ->get();
+        $status = Status::select(
+            'id',
+            'name'
+        )->where('del_flag', 0)
+         ->whereNotIn('id', $status_not_show)
+         ->get();
         foreach ($status as $value) {
             $value->name = __::status_name($value->name);
         }
         if ($tab === __::get_tab('ASSIGN')) {
-            $query = Orders::select('orders.id as id', 'orders.code as code', 'users.name as user_name', 'users.phone as user_phone', 'orders.address as ship_address', 'status_order.id_status as id_status', 'status.name as name_status', 'orders.note as note')
-                           ->leftjoin('users', 'users.id', '=', 'orders.id_user')
-                           ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
-                           ->leftjoin('status_order', 'status_order.id_order', '=', 'orders.id')
-                           ->leftjoin('status', 'status.id', '=', 'status_order.id_status')
-                           ->where('orders.del_flag', 0)
-                           ->where('users.del_flag', 0)
-                           ->where('status_user.id_status', 1)
-                           ->where('status_user.del_flag', 0)
-                           ->whereIn('status_order.id_status', [
-                               __::status('create'),
-                               __::status('updated'),
-                               __::status('rollback')
-                           ])
-                           ->where('status_order.del_flag', 0)
-                           ->where('status.del_flag', 0);
+            $query = Orders::select(
+                'orders.id as id',
+                'orders.code as code',
+                'users.name as user_name',
+                'users.phone as user_phone',
+                'orders.address as ship_address',
+                'status_order.id_status as id_status',
+                'status.name as name_status',
+                'orders.note as note'
+            )->leftjoin('users', 'users.id', '=', 'orders.id_user')
+             ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
+             ->leftjoin('status_order', 'status_order.id_order', '=', 'orders.id')
+             ->leftjoin('status', 'status.id', '=', 'status_order.id_status')
+             ->where('orders.del_flag', 0)
+             ->where('users.del_flag', 0)
+             ->where('status_user.id_status', 1)
+             ->where('status_user.del_flag', 0)
+             ->whereIn('status_order.id_status', [
+                 __::status('create'),
+                 __::status('updated'),
+                 __::status('rollback')
+             ])
+             ->where('status_order.del_flag', 0)
+             ->where('status.del_flag', 0);
         } elseif ($tab === __::get_tab('SHIPPING')) {
-            $query = Orders::select('orders.id as id', 'orders.code as code', 'users.name as user_name', 'users.phone as user_phone', 'orders.address as ship_address', 'status_order.id_status as id_status', 'status.name as name_status', 'orders.note as note', 'shipper.name as shipper_name', 'shipper.phone as shipper_phone')
-                           ->leftjoin('users', 'users.id', '=', 'orders.id_user')
-                           ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
-                           ->leftjoin('status_order', 'status_order.id_order', '=', 'orders.id')
-                           ->leftjoin('status', 'status.id', '=', 'status_order.id_status')
-                           ->leftjoin('detail_shipper', 'detail_shipper.id_user', '=', 'orders.id_shipper')
-                           ->leftjoin('users as shipper', 'shipper.id', '=', 'detail_shipper.id_user')
-                           ->leftjoin('status_user as status_shipper', 'status_shipper.id_user', '=', 'detail_shipper.id_user')
-                           ->where('orders.del_flag', 0)
-                           ->where('users.del_flag', 0)
-                           ->where('detail_shipper.del_flag', 0)
-                           ->where('status_user.id_status', 1)
-                           ->where('status_user.del_flag', 0)
-                           ->where('shipper.del_flag', 0)
-                           ->where('status_shipper.id_status', 1)
-                           ->where('status_shipper.del_flag', 0)
-                           ->where('status_order.del_flag', 0)
-                           ->where('status.del_flag', 0)
-                           ->whereIn('status_order.id_status', [
-                               __::status('pack'),
-                               __::status('assign'),
-                               __::status('shipping'),
-                               __::status('pending')
-                           ]);
+            $query = Orders::select(
+                'orders.id as id',
+                'orders.code as code',
+                'users.name as user_name',
+                'users.phone as user_phone',
+                'orders.address as ship_address',
+                'status_order.id_status as id_status',
+                'status.name as name_status',
+                'orders.note as note',
+                'shipper.name as shipper_name',
+                'shipper.phone as shipper_phone'
+            )->leftjoin('users', 'users.id', '=', 'orders.id_user')
+             ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
+             ->leftjoin('status_order', 'status_order.id_order', '=', 'orders.id')
+             ->leftjoin('status', 'status.id', '=', 'status_order.id_status')
+             ->leftjoin('detail_shipper', 'detail_shipper.id_user', '=', 'orders.id_shipper')
+             ->leftjoin('users as shipper', 'shipper.id', '=', 'detail_shipper.id_user')
+             ->leftjoin('status_user as status_shipper', 'status_shipper.id_user', '=', 'detail_shipper.id_user')
+             ->where('orders.del_flag', 0)
+             ->where('users.del_flag', 0)
+             ->where('detail_shipper.del_flag', 0)
+             ->where('status_user.id_status', 1)
+             ->where('status_user.del_flag', 0)
+             ->where('shipper.del_flag', 0)
+             ->where('status_shipper.id_status', 1)
+             ->where('status_shipper.del_flag', 0)
+             ->where('status_order.del_flag', 0)
+             ->where('status.del_flag', 0)
+             ->whereIn('status_order.id_status', [
+                 __::status('pack'),
+                 __::status('assign'),
+                 __::status('shipping'),
+                 __::status('pending')
+             ]);
             if ($role === __::ROLES['USER']) {
                 $id = Auth::user()->id;
                 $query = $query->where(function ($query) use ($id) {
@@ -111,27 +131,37 @@ class PortalController extends Controller
                 });
             }
         } elseif ($tab === __::get_tab('TRANSFERS')) {
-            $query = Orders::select('orders.id as id', 'orders.code as code', 'users.name as user_name', 'users.phone as user_phone', 'orders.address as ship_address', 'status_order.id_status as id_status', 'status.name as name_status', 'orders.note as note', 'shipper.name as shipper_name', 'shipper.phone as shipper_phone')
-                           ->leftjoin('users', 'users.id', '=', 'orders.id_user')
-                           ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
-                           ->leftjoin('status_order', 'status_order.id_order', '=', 'orders.id')
-                           ->leftjoin('status', 'status.id', '=', 'status_order.id_status')
-                           ->leftjoin('detail_shipper', 'detail_shipper.id_user', '=', 'orders.id_shipper')
-                           ->leftjoin('users as shipper', 'shipper.id', '=', 'detail_shipper.id_user')
-                           ->leftjoin('status_user as status_shipper', 'status_shipper.id_user', '=', 'detail_shipper.id_user')
-                           ->where('orders.del_flag', 0)
-                           ->where('users.del_flag', 0)
-                           ->where('detail_shipper.del_flag', 0)
-                           ->where('status_user.id_status', 1)
-                           ->where('status_user.del_flag', 0)
-                           ->where('shipper.del_flag', 0)
-                           ->where('status_shipper.id_status', 1)
-                           ->where('status_shipper.del_flag', 0)
-                           ->whereIn('status_order.id_status', [
-                               __::status('success')
-                           ])
-                           ->where('status_order.del_flag', 0)
-                           ->where('status.del_flag', 0);
+            $query = Orders::select(
+                'orders.id as id',
+                'orders.code as code',
+                'users.name as user_name',
+                'users.phone as user_phone',
+                'orders.address as ship_address',
+                'status_order.id_status as id_status',
+                'status.name as name_status',
+                'orders.note as note',
+                'shipper.name as shipper_name',
+                'shipper.phone as shipper_phone'
+            )->leftjoin('users', 'users.id', '=', 'orders.id_user')
+             ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
+             ->leftjoin('status_order', 'status_order.id_order', '=', 'orders.id')
+             ->leftjoin('status', 'status.id', '=', 'status_order.id_status')
+             ->leftjoin('detail_shipper', 'detail_shipper.id_user', '=', 'orders.id_shipper')
+             ->leftjoin('users as shipper', 'shipper.id', '=', 'detail_shipper.id_user')
+             ->leftjoin('status_user as status_shipper', 'status_shipper.id_user', '=', 'detail_shipper.id_user')
+             ->where('orders.del_flag', 0)
+             ->where('users.del_flag', 0)
+             ->where('detail_shipper.del_flag', 0)
+             ->where('status_user.id_status', 1)
+             ->where('status_user.del_flag', 0)
+             ->where('shipper.del_flag', 0)
+             ->where('status_shipper.id_status', 1)
+             ->where('status_shipper.del_flag', 0)
+             ->whereIn('status_order.id_status', [
+                 __::status('success')
+             ])
+             ->where('status_order.del_flag', 0)
+             ->where('status.del_flag', 0);
         }
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
@@ -199,15 +229,17 @@ class PortalController extends Controller
         try {
             DB::beginTransaction();
             $date_time = date_format(new DateTime('NOW'), 'd/m/Y H:i:s');
-            $shipper = DetailShipper::select('users.name as name', 'users.phone as phone')
-                                    ->leftjoin('users', 'users.id', '=', 'detail_shipper.id_user')
-                                    ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
-                                    ->where('detail_shipper.id_user', $request->shipper)
-                                    ->where('detail_shipper.del_flag', 0)
-                                    ->where('users.del_flag', 0)
-                                    ->where('status_user.id_status', __::status('active'))
-                                    ->where('status_user.del_flag', 0)
-                                    ->first();
+            $shipper = DetailShipper::select(
+                'users.name as name',
+                'users.phone as phone'
+            )->leftjoin('users', 'users.id', '=', 'detail_shipper.id_user')
+             ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
+             ->where('detail_shipper.id_user', $request->shipper)
+             ->where('detail_shipper.del_flag', 0)
+             ->where('users.del_flag', 0)
+             ->where('status_user.id_status', __::status('active'))
+             ->where('status_user.del_flag', 0)
+             ->first();
             $order             = Orders::find($request->order);
             $order->id_shipper = $request->shipper;
             $order->note       = Notes::order('assign', $order->code, Auth::user()->name, $date_time, $shipper->name.' - '.$shipper->phone);
@@ -262,11 +294,12 @@ class PortalController extends Controller
             if (empty($request->status)) {
                 $request->status = __::status('shipping');
             }
-            $status = Status::select('name')
-                            ->where('id', $request->status)
-                            ->where('del_flag', 0)
-                            ->first()
-                            ->name;
+            $status = Status::select(
+                'name'
+            )->where('id', $request->status)
+             ->where('del_flag', 0)
+             ->first()
+             ->name;
             if ($status_order->first()->id_status == $request->status) {
                 DB::rollBack();
                 return [
@@ -359,23 +392,26 @@ class PortalController extends Controller
                 'time'      => $date_time,
                 'note'      => Notes::trace('transfers', $order->code, $date_time)
             ]);
-            $percent = Pays::select('percent')
-                           ->leftjoin('order_pay', 'order_pay.id_pay', '=', 'pays.id')
-                           ->where('pays.del_flag', 0)
-                           ->where('order_pay.id_order', $order->id)
-                           ->where('order_pay.del_flag', 0)
-                           ->first()
-                           ->percent;
+            $percent = Pays::select(
+                'percent'
+            )->leftjoin('order_pay', 'order_pay.id_pay', '=', 'pays.id')
+             ->where('pays.del_flag', 0)
+             ->where('order_pay.id_order', $order->id)
+             ->where('order_pay.del_flag', 0)
+             ->first()
+             ->percent;
             $balances = Balances::where('id_shipper', $order->id_shipper)
                                 ->where('del_flag', 0)
                                 ->first();
             $balances->total += (int) $order->total_amount*$percent/100;
             $balances->version_no += 1;
             $balances->save();
-            $user = User::select('name', 'phone')
-                        ->where('id', $order->id_shipper)
-                        ->where('del_flag', 0)
-                        ->first();
+            $user = User::select(
+                'name',
+                'phone'
+            )->where('id', $order->id_shipper)
+             ->where('del_flag', 0)
+             ->first();
             $balance_log = BalanceLog::create([
                 'id_order'    => $order->id,
                 'id_user'     => $order->id_user,
@@ -406,12 +442,13 @@ class PortalController extends Controller
      */
     public static function timeline(Request $request)
     {
-        $logs = Traces::select('traces_log.note as note')
-                      ->leftjoin('traces_log', 'traces_log.id_trace', '=', 'traces.id')
-                      ->where('traces.id_order', $request->id)
-                      ->where('traces.del_flag', 0)
-                      ->where('traces_log.del_flag', 0)
-                      ->get();
+        $logs = Traces::select(
+            'traces_log.note as note'
+        )->leftjoin('traces_log', 'traces_log.id_trace', '=', 'traces.id')
+         ->where('traces.id_order', $request->id)
+         ->where('traces.del_flag', 0)
+         ->where('traces_log.del_flag', 0)
+         ->get();
         return view('portal.timeline', [
             'logs' => $logs
         ]);

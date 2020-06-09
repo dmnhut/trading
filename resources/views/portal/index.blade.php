@@ -221,9 +221,9 @@
 <ul class="pagination">
     @for ($i = 1; $i
     <= $page_number; $i++) @if($page_active == $i)
-    <li class="active"><a href="{{route('portal.index', ['page' => $i, 'tab' => $tab])}}">{{$i}}</a></li>
+    <li class="active"><a href="{{route('portal.index', ['tab' => $tab, 'page' => $i])}}">{{$i}}</a></li>
     @else
-    <li class="waves-effect"><a href="{{route('portal.index', ['page' => $i, 'tab' => $tab])}}">{{$i}}</a></li>
+    <li class="waves-effect"><a href="{{route('portal.index', ['tab' => $tab, 'page' => $i])}}">{{$i}}</a></li>
     @endif
     @endfor
 </ul>

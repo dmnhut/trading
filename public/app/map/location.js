@@ -39,9 +39,6 @@ const geoGet = () => {
     }
 }
 
-setInterval(
-    () => {
-        geoGet();
-    },
-    10000
-);
+setInterval(() => {
+    geoGet();
+}, 10000);

@@ -20,9 +20,11 @@ class UnitsController extends Controller
     public function index(Request $request)
     {
         $page = empty($request->page) ? 1 : $request->page;
-        $query = Units::select('id', 'name')
-                      ->where('del_flag', 0)
-                      ->orderBy('name');
+        $query = Units::select(
+            'id',
+            'name'
+        )->where('del_flag', 0)
+         ->orderBy('name');
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         return view('units.index', [

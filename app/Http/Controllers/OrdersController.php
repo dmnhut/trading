@@ -50,17 +50,25 @@ class OrdersController extends Controller
     public function index(Request $request)
     {
         $page = empty($request->page) ? 1 : $request->page;
-        $query = Orders::select('orders.id as id', 'orders.code as code', 'users.name as user_name', 'users.phone as user_phone', 'orders.address as ship_address', 'status_order.id_status as id_status', 'status.name as name_status', 'orders.note as note')
-                       ->leftjoin('users', 'users.id', '=', 'orders.id_user')
-                       ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
-                       ->leftjoin('status_order', 'status_order.id_order', '=', 'orders.id')
-                       ->leftjoin('status', 'status.id', '=', 'status_order.id_status')
-                       ->where('orders.del_flag', 0)
-                       ->where('users.del_flag', 0)
-                       ->where('status_user.id_status', 1)
-                       ->where('status_user.del_flag', 0)
-                       ->where('status_order.del_flag', 0)
-                       ->where('status.del_flag', 0);
+        $query = Orders::select(
+            'orders.id as id',
+            'orders.code as code',
+            'users.name as user_name',
+            'users.phone as user_phone',
+            'orders.address as ship_address',
+            'status_order.id_status as id_status',
+            'status.name as name_status',
+            'orders.note as note'
+        )->leftjoin('users', 'users.id', '=', 'orders.id_user')
+         ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
+         ->leftjoin('status_order', 'status_order.id_order', '=', 'orders.id')
+         ->leftjoin('status', 'status.id', '=', 'status_order.id_status')
+         ->where('orders.del_flag', 0)
+         ->where('users.del_flag', 0)
+         ->where('status_user.id_status', 1)
+         ->where('status_user.del_flag', 0)
+         ->where('status_order.del_flag', 0)
+         ->where('status.del_flag', 0);
         $role = __::get_role_code(Auth::user()->id);
         if ($role === __::ROLES['USER']) {
             $query = $query->where('orders.id_user', Auth::user()->id);
@@ -87,17 +95,24 @@ class OrdersController extends Controller
         } elseif ($role === __::ROLES['ADMIN']) {
             $users = DB::select(Sql::getUsers2CreateOrder(true, null));
         }
-        $provinces = Provinces::select('id as id', 'name as text')
-                              ->orderBy('text')
-                              ->get();
-        $units = Units::select('id', 'name')
-                      ->where('del_flag', 0)
-                      ->orderBy('name')
-                      ->get();
-        $prices = Prices::select('id', 'kg', 'amount')
-                        ->where('del_flag', 0)
-                        ->where('turn_on', 1)
-                        ->get();
+        $provinces = Provinces::select(
+            'id as id',
+            'name as text'
+        )->orderBy('text')
+         ->get();
+        $units = Units::select(
+            'id',
+            'name'
+        )->where('del_flag', 0)
+         ->orderBy('name')
+         ->get();
+        $prices = Prices::select(
+            'id',
+            'kg',
+            'amount'
+        )->where('del_flag', 0)
+         ->where('turn_on', 1)
+         ->get();
         $messages = [
             'item'     => Messages::errors()->items('item'),
             'unit'     => Messages::errors()->items('unit'),
@@ -177,11 +192,12 @@ class OrdersController extends Controller
             }
             $order_pay = OrderPay::create([
                 'id_order' => $order->id,
-                'id_pay'   => Pays::select('id')
-                                  ->where('turn_on', 1)
-                                  ->where('del_flag', 0)
-                                  ->first()
-                                  ->id
+                'id_pay'   => Pays::select(
+                    'id'
+                )->where('turn_on', 1)
+                 ->where('del_flag', 0)
+                 ->first()
+                 ->id
             ]);
             $order_price = OrderPrice::create([
                 'id_order' => $order->id,
@@ -250,16 +266,15 @@ class OrdersController extends Controller
             'order_price.id_price as id_price',
             'prices.amount as amount',
             'order_pay.id_pay as id_pay'
-        )
-                       ->leftjoin('order_price', 'order_price.id_order', '=', 'orders.id')
-                       ->leftjoin('order_pay', 'order_pay.id_order', '=', 'orders.id')
-                       ->leftjoin('prices', 'prices.id', '=', 'order_price.id_price')
-                       ->where('orders.id', $id)
-                       ->where('orders.del_flag', 0)
-                       ->where('order_price.del_flag', 0)
-                       ->where('order_pay.del_flag', 0)
-                       ->where('prices.del_flag', 0)
-                       ->first();
+        )->leftjoin('order_price', 'order_price.id_order', '=', 'orders.id')
+         ->leftjoin('order_pay', 'order_pay.id_order', '=', 'orders.id')
+         ->leftjoin('prices', 'prices.id', '=', 'order_price.id_price')
+         ->where('orders.id', $id)
+         ->where('orders.del_flag', 0)
+         ->where('order_price.del_flag', 0)
+         ->where('order_pay.del_flag', 0)
+         ->where('prices.del_flag', 0)
+         ->first();
         $role = __::get_role_code(Auth::user()->id);
         if ($role === __::ROLES['USER']) {
             if ($order->id_user != Auth::user()->id) {
@@ -275,14 +290,19 @@ class OrdersController extends Controller
         } elseif ($role === __::ROLES['ADMIN']) {
             $users = DB::select(Sql::getUsers2CreateOrder(true, null));
         }
-        $units = Units::select('id', 'name')
-                      ->where('del_flag', 0)
-                      ->orderBy('name')
-                      ->get();
-        $prices = Prices::select('id', 'kg', 'amount')
-                        ->where('del_flag', 0)
-                        ->where('turn_on', 1)
-                        ->get();
+        $units = Units::select(
+            'id',
+            'name'
+        )->where('del_flag', 0)
+         ->orderBy('name')
+         ->get();
+        $prices = Prices::select(
+            'id',
+            'kg',
+            'amount'
+        )->where('del_flag', 0)
+         ->where('turn_on', 1)
+         ->get();
         $messages = [
             'item'     => Messages::errors()->items('item'),
             'unit'     => Messages::errors()->items('unit'),
@@ -307,25 +327,30 @@ class OrdersController extends Controller
             'order_detail.quantity as quantity',
             'order_unit.id_unit as id_unit',
             'units.name as name_unit'
-        )
-                                   ->leftjoin('order_unit', 'order_unit.id_item', '=', 'order_detail.id')
-                                   ->leftjoin('units', 'units.id', '=', 'order_unit.id_unit')
-                                   ->where('order_detail.id_order', $id)
-                                   ->where('order_detail.del_flag', 0)
-                                   ->where('order_unit.del_flag', 0)
-                                   ->where('units.del_flag', 0)
-                                   ->get();
-        $provinces = Provinces::select('id as id', 'name as text')
-                              ->orderBy('text')
-                              ->get();
-        $districts = Districts::select('id as id', 'name as text')
-                              ->where('id_province', $order->id_province)
-                              ->orderBy('text')
-                              ->get();
-        $wards = Wards::select('id as id', 'name as text')
-                      ->where('id_district', $order->id_district)
-                      ->orderBy('text')
-                      ->get();
+        )->leftjoin('order_unit', 'order_unit.id_item', '=', 'order_detail.id')
+         ->leftjoin('units', 'units.id', '=', 'order_unit.id_unit')
+         ->where('order_detail.id_order', $id)
+         ->where('order_detail.del_flag', 0)
+         ->where('order_unit.del_flag', 0)
+         ->where('units.del_flag', 0)
+         ->get();
+        $provinces = Provinces::select(
+            'id as id',
+            'name as text'
+        )->orderBy('text')
+         ->get();
+        $districts = Districts::select(
+            'id as id',
+            'name as text'
+        )->where('id_province', $order->id_province)
+         ->orderBy('text')
+         ->get();
+        $wards = Wards::select(
+            'id as id',
+            'name as text'
+        )->where('id_district', $order->id_district)
+         ->orderBy('text')
+         ->get();
         return view('orders.edit', [
             'id'        => $id,
             'code'      => $order->code,
@@ -378,9 +403,10 @@ class OrdersController extends Controller
             $order->note         = Notes::order('updated', $request->code, Auth::user()->name, $date_time);
             $order->version_no   = $order->version_no + 1;
             $order->save();
-            $items = OrderDetail::select('id')
-                                ->where('id_order', $order->id)
-                                ->get();
+            $items = OrderDetail::select(
+                'id'
+            )->where('id_order', $order->id)
+             ->get();
             foreach ($items as $value) {
                 OrderDetail::find($value->id)
                            ->update([
@@ -408,11 +434,12 @@ class OrdersController extends Controller
             $order_pay = OrderPay::where('id_order', $order->id)
                                  ->where('del_flag', 0)
                                  ->update([
-                                     'id_pay'    => Pays::select('id')
-                                                        ->where('turn_on', 1)
-                                                        ->where('del_flag', 0)
-                                                        ->first()
-                                                        ->id,
+                                     'id_pay'    => Pays::select(
+                                         'id'
+                                     )->where('turn_on', 1)
+                                      ->where('del_flag', 0)
+                                      ->first()
+                                      ->id,
                                      'version_no' => DB::raw('version_no + 1')
                                  ]);
             $order_price = OrderPrice::where('id_order', $order->id)

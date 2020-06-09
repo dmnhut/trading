@@ -19,7 +19,12 @@ class PricesController extends Controller
     public function index(Request $request)
     {
         $page = empty($request->page) ? 1 : $request->page;
-        $query = Prices::select('id', 'kg', 'amount', 'turn_on')->where('del_flag', 0);
+        $query = Prices::select(
+            'id',
+            'kg',
+            'amount',
+            'turn_on'
+        )->where('del_flag', 0);
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
         $messages = [
@@ -75,9 +80,13 @@ class PricesController extends Controller
             'kg'     => $request->kg,
             'amount' => $request->amount
         ]);
-        $data = Prices::select('id', 'kg', 'amount', 'turn_on')
-                      ->where('del_flag', 0)
-                      ->get();
+        $data = Prices::select(
+            'id',
+            'kg',
+            'amount',
+            'turn_on'
+        )->where('del_flag', 0)
+         ->get();
         foreach ($data as $value) {
             $value->url = route('prices.destroy', [
                 $value->id

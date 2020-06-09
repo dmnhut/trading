@@ -22,26 +22,38 @@ class DetailShipperController extends Controller
     public function index(Request $request)
     {
         $page = empty($request->page) ? 1 : $request->page;
-        $query = User::select('users.id as id', 'users.name as name', 'users.email as email', 'users.phone')
-                     ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
-                     ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
-                     ->where('users.del_flag', 0)
-                     ->where('status.id', __::status('active'));
+        $query = User::select(
+            'users.id as id',
+            'users.name as name',
+            'users.email as email',
+            'users.phone'
+        )->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
+         ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
+         ->where('users.del_flag', 0)
+         ->where('status.id', __::status('active'));
         $role = __::get_role_code(Auth::user()->id);
         if ($role === __::ROLES['USER']) {
             $query = $query->where('users.id', Auth::user()->id);
         }
         $total = $query->count();
         $page_number = ceil($total/__::TAKE_ITEM);
-        $shippers = DetailShipper::select('users.id as id', 'detail_shipper.id as id_shipper', 'provinces.id as id_province', 'provinces.name as province', 'districts.id as id_district', 'districts.name as district', 'wards.id as id_ward', 'wards.name as ward')
-                                 ->rightjoin('users', 'users.id', '=', 'detail_shipper.id_user')
-                                 ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
-                                 ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
-                                 ->leftjoin('provinces', 'provinces.id', '=', 'detail_shipper.id_province')
-                                 ->leftjoin('districts', 'districts.id', '=', 'detail_shipper.id_district')
-                                 ->leftjoin('wards', 'wards.id', '=', 'detail_shipper.id_ward')
-                                 ->where('users.del_flag', 0)
-                                 ->where('status.name', 'active')->get();
+        $shippers = DetailShipper::select(
+            'users.id as id',
+            'detail_shipper.id as id_shipper',
+            'provinces.id as id_province',
+            'provinces.name as province',
+            'districts.id as id_district',
+            'districts.name as district',
+            'wards.id as id_ward',
+            'wards.name as ward'
+        )->rightjoin('users', 'users.id', '=', 'detail_shipper.id_user')
+         ->leftjoin('status_user', 'status_user.id_user', '=', 'users.id')
+         ->leftjoin('status', 'status.id', '=', 'status_user.id_status')
+         ->leftjoin('provinces', 'provinces.id', '=', 'detail_shipper.id_province')
+         ->leftjoin('districts', 'districts.id', '=', 'detail_shipper.id_district')
+         ->leftjoin('wards', 'wards.id', '=', 'detail_shipper.id_ward')
+         ->where('users.del_flag', 0)
+         ->where('status.name', 'active')->get();
         $detail_shippers = [];
         foreach ($shippers as $val) {
             $detail_shippers[$val->id] = [

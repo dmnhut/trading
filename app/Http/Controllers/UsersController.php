@@ -91,9 +91,11 @@ class UsersController extends Controller
                 'error'   => true
             ]);
         }
-        $data = Status::select('id', 'name')
-                      ->wherein('name', __::STATUS)
-                      ->get();
+        $data = Status::select(
+            'id',
+            'name'
+        )->wherein('name', __::STATUS)
+         ->get();
         foreach ($data as $value) {
             $status[$value->name] = $value->id;
         }

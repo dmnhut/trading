@@ -14,8 +14,10 @@ class ProvinceController extends Controller
      */
     public function index()
     {
-        return Provinces::select('id as id', 'name as text')
-                        ->orderBy('text')
-                        ->get();
+        return Provinces::select(
+            'id as id',
+            'name as text'
+        )->orderBy('text')
+         ->get();
     }
 }
