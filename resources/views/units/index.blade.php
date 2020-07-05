@@ -70,7 +70,7 @@
     @endif
     @endfor
 </ul>
-<div id="modal-add" class="modal">
+<div id="modal-add" class="modal grey darken-3">
     <div class="modal-content grey darken-3 white-text">
         <h5>Thêm đơn vị tính</h5>
         <div class="row">
@@ -108,5 +108,5 @@
 </div>
 @endsection
 @section('script')
-<script src="{{url('app/units/index.js')}}"></script>
+<script type="module" src="{{url('js/units/index/app.js')}}"></script>
 @endsection

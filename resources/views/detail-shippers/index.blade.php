@@ -102,7 +102,8 @@
                                 <form method="POST" action="{{route('detail-shippers.destroy', [$detail_shippers[$value->id]['id_shipper']])}}">
                                     @method('DELETE')
                                     @csrf
-                                    <button class="waves-effect waves-light btn btn-small grey darken-2">Xóa cài đặt</button>
+                                    {{-- <button pjax class="waves-effect waves-light btn btn-small grey darken-2">Xóa cài đặt</button> --}}
+                                    <input type="submit" class="waves-effect waves-light btn btn-small grey darken-2" value="Xóa cài đặt" />
                                 </form>
                                 @endif
                         </td>
@@ -135,7 +136,7 @@
     @endif
     @endfor
 </ul>
-<div id="modal-detail" class="modal" url="{{route('detail-shippers.detail')}}">
+<div id="modal-detail" class="modal grey darken-3" url="{{route('detail-shippers.detail')}}">
     <div class="modal-content grey darken-3 white-text">
         <h5>Thông tin chi tiết
             <div class="chip">
@@ -152,7 +153,7 @@
         <button class="modal-close waves-effect waves-green btn grey darken-2">Đóng</button>
     </div>
 </div>
-<div id="modal-area" class="modal">
+<div id="modal-area" class="modal grey darken-3 ">
     <div class="modal-content grey darken-3 white-text">
         <h5>Cài đặt khu vực
             <div class="chip">
@@ -194,11 +195,14 @@
 </div>
 @csrf
 <input type="hidden" id="url" value="{{route('detail-shippers.index')}}" />
+<input type="hidden" id="provinces" value="{{route('provinces.index')}}" />
+<input type="hidden" id="districts" value="{{route('districts.index')}}" />
+<input type="hidden" id="wards" value="{{route('wards.index')}}" />
 <input type="hidden" name="_id" />
 <input type="hidden" name="_mode" />
 <input type="hidden" name="_id_shipper" />
 <input type="hidden" name="_captions" value='@json($captions)' />
 @endsection
 @section('script')
-<script src="{{url('app/detail-shippers/index.js')}}"></script>
+<script type="module" src="{{url('js/detail-shippers/index/app.js')}}"></script>
 @endsection

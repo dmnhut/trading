@@ -18,3 +18,6 @@
     </div>
 </div>
 @endsection
+@section('script')
+<script type="module" src="{{url('js/container/app.js')}}"></script>
+@endsection

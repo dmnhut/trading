@@ -228,7 +228,7 @@
     @endfor
 </ul>
 @if($role === App\Fun\__::ROLES['ADMIN'])
-<div id="modal-assign" class="modal">
+<div id="modal-assign" class="modal grey darken-3">
     <div class="modal-content grey darken-3 white-text">
         <div class="message" style="display:none">
             <div class="section error" style="display:none">
@@ -267,7 +267,7 @@
     </div>
 </div>
 @endif
-<div id="modal-shipping" class="modal">
+<div id="modal-shipping" class="modal grey darken-3">
     <div class="modal-content grey darken-3 white-text">
         <div class="message" style="display:none">
             <div class="section error" style="display:none">
@@ -345,5 +345,5 @@
     document.querySelector("#tbl-transfers").style.display = "none";
 </script>
 @endif
-<script src="{{url('app/portal/index.js')}}"></script>
+<script type="module" src="{{url('js/portal/index/app.js')}}"></script>
 @endsection

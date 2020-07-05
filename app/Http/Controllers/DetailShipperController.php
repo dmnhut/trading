@@ -90,7 +90,8 @@ class DetailShipperController extends Controller
      */
     public function detail(Request $request)
     {
-        if ($request->id != Auth::user()->id) {
+        $role = __::get_role_code(Auth::user()->id);
+        if ($request->id != Auth::user()->id && $role != __::ROLES['ADMIN']) {
             Auth::logout();
             return [
                 'message' => Messages::errors()->permission(),
@@ -230,6 +231,6 @@ class DetailShipperController extends Controller
             'del_flag'   => 1,
             'version_no' => DB::raw('version_no + 1')
         ]);
-        return redirect(route('detail-shippers.index'));
+        return DetailShipperController::index(new Request);
     }
 }

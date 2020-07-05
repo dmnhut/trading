@@ -13,14 +13,27 @@
         "axios": "^0.19",
         "bootstrap": "^4.5.0",
         "cross-env": "^5.1",
-        "jquery": "^3.5.1",
+        "jquery": "3.5.1",
         "laravel-mix": "^4.0.7",
         "lodash": "^4.17.13",
         "popper.js": "^1.12",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.26.8",
-        "sass-loader": "^8.0.0",
+        "sass": "^1.26.9",
+        "sass-loader": "^7.3.1",
         "vue": "^2.5.17",
-        "vue-template-compiler": "^2.6.10"
+        "vue-template-compiler": "^2.6.10",
+        "webpack": "^4.43.0"
+    },
+    "dependencies": {
+        "bcrypt": "^2.0.1",
+        "canvas": "^2.6.1",
+        "here-js-api": "^2.0.0",
+        "jquery-pjax": "^2.0.1",
+        "jsbarcode": "^3.11.0",
+        "materialize-css": "^1.0.0",
+        "node-sass": "^4.14.1",
+        "qrcode": "^1.4.4",
+        "toastr": "^2.1.4",
+        "yargs-parser": "^18.1.3"
     }
 }

@@ -25,5 +25,5 @@
 <input name="shipper" type="hidden" value="{{$shipper}}" />
 @endsection
 @section('script')
-<script src="{{url('app/map/location.js')}}"></script>
+<script type="module" src="{{url('js/map/location/app.js')}}"></script>
 @endsection

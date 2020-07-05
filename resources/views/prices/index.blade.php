@@ -78,7 +78,7 @@
     @endfor
 </ul>
 @csrf
-<div id="modal-add" class="modal">
+<div id="modal-add" class="modal grey darken-3">
     <div class="modal-content grey darken-3 white-text">
         <h4>Thêm mới cài đặt giá</h4>
         <div class="input-field">
@@ -107,5 +107,5 @@
 </div>
 @endsection
 @section('script')
-<script src="{{url('app/prices/index.js')}}"></script>
+<script type="module" src="{{url('js/prices/index/app.js')}}"></script>
 @endsection

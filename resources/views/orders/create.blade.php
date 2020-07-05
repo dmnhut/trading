@@ -14,7 +14,7 @@
         </div>
     </div>
 </div>
-<form id="orders-create" action="{{route('orders.store')}}" enctype="multipart/form-data">
+<form id="orders-create" enctype="multipart/form-data">
     @csrf
     <div class="card-panel grey darken-3 white-text">
         <div class="row">
@@ -174,7 +174,7 @@
                                 <svg id="barcode"></svg>
                             </div>
                             <div class="col m4 s12 valign-wrapper">
-                                <div id="qrcode"></div>
+                                <canvas id="qrcode"></canvas>
                             </div>
                         </div>
                     </div>
@@ -197,13 +197,12 @@
 </div>
 <input type="hidden" name="_messages" value='@json($messages)' />
 <input type="hidden" name="_validator" value='@json($validator)' />
+<input type="hidden" name="_url_orders" value="{{route('orders.store')}}" />
 <input type="hidden" name="_url_provinces" value="{{route('provinces.index')}}" />
 <input type="hidden" name="_url_districts" value="{{route('districts.index')}}" />
 <input type="hidden" name="_url_wards" value="{{route('wards.index')}}" />
 <input type="hidden" name="_url_code" value="{{route('orders.code')}}" />
 @endsection
 @section('script')
-<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
-<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
-<script src="{{url('app/orders/create.js')}}"></script>
+<script type="module" src="{{url('js/orders/create/app.js')}}"></script>
 @endsection

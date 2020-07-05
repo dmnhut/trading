@@ -448,6 +448,7 @@ class PortalController extends Controller
          ->where('traces.id_order', $request->id)
          ->where('traces.del_flag', 0)
          ->where('traces_log.del_flag', 0)
+         ->orderBy('traces_log.id', 'desc')
          ->get();
         return view('portal.timeline', [
             'logs' => $logs

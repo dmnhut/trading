@@ -72,5 +72,5 @@
 <input type="hidden" name="_url_back" value="{{route('dashboard')}}" />
 @endsection
 @section('script')
-<script src="{{url('app/users/info.js')}}"></script>
+<script type="module" src="{{url('js/users/info/app.js')}}"></script>
 @endsection

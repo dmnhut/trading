@@ -20,7 +20,6 @@
     <nav class="grey darken-3">
         <div class="container">
             <div class="nav-wrapper">
-                {{-- <a href="{{route('dashboard')}}" class="brand-logo center hide-on-med-and-down"><i class="icon ion-heart"></i> <i class="ion-social-tux"></i></a> --}}
                 <a href="{{route('dashboard')}}" class="brand-logo center hide-on-med-and-down">Quản lý chuyển hàng</a>
                 @if(Auth::check())
                 <a href="#" title="Danh sách điều hướng" data-target="slide-out" class="sidenav-trigger button-collapse show-on-large right">
@@ -110,7 +109,7 @@
     </nav>
     <section class="section section-visitors lighten-4">
         <div class="row">
-            <div class="col s12 m12 l12" id="content">
+            <div class="col s12 m12 l12">
                 @yield('content')
             </div>
         </div>
@@ -134,14 +133,6 @@
     <footer class="section grey darken-3 white-text center">
         <p><b>#2020</b> <i class="icon ion-heart"></i> <i class="ion-social-tux"></i> <i class="ion-social-octocat"></i></p>
     </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/JsBarcode.all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
-    <script src="{{url('app/qrcode.js')}}"></script>
-    <script src="{{url('app/container/index.js')}}"></script>
     @yield('script')
 </body>
 

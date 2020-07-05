@@ -98,5 +98,5 @@
 <input type="hidden" name="_text" value='@json($text)' />
 @endsection
 @section('script')
-<script src="{{url('app/users/edit.js')}}"></script>
+<script type="module" src="{{url('js/users/edit/app.js')}}"></script>
 @endsection
