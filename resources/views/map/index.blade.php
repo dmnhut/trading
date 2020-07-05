@@ -20,7 +20,8 @@
 <input type="hidden" id="destination" value='@json($destination)' />
 <input type="hidden" name="order" value="{{$order}}" />
 <input type="hidden" name="_url_map_get" value="{{route('map.get')}}" />
+<input type="hidden" id="object" value="MapIndex" />
 @endsection
 @section('script')
-<script type="module" src="{{url('js/map/index/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection

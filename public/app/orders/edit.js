@@ -3,18 +3,87 @@ import {
     common
 } from '../container/index.js';
 
-$(document).ready(() => {
-
-    ready();
-});
-
 const ready = () => {
 
     common();
     onFocusOutInputNumber(['#phone', '#quantity']);
     clear();
     printCode();
+    eventHandler();
+};
 
+const printCode = () => {
+
+    JsBarcode('#barcode', document.querySelector('#code').value, {
+        width: 1,
+        height: 80,
+        displayValue: true
+    });
+    document.querySelector('#qrcode').innerHTML = '';
+    QRCode.toCanvas(
+        document.querySelector('#qrcode'), document.querySelector('#code').value
+    );
+}
+
+const clear = () => {
+
+    $('#quantity').parent().children().last().removeClass('active');
+    $('select').formSelect('destroy');
+    $('select').formSelect();
+    document.querySelector('#item').value = '';
+    document.querySelector('#quantity').value = '';
+    document.querySelector('.alert').style.display = 'none';
+    document.querySelector('.section.error').style.display = 'none';
+    document.querySelector('.message.items').style.display = 'none';
+    document.querySelector('.message.form').style.display = 'none';
+};
+
+const geocode = async text => {
+
+    window.apikey = 'rdPtJTe3tAU-3NtGSN8ZaPeJGm63EsYwqSFwxEzmBYg';
+    let platform = new H.service.Platform({
+        apikey: window.apikey
+    });
+    let geocoder = platform.getGeocodingService(),
+        geocodingParameters = {
+            searchText: text,
+            jsonattributes: 1
+        };
+    let locations = {};
+    await geocoder.geocode(
+        geocodingParameters,
+        result => {
+            locations = result.response.view[0].result[0].location.displayPosition;
+        },
+        error => {
+            console.log(error);
+        }
+    );
+    return locations;
+};
+
+const getDataItems = () => {
+
+    let result = [];
+    let arr = Array.from(document.querySelector('#items').children);
+    if (0 === arr.length) {
+        return result;
+    }
+
+    Array.from(document.querySelector('#items').children).forEach(el => {
+
+        let dataTable = {
+            item_name: el.children[0].getAttribute('data'),
+            id_unit: el.children[1].getAttribute('data'),
+            quantity: el.children[2].getAttribute('data')
+        };
+        result.push(dataTable);
+    });
+
+    return result;
+};
+
+const eventHandler = () => {
 
     document.querySelector('#btn-back').addEventListener('click', event => {
 
@@ -80,7 +149,6 @@ const ready = () => {
         document.querySelector('#items').appendChild(row);
         $('#items').parents().css('display', '');
     });
-
 
     document.querySelector('#kg').addEventListener('change', () => {
 
@@ -297,96 +365,29 @@ const ready = () => {
             });
         });
     });
-};
 
-const printCode = () => {
+    window.removeRow = node => {
 
-    JsBarcode('#barcode', document.querySelector('#code').value, {
-        width: 1,
-        height: 80,
-        displayValue: true
-    });
-    document.querySelector('#qrcode').innerHTML = '';
-    QRCode.toCanvas(
-        document.querySelector('#qrcode'), document.querySelector('#code').value
-    );
-}
-
-const clear = () => {
-
-    $('#quantity').parent().children().last().removeClass('active');
-    $('select').formSelect('destroy');
-    $('select').formSelect();
-    document.querySelector('#item').value = '';
-    document.querySelector('#quantity').value = '';
-    document.querySelector('.alert').style.display = 'none';
-    document.querySelector('.section.error').style.display = 'none';
-    document.querySelector('.message.items').style.display = 'none';
-    document.querySelector('.message.form').style.display = 'none';
-};
-
-const geocode = async text => {
-
-    window.apikey = 'rdPtJTe3tAU-3NtGSN8ZaPeJGm63EsYwqSFwxEzmBYg';
-    let platform = new H.service.Platform({
-        apikey: window.apikey
-    });
-    let geocoder = platform.getGeocodingService(),
-        geocodingParameters = {
-            searchText: text,
-            jsonattributes: 1
-        };
-    let locations = {};
-    await geocoder.geocode(
-        geocodingParameters,
-        result => {
-            locations = result.response.view[0].result[0].location.displayPosition;
-        },
-        error => {
-            console.log(error);
+        event.preventDefault();
+        node.parents('tr').remove();
+        if (0 === $('#items').children().length) {
+            $('#items').parents('table').css('display', 'none');
         }
-    );
-    return locations;
+    };
+
+    window.removeMessage = node => {
+
+        setTimeout(() => {
+
+            node.parent().css('display', 'none');
+            document.querySelector('.section.error').style.display = 'none';
+        }, 400);
+
+        document.querySelector('.message.items').style.display = 'none';
+        document.querySelector('.message.form').style.display = 'none';
+    };
 };
 
-window.removeRow = node => {
-
-    event.preventDefault();
-    node.parents('tr').remove();
-    if (0 === $('#items').children().length) {
-        $('#items').parents('table').css('display', 'none');
-    }
-};
-
-window.removeMessage = node => {
-
-    setTimeout(() => {
-
-        node.parent().css('display', 'none');
-        document.querySelector('.section.error').style.display = 'none';
-    }, 400);
-
-    document.querySelector('.message.items').style.display = 'none';
-    document.querySelector('.message.form').style.display = 'none';
-};
-
-const getDataItems = () => {
-
-    let result = [];
-    let arr = Array.from(document.querySelector('#items').children);
-    if (0 === arr.length) {
-        return result;
-    }
-
-    Array.from(document.querySelector('#items').children).forEach(el => {
-
-        let dataTable = {
-            item_name: el.children[0].getAttribute('data'),
-            id_unit: el.children[1].getAttribute('data'),
-            quantity: el.children[2].getAttribute('data')
-        };
-        result.push(dataTable);
-    });
-
-    return result;
+export {
+    ready as OrdersEdit
 };

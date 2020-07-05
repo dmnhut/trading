@@ -3,15 +3,15 @@ import {
     common
 } from '../container/index.js';
 
-$(document).ready(() => {
-
-    ready();
-});
-
 const ready = () => {
 
     common();
     onFocusOutInputNumber(['#identity_card', '#phone']);
+    eventHandler();
+};
+
+const eventHandler = () => {
+
     let text = JSON.parse($('input[name=_text]').val());
     $('.datepicker').datepicker({
         format: 'dd/mm/yyyy',
@@ -56,4 +56,8 @@ const ready = () => {
             }
         });
     });
+};
+
+export {
+    ready as UsersCreate
 };

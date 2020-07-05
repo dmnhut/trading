@@ -2,15 +2,29 @@ import {
     common
 } from '../container/index.js';
 
-$(document).ready(() => {
-
-    ready();
-});
-
 const ready = () => {
 
     common();
     formSelect();
+    eventHandler();
+};
+
+const formSelect = () => {
+
+    $('#province').formSelect('destroy');
+    $('#province').empty();
+    $('#province').formSelect();
+    $('#district').formSelect('destroy');
+    $('#district').empty();
+    $('#district').prop('disabled', true);
+    $('#district').formSelect();
+    $('#ward').formSelect('destroy');
+    $('#ward').empty();
+    $('#ward').prop('disabled', true);
+    $('#ward').formSelect();
+}
+
+const eventHandler = () => {
 
     document.querySelector('.btn-close').addEventListener('click', () => {
 
@@ -270,17 +284,6 @@ const ready = () => {
     });
 };
 
-const formSelect = () => {
-
-    $('#province').formSelect('destroy');
-    $('#province').empty();
-    $('#province').formSelect();
-    $('#district').formSelect('destroy');
-    $('#district').empty();
-    $('#district').prop('disabled', true);
-    $('#district').formSelect();
-    $('#ward').formSelect('destroy');
-    $('#ward').empty();
-    $('#ward').prop('disabled', true);
-    $('#ward').formSelect();
-}
+export {
+    ready as DetailShippers
+};

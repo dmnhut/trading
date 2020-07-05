@@ -81,10 +81,22 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
+
+/***/ "./node_modules/@babel/runtime/regenerator/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
+
+
+/***/ }),
 
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
@@ -53582,6 +53594,746 @@ module.exports = Array.isArray || function (arr) {
 
 /***/ }),
 
+/***/ "./node_modules/regenerator-runtime/runtime.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/regenerator-runtime/runtime.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new PromiseImpl(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+   true ? module.exports : undefined
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/toastr/toastr.js":
 /*!***************************************!*\
   !*** ./node_modules/toastr/toastr.js ***!
@@ -54142,6 +54894,27 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./public/app/container/common.js":
+/*!****************************************!*\
+  !*** ./public/app/container/common.js ***!
+  \****************************************/
+/*! exports provided: PageCommon */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageCommon", function() { return ready; });
+/* harmony import */ var _index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.js */ "./public/app/container/index.js");
+
+
+var ready = function ready() {
+  Object(_index_js__WEBPACK_IMPORTED_MODULE_0__["common"])();
+};
+
+
+
+/***/ }),
+
 /***/ "./public/app/container/index.js":
 /*!***************************************!*\
   !*** ./public/app/container/index.js ***!
@@ -54256,62 +55029,369 @@ var common = function common() {
 
 /***/ }),
 
+/***/ "./public/app/detail-shippers/index.js":
+/*!*********************************************!*\
+  !*** ./public/app/detail-shippers/index.js ***!
+  \*********************************************/
+/*! exports provided: DetailShippers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DetailShippers", function() { return ready; });
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
+
+
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["common"])();
+  formSelect();
+  eventHandler();
+};
+
+var formSelect = function formSelect() {
+  $('#province').formSelect('destroy');
+  $('#province').empty();
+  $('#province').formSelect();
+  $('#district').formSelect('destroy');
+  $('#district').empty();
+  $('#district').prop('disabled', true);
+  $('#district').formSelect();
+  $('#ward').formSelect('destroy');
+  $('#ward').empty();
+  $('#ward').prop('disabled', true);
+  $('#ward').formSelect();
+};
+
+var eventHandler = function eventHandler() {
+  document.querySelector('.btn-close').addEventListener('click', function () {
+    formSelect();
+  });
+  document.querySelector('#province').addEventListener('change', function () {
+    document.querySelector('.main-loader').style.display = '';
+    $('#district').empty();
+    $('#district').prop('disabled', true);
+    $('#district').formSelect();
+    $('#ward').empty();
+    $('#ward').prop('disabled', true);
+    $('#ward').formSelect();
+    axios.get(document.querySelector('#districts').value, {
+      params: {
+        id: $('#province').formSelect()[0].selectedOptions[0].value
+      }
+    }).then(function (response) {
+      response.data.forEach(function (element) {
+        var opt = document.createElement('option');
+        opt.value = element.id;
+        opt.innerHTML = element.text;
+        document.querySelector('#district').appendChild(opt);
+      });
+      $('#district').prop('disabled', false);
+      $('#district').formSelect();
+      axios.get(document.querySelector('#wards').value, {
+        params: {
+          id: $('#district').formSelect('getSelectedValues').pop()
+        }
+      }).then(function (response) {
+        response.data.forEach(function (element) {
+          var opt = document.createElement('option');
+          opt.value = element.id;
+          opt.innerHTML = element.text;
+          document.querySelector('#ward').appendChild(opt);
+        });
+        $('#ward').prop('disabled', false);
+        $('#ward').formSelect();
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function () {
+        document.querySelector('.main-loader').style.display = 'none';
+      });
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  });
+  document.querySelector('#district').addEventListener('change', function () {
+    document.querySelector('.main-loader').style.display = '';
+    $('#ward').empty();
+    $('#ward').prop('disabled', true);
+    $('#ward').formSelect();
+    axios.get(document.querySelector('#wards').value, {
+      params: {
+        id: $('#district').formSelect()[0].selectedOptions[0].value
+      }
+    }).then(function (response) {
+      response.data.forEach(function (element) {
+        var opt = document.createElement('option');
+        opt.value = element.id;
+        opt.innerHTML = element.text;
+        document.querySelector('#ward').appendChild(opt);
+      });
+      $('#ward').prop('disabled', false);
+      $('#ward').formSelect();
+    })["catch"](function (error) {
+      console.log(error);
+    })["finally"](function () {
+      document.querySelector('.main-loader').style.display = 'none';
+    });
+  });
+  document.querySelectorAll('.btn-cu').forEach(function (element) {
+    element.addEventListener('click', function () {
+      var captions = JSON.parse(document.querySelector('input[name=_captions]').value);
+
+      if ('update' === element.getAttribute('mode')) {
+        $('#btn-modal-cu').html(captions['update']);
+        document.querySelector('input[name=_mode]').value = 'update';
+      } else {
+        $('#btn-modal-cu').html(captions['add']);
+        document.querySelector('input[name=_mode]').value = 'add';
+      }
+
+      document.querySelector('#usrname').innerHTML = element.getAttribute('usrname');
+      document.querySelector('input[name=_id_shipper]').value = element.getAttribute('id_shipper');
+      document.querySelector('.main-loader').style.display = '';
+      document.querySelector('input[name=_id]').value = element.getAttribute('data');
+      axios.get(document.querySelector('#provinces').value).then(function (response) {
+        response.data.forEach(function (element) {
+          var opt = document.createElement('option');
+          opt.value = element.id;
+          opt.innerHTML = element.text;
+          document.querySelector('#province').appendChild(opt);
+        });
+
+        if ('update' === element.getAttribute('mode')) {
+          $('#province').val(element.getAttribute('province'));
+        }
+
+        $('#province').formSelect();
+        axios.get(document.querySelector('#districts').value, {
+          params: {
+            id: $('#province').formSelect('getSelectedValues').pop()
+          }
+        }).then(function (response) {
+          $('#district').empty();
+          response.data.forEach(function (element) {
+            var opt = document.createElement('option');
+            opt.value = element.id;
+            opt.innerHTML = element.text;
+            document.querySelector('#district').appendChild(opt);
+          });
+          $('#district').prop('disabled', false);
+
+          if ('update' === element.getAttribute('mode')) {
+            $('#district').val(element.getAttribute('district'));
+          }
+
+          $('#district').formSelect();
+          axios.get(document.querySelector('#wards').value, {
+            params: {
+              id: $('#district').formSelect('getSelectedValues').pop()
+            }
+          }).then(function (response) {
+            $('#ward').empty();
+            response.data.forEach(function (element) {
+              var opt = document.createElement('option');
+              opt.value = element.id;
+              opt.innerHTML = element.text;
+              document.querySelector('#ward').appendChild(opt);
+            });
+            $('#ward').prop('disabled', false);
+
+            if ('update' === element.getAttribute('mode')) {
+              $('#ward').val(element.getAttribute('ward'));
+            }
+
+            $('#ward').formSelect();
+          })["catch"](function (error) {
+            console.log(error);
+          })["finally"](function () {
+            document.querySelector('.main-loader').style.display = 'none';
+            $('#modal-area').modal('open');
+          });
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+  });
+  document.querySelectorAll('.btn-detail').forEach(function (element) {
+    var id = element.getAttribute('data');
+    element.addEventListener('click', function () {
+      document.querySelector('.main-loader').style.display = '';
+      var data = {
+        _token: document.querySelector('input[name=_token]').value,
+        id: id
+      };
+      axios.post(document.querySelector('#modal-detail').getAttribute('url'), data).then(function (response) {
+        if (response.data.error) {
+          $('.btn-close').click();
+          document.querySelector('#message').innerHTML = response.data.message;
+          document.querySelector('.main-loader').style.display = 'none';
+          $('#modal-message').modal('open');
+        } else {
+          document.querySelector('#detail-name').innerHTML = response.data.name;
+          document.querySelector('#detail-birthdate').innerHTML = response.data.birthdate;
+          document.querySelector('#detail-email').innerHTML = response.data.email;
+          document.querySelector('#detail-identity_card').innerHTML = response.data.identity_card;
+          document.querySelector('#detail-phone').innerHTML = response.data.phone;
+          document.querySelector('#detail-gender').innerHTML = response.data.gender;
+          document.querySelector('.main-loader').style.display = 'none';
+          $('#modal-detail').modal('open');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+  });
+  document.querySelector('#btn-modal-cu').addEventListener('click', function () {
+    document.querySelector('.main-loader').style.display = '';
+
+    if (0 === $('#province').formSelect('getSelectedValues') || 0 === $('#district').formSelect('getSelectedValues') || 0 === $('#ward').formSelect('getSelectedValues')) {
+      console.log('wait loading...');
+      return false;
+    }
+
+    var data = {
+      _token: document.querySelector('input[name=_token]').value,
+      user: document.querySelector('input[name=_id]').value,
+      province: $('#province').formSelect()[0].selectedOptions[0].value,
+      district: $('#district').formSelect()[0].selectedOptions[0].value,
+      ward: $('#ward').formSelect()[0].selectedOptions[0].value
+    };
+
+    if ('update' === document.querySelector('input[name=_mode]').value) {
+      data._method = 'PUT';
+    }
+
+    axios.post([document.querySelector('#url').value, '/', document.querySelector('input[name=_id_shipper]').value].join(''), data).then(function (response) {
+      if (response.data.error) {
+        $('.btn-close').click();
+      }
+
+      document.querySelector('#message').innerHTML = response.data.message;
+      document.querySelector('.main-loader').style.display = 'none';
+      $('#modal-message').modal('open');
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  });
+};
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
+/***/ "./public/app/index.js":
+/*!*****************************!*\
+  !*** ./public/app/index.js ***!
+  \*****************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var _container_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./container/common */ "./public/app/container/common.js");
+/* harmony import */ var _detail_shippers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./detail-shippers */ "./public/app/detail-shippers/index.js");
+/* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./map */ "./public/app/map/index.js");
+/* harmony import */ var _map_location__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./map/location */ "./public/app/map/location.js");
+/* harmony import */ var _orders_create__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./orders/create */ "./public/app/orders/create.js");
+/* harmony import */ var _orders_edit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./orders/edit */ "./public/app/orders/edit.js");
+/* harmony import */ var _portal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./portal */ "./public/app/portal/index.js");
+/* harmony import */ var _prices__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./prices */ "./public/app/prices/index.js");
+/* harmony import */ var _units__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./units */ "./public/app/units/index.js");
+/* harmony import */ var _users_create__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./users/create */ "./public/app/users/create.js");
+/* harmony import */ var _users_edit__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./users/edit */ "./public/app/users/edit.js");
+/* harmony import */ var _users_info__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./users/info */ "./public/app/users/info.js");
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function () {
+  var object = document.querySelector('#object').value;
+
+  if ('PageCommon' === object) {
+    Object(_container_common__WEBPACK_IMPORTED_MODULE_0__["PageCommon"])();
+  }
+
+  if ('DetailShippers' === object) {
+    Object(_detail_shippers__WEBPACK_IMPORTED_MODULE_1__["DetailShippers"])();
+  }
+
+  if ('MapIndex' === object) {
+    Object(_map__WEBPACK_IMPORTED_MODULE_2__["MapIndex"])();
+  }
+
+  if ('MapLocation' === object) {
+    Object(_map_location__WEBPACK_IMPORTED_MODULE_3__["MapLocation"])();
+  }
+
+  if ('OrdersCreate' === object) {
+    Object(_orders_create__WEBPACK_IMPORTED_MODULE_4__["OrdersCreate"])();
+  }
+
+  if ('OrdersEdit' === object) {
+    Object(_orders_edit__WEBPACK_IMPORTED_MODULE_5__["OrdersEdit"])();
+  }
+
+  if ('Portal' === object) {
+    Object(_portal__WEBPACK_IMPORTED_MODULE_6__["Portal"])();
+  }
+
+  if ('Prices' === object) {
+    Object(_prices__WEBPACK_IMPORTED_MODULE_7__["Prices"])();
+  }
+
+  if ('Units' === object) {
+    Object(_units__WEBPACK_IMPORTED_MODULE_8__["Units"])();
+  }
+
+  if ('UsersCreate' === object) {
+    Object(_users_create__WEBPACK_IMPORTED_MODULE_9__["UsersCreate"])();
+  }
+
+  if ('UsersEdit' === object) {
+    Object(_users_edit__WEBPACK_IMPORTED_MODULE_10__["UsersEdit"])();
+  }
+
+  if ('UsersInfo' === object) {
+    Object(_users_info__WEBPACK_IMPORTED_MODULE_11__["UsersInfo"])();
+  }
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
 /***/ "./public/app/map/index.js":
 /*!*********************************!*\
   !*** ./public/app/map/index.js ***!
   \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: MapIndex */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-window.apikey = 'rdPtJTe3tAU-3NtGSN8ZaPeJGm63EsYwqSFwxEzmBYg';
-window.addEventListener('resize', function () {
-  return map.getViewPort().resize();
-});
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MapIndex", function() { return ready; });
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
 
-window.onload = function () {
-  moveMapToOrder(map);
 
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["common"])();
+  eventHandler();
+};
+
+var moveMapToOrder = function moveMapToOrder(map) {
   var _JSON$parse = JSON.parse(document.querySelector('#destination').value),
       lat = _JSON$parse.lat,
       lng = _JSON$parse.lng;
-
-  var client = new H.map.Marker({
-    lat: lat,
-    lng: lng
-  });
-  client.setData(document.querySelector('#title-address').value);
-  client.addEventListener('tap', function (evt) {
-    var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
-      content: evt.target.getData()
-    });
-    ui.addBubble(bubble);
-  }, false);
-  map.addObject(client);
-  map.setZoom(18);
-  setInterval(function () {
-    getLocationShipper();
-  }, 10000);
-};
-
-var platform = new H.service.Platform({
-  apikey: window.apikey
-});
-var defaultLayers = platform.createDefaultLayers();
-var map = new H.Map(document.getElementById('map'), defaultLayers.vector.normal.map, {
-  center: {
-    lat: 0,
-    lng: 0
-  },
-  zoom: 4,
-  pixelRatio: window.devicePixelRatio || 1
-});
-var ui = H.ui.UI.createDefault(map, defaultLayers);
-var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-
-var moveMapToOrder = function moveMapToOrder(map) {
-  var _JSON$parse2 = JSON.parse(document.querySelector('#destination').value),
-      lat = _JSON$parse2.lat,
-      lng = _JSON$parse2.lng;
 
   map.setCenter({
     lat: lat,
@@ -54355,6 +55435,1563 @@ var getLocationShipper = function getLocationShipper() {
     console.log(error);
   });
 };
+
+var eventHandler = function eventHandler() {
+  window.apikey = 'rdPtJTe3tAU-3NtGSN8ZaPeJGm63EsYwqSFwxEzmBYg';
+  var platform = new H.service.Platform({
+    apikey: window.apikey
+  });
+  var defaultLayers = platform.createDefaultLayers();
+  var map = new H.Map(document.getElementById('map'), defaultLayers.vector.normal.map, {
+    center: {
+      lat: 0,
+      lng: 0
+    },
+    zoom: 4,
+    pixelRatio: window.devicePixelRatio || 1
+  });
+  var ui = H.ui.UI.createDefault(map, defaultLayers);
+  var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+  window.addEventListener('resize', function () {
+    return map.getViewPort().resize();
+  });
+
+  window.onload = function () {
+    moveMapToOrder(map);
+
+    var _JSON$parse2 = JSON.parse(document.querySelector('#destination').value),
+        lat = _JSON$parse2.lat,
+        lng = _JSON$parse2.lng;
+
+    var client = new H.map.Marker({
+      lat: lat,
+      lng: lng
+    });
+    client.setData(document.querySelector('#title-address').value);
+    client.addEventListener('tap', function (evt) {
+      var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+        content: evt.target.getData()
+      });
+      ui.addBubble(bubble);
+    }, false);
+    map.addObject(client);
+    map.setZoom(18);
+    setInterval(function () {
+      getLocationShipper();
+    }, 10000);
+  };
+
+  window.onload();
+};
+
+
+
+/***/ }),
+
+/***/ "./public/app/map/location.js":
+/*!************************************!*\
+  !*** ./public/app/map/location.js ***!
+  \************************************/
+/*! exports provided: MapLocation */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MapLocation", function() { return ready; });
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
+
+
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["common"])();
+  geoGet();
+  setInterval(function () {
+    geoGet();
+  }, 10000);
+};
+
+var geoGet = function geoGet() {
+  var status = document.querySelector('#status');
+  var lat = document.querySelector('#lat');
+  var lng = document.querySelector('#lng');
+  lat.textContent = '';
+  lng.textContent = '';
+
+  var success = function success(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    status.textContent = '';
+    lat.innerHTML = latitude;
+    lng.innerHTML = longitude;
+    axios.post(document.querySelector('input[name=_url_location_store]').value, {
+      _token: document.querySelector('input[name=_token]').value,
+      _method: document.querySelector('input[name=_method]').value,
+      order: document.querySelector('input[name=order]').value,
+      shipper: document.querySelector('input[name=shipper]').value,
+      lat: latitude,
+      lng: longitude
+    }).then(function (response) {
+      console.log(response.data);
+
+      if (response.data.error) {// TODO
+      } else {// TODO
+        }
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  };
+
+  var error = function error() {
+    status.textContent = 'Unable to retrieve your location';
+  };
+
+  if (!navigator.geolocation) {
+    status.textContent = 'Geolocation is not supported by your browser';
+  } else {
+    status.textContent = 'Locating…';
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
+};
+
+
+
+/***/ }),
+
+/***/ "./public/app/orders/create.js":
+/*!*************************************!*\
+  !*** ./public/app/orders/create.js ***!
+  \*************************************/
+/*! exports provided: OrdersCreate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrdersCreate", function() { return ready; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_1__["common"])();
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_1__["onFocusOutInputNumber"])(['#phone', '#quantity']);
+  clear();
+  printCode();
+  eventHandler();
+};
+
+var printCode = function printCode() {
+  JsBarcode('#barcode', document.querySelector('#code').value, {
+    width: 1,
+    height: 80,
+    displayValue: true
+  });
+  document.querySelector('#qrcode').innerHTML = '';
+  QRCode.toCanvas(document.querySelector('#qrcode'), document.querySelector('#code').value);
+};
+
+var clear = function clear() {
+  $('#quantity').parent().children().last().removeClass('active');
+  $('select').formSelect('destroy');
+  $('#kg').val(0);
+  $('#province').val(0);
+  $('#district').prop('disabled', true);
+  $('#ward').prop('disabled', true);
+  $('#district').empty();
+  $('#ward').empty();
+  $('#district').append(new Option('---', 0));
+  $('#ward').append(new Option('---', 0));
+  $('#district').val(0);
+  $('#ward').val(0);
+  $('select').formSelect();
+  $('#items').parents('table').css('display', 'none');
+  document.querySelector('label[for=address]').classList.remove('active');
+  document.querySelector('#total-amount').value = 0;
+  document.querySelector('#address').value = '';
+  document.querySelector('#item').value = '';
+  document.querySelector('#quantity').value = '';
+  document.querySelector('#items').innerHTML = '';
+  document.querySelector('.alert').style.display = 'none';
+  document.querySelector('.section.error').style.display = 'none';
+  document.querySelector('.message.items').style.display = 'none';
+  document.querySelector('.message.form').style.display = 'none';
+};
+
+var getDataItems = function getDataItems() {
+  var result = [];
+  var arr = Array.from(document.querySelector('#items').children);
+
+  if (0 === arr.length) {
+    return result;
+  }
+
+  Array.from(document.querySelector('#items').children).forEach(function (el) {
+    var dataTable = {
+      item_name: el.children[0].getAttribute('data'),
+      id_unit: el.children[1].getAttribute('data'),
+      quantity: el.children[2].getAttribute('data')
+    };
+    result.push(dataTable);
+  });
+  return result;
+};
+
+var geocode = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(text) {
+    var platform, geocoder, geocodingParameters, locations;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            window.apikey = 'rdPtJTe3tAU-3NtGSN8ZaPeJGm63EsYwqSFwxEzmBYg';
+            platform = new H.service.Platform({
+              apikey: window.apikey
+            });
+            geocoder = platform.getGeocodingService(), geocodingParameters = {
+              searchText: text,
+              jsonattributes: 1
+            };
+            locations = {};
+            _context.next = 6;
+            return geocoder.geocode(geocodingParameters, function (result) {
+              locations = result.response.view[0].result[0].location.displayPosition;
+            }, function (error) {
+              console.log(error);
+            });
+
+          case 6:
+            return _context.abrupt("return", locations);
+
+          case 7:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function geocode(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+var eventHandler = function eventHandler() {
+  document.querySelector('#btn-back').addEventListener('click', function (event) {
+    event.preventDefault();
+    window.location.href = document.querySelector('input[name=_url_orders]').value;
+  });
+  document.querySelector('#btn-clear').addEventListener('click', function (event) {
+    event.preventDefault();
+    clear();
+    axios.post(document.querySelector('input[name=_url_code]').value, {
+      _token: document.querySelector('input[name=_token]').value
+    }).then(function (response) {
+      document.querySelector('#code').value = response.data.code;
+      printCode();
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  });
+  document.querySelector('#btn-add-item').addEventListener('click', function (event) {
+    event.preventDefault();
+    var messages = [];
+
+    var _JSON$parse = JSON.parse($('input[name=_messages]').val()),
+        item = _JSON$parse.item,
+        unit = _JSON$parse.unit,
+        quantity = _JSON$parse.quantity;
+
+    var validate = JSON.parse($('input[name=_validator]').val());
+
+    if (0 === document.querySelector('#item').value.length) {
+      messages.push(item);
+    }
+
+    if (0 === $('#unit').formSelect('getSelectedValues').length) {
+      messages.push(unit);
+    }
+
+    if (0 === document.querySelector('#quantity').value.length) {
+      messages.push(quantity);
+    } else {
+      if (Array.isArray(document.querySelector('#quantity').value.match(new RegExp(validate.quantity.re)))) {
+        messages.push(validate.quantity.error);
+      }
+    }
+
+    if (messages.length != 0) {
+      document.querySelector('.message.items').style.display = '';
+      document.querySelector('.message.form').style.display = 'none';
+      $('.alert').html('<span class="closebtn" type="items" onclick="removeMessage($(this))">&times;</span>');
+      messages.map(function (val) {
+        $('.alert').append(val + '<br>');
+      });
+      document.querySelector('.alert').style.display = '';
+      document.querySelector('.section.error').style.display = '';
+      return;
+    }
+
+    var row = document.createElement('tr');
+    row.appendChild(document.createElement('td'));
+    row.appendChild(document.createElement('td'));
+    row.appendChild(document.createElement('td'));
+    row.appendChild(document.createElement('td'));
+    row.childNodes[0].appendChild(document.createTextNode(document.querySelector('#item').value));
+    row.childNodes[0].setAttribute('data', document.querySelector('#item').value);
+    row.childNodes[1].appendChild(document.createTextNode($('#unit>option:selected').html()));
+    row.childNodes[1].setAttribute('data', $('#unit').formSelect()[0].selectedOptions[0].value);
+    row.childNodes[2].appendChild(document.createTextNode(document.querySelector('#quantity').value));
+    row.childNodes[2].setAttribute('data', document.querySelector('#quantity').value);
+    row.childNodes[3].innerHTML = '<button class="waves-effect waves-light btn red" onclick="removeRow($(this))"><i class="small material-icons">close</i></button>';
+    document.querySelector('#items').appendChild(row);
+    $('#items').parents().css('display', '');
+  });
+  document.querySelector('#kg').addEventListener('change', function () {
+    document.querySelector('#total-amount').value = $('#kg').formSelect()[0].selectedOptions[0].value.split('-')[1] + ' VND';
+    document.querySelector('#total-amount').setAttribute('data', $('#kg').formSelect()[0].selectedOptions[0].value.split('-')[0]);
+  });
+  document.querySelector('#province').addEventListener('change', function () {
+    document.querySelector('.main-loader').style.display = '';
+    $('#district').empty();
+    $('#district').prop('disabled', true);
+    $('#district').formSelect();
+    $('#ward').empty();
+    $('#ward').prop('disabled', true);
+    $('#ward').formSelect();
+    axios.get(document.querySelector('input[name=_url_districts]').value, {
+      params: {
+        id: $('#province').formSelect()[0].selectedOptions[0].value
+      }
+    }).then(function (response) {
+      response.data.forEach(function (element) {
+        var opt = document.createElement('option');
+        opt.value = element.id;
+        opt.innerHTML = element.text;
+        document.querySelector('#district').appendChild(opt);
+      });
+      $('#district').prop('disabled', false);
+      $('#district').formSelect();
+      axios.get(document.querySelector('input[name=_url_wards]').value, {
+        params: {
+          id: $('#district').formSelect('getSelectedValues').pop()
+        }
+      }).then(function (response) {
+        response.data.forEach(function (element) {
+          var opt = document.createElement('option');
+          opt.value = element.id;
+          opt.innerHTML = element.text;
+          document.querySelector('#ward').appendChild(opt);
+        });
+        $('#ward').prop('disabled', false);
+        $('#ward').formSelect();
+        document.querySelector('#address').value = [$('#' + $('#province').parent().children()[1].id + '>li.selected').text(), $('#' + $('#district').parent().children()[1].id + '>li.selected').text(), $('#' + $('#ward').parent().children()[1].id + '>li.selected').text()].join(', ');
+        document.querySelector('label[for=address]').classList.add('active');
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function () {
+        document.querySelector('.main-loader').style.display = 'none';
+      });
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  });
+  document.querySelector('#district').addEventListener('change', function () {
+    document.querySelector('.main-loader').style.display = '';
+    $('#ward').empty();
+    $('#ward').prop('disabled', true);
+    $('#ward').formSelect();
+    axios.get(document.querySelector('input[name=_url_wards]').value, {
+      params: {
+        id: $('#district').formSelect()[0].selectedOptions[0].value
+      }
+    }).then(function (response) {
+      response.data.forEach(function (element) {
+        var opt = document.createElement('option');
+        opt.value = element.id;
+        opt.innerHTML = element.text;
+        document.querySelector('#ward').appendChild(opt);
+      });
+      $('#ward').prop('disabled', false);
+      $('#ward').formSelect();
+      document.querySelector('#address').value = [$('#' + $('#province').parent().children()[1].id + '>li.selected').text(), $('#' + $('#district').parent().children()[1].id + '>li.selected').text(), $('#' + $('#ward').parent().children()[1].id + '>li.selected').text()].join(', ');
+      document.querySelector('label[for=address]').classList.add('active');
+    })["catch"](function (error) {
+      console.log(error);
+    })["finally"](function () {
+      document.querySelector('.main-loader').style.display = 'none';
+    });
+  });
+  document.querySelector('#ward').addEventListener('change', function () {
+    document.querySelector('#address').value = [$('#' + $('#province').parent().children()[1].id + '>li.selected').text(), $('#' + $('#district').parent().children()[1].id + '>li.selected').text(), $('#' + $('#ward').parent().children()[1].id + '>li.selected').text()].join(', ');
+    document.querySelector('label[for=address]').classList.add('active');
+  });
+  document.querySelector('#btn-add').addEventListener('click', function (event) {
+    event.preventDefault();
+    var messages = [];
+
+    var _JSON$parse2 = JSON.parse($('input[name=_messages]').val()),
+        items = _JSON$parse2.items,
+        province = _JSON$parse2.province,
+        district = _JSON$parse2.district,
+        ward = _JSON$parse2.ward,
+        address = _JSON$parse2.address,
+        receiver = _JSON$parse2.receiver,
+        phone = _JSON$parse2.phone,
+        kg = _JSON$parse2.kg;
+
+    var listItems = getDataItems();
+
+    if (0 === listItems.length) {
+      messages.push(items);
+    }
+
+    if (0 === $('#province').formSelect('getSelectedValues')[0]) {
+      messages.push(province);
+    }
+
+    if (0 === $('#district').formSelect('getSelectedValues')[0]) {
+      messages.push(district);
+    }
+
+    if (0 === $('#ward').formSelect('getSelectedValues')[0]) {
+      messages.push(ward);
+    }
+
+    if ('' === document.querySelector('#address').value) {
+      messages.push(address);
+    }
+
+    if ('' === document.querySelector('#receiver').value) {
+      messages.push(receiver);
+    }
+
+    if ('' === document.querySelector('#phone').value) {
+      messages.push(phone);
+    }
+
+    if (0 === $('#kg').formSelect('getSelectedValues')[0]) {
+      messages.push(kg);
+    }
+
+    if (0 !== messages.length) {
+      document.querySelector('.message.form').style.display = '';
+      document.querySelector('.message.items').style.display = 'none';
+      $('.alert').html('<span class="closebtn" type="form" onclick="removeMessage($(this))">&times;</span>');
+      messages.map(function (val) {
+        $('.alert').append(val + '<br>');
+      });
+      document.querySelector('.alert').style.display = '';
+      document.querySelector('.section.error').style.display = '';
+      return;
+    }
+
+    var params = {};
+    params._token = document.querySelector('input[name=_token]').value;
+    params.code = document.querySelector('#code').value;
+    params.items = JSON.stringify(listItems);
+    params.user = $('#user').formSelect()[0].selectedOptions[0].value;
+    params.province = $('#province').formSelect()[0].selectedOptions[0].value;
+    params.district = $('#district').formSelect()[0].selectedOptions[0].value;
+    params.ward = $('#ward').formSelect()[0].selectedOptions[0].value;
+    params.address = document.querySelector('#address').value;
+    params.receiver = document.querySelector('#receiver').value;
+    params.phone = document.querySelector('#phone').value;
+    params.kg = $('#kg').formSelect()[0].selectedOptions[0].value.split('-')[0];
+    params.total_amount = document.querySelector('#total-amount').value.split(' ')[0];
+    geocode(params.address).then(function (value) {
+      params.lat = String(value.latitude);
+      params.lng = String(value.longitude);
+      document.querySelector('.main-loader').style.display = '';
+      axios.post(document.querySelector('input[name=_url_orders]').value, params).then(function (response) {
+        if (response.data.error) {
+          axios.post(document.querySelector('input[name=_url_code]').value, {
+            _token: document.querySelector('input[name=_token]').value
+          }).then(function (response) {
+            document.querySelector('#code').value = response.data.code;
+            printCode();
+          })["catch"](function (error) {
+            console.log(error);
+          });
+          document.querySelector('.message.form').style.display = '';
+          document.querySelector('.message.items').style.display = 'none';
+          $('.alert').html('<span class="closebtn" type="form" onclick="removeMessage($(this))">&times;</span>');
+          $('.alert').append(response.data.message);
+          document.querySelector('.alert').style.display = '';
+          document.querySelector('.section.error').style.display = '';
+          document.querySelector('.main-loader').style.display = 'none';
+        } else {
+          document.querySelector('#message').innerHTML = response.data.message;
+          document.querySelector('.main-loader').style.display = 'none';
+          document.querySelector('.alert').style.display = 'none';
+          document.querySelector('.section.error').style.display = 'none';
+          document.querySelector('.message.form').style.display = 'none';
+          document.querySelector('.message.items').style.display = 'none';
+          document.querySelector('.main-loader').style.display = 'none';
+          $('#modal-message').modal('open');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+  });
+
+  window.removeRow = function (node) {
+    event.preventDefault();
+    node.parents('tr').remove();
+
+    if (0 === $('#items').children().length) {
+      $('#items').parents('table').css('display', 'none');
+    }
+  };
+
+  window.removeMessage = function (node) {
+    setTimeout(function () {
+      node.parent().css('display', 'none');
+      document.querySelector('.section.error').style.display = 'none';
+    }, 400);
+    document.querySelector('.message.items').style.display = 'none';
+    document.querySelector('.message.form').style.display = 'none';
+  };
+};
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
+/***/ "./public/app/orders/edit.js":
+/*!***********************************!*\
+  !*** ./public/app/orders/edit.js ***!
+  \***********************************/
+/*! exports provided: OrdersEdit */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrdersEdit", function() { return ready; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_1__["common"])();
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_1__["onFocusOutInputNumber"])(['#phone', '#quantity']);
+  clear();
+  printCode();
+  eventHandler();
+};
+
+var printCode = function printCode() {
+  JsBarcode('#barcode', document.querySelector('#code').value, {
+    width: 1,
+    height: 80,
+    displayValue: true
+  });
+  document.querySelector('#qrcode').innerHTML = '';
+  QRCode.toCanvas(document.querySelector('#qrcode'), document.querySelector('#code').value);
+};
+
+var clear = function clear() {
+  $('#quantity').parent().children().last().removeClass('active');
+  $('select').formSelect('destroy');
+  $('select').formSelect();
+  document.querySelector('#item').value = '';
+  document.querySelector('#quantity').value = '';
+  document.querySelector('.alert').style.display = 'none';
+  document.querySelector('.section.error').style.display = 'none';
+  document.querySelector('.message.items').style.display = 'none';
+  document.querySelector('.message.form').style.display = 'none';
+};
+
+var geocode = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(text) {
+    var platform, geocoder, geocodingParameters, locations;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            window.apikey = 'rdPtJTe3tAU-3NtGSN8ZaPeJGm63EsYwqSFwxEzmBYg';
+            platform = new H.service.Platform({
+              apikey: window.apikey
+            });
+            geocoder = platform.getGeocodingService(), geocodingParameters = {
+              searchText: text,
+              jsonattributes: 1
+            };
+            locations = {};
+            _context.next = 6;
+            return geocoder.geocode(geocodingParameters, function (result) {
+              locations = result.response.view[0].result[0].location.displayPosition;
+            }, function (error) {
+              console.log(error);
+            });
+
+          case 6:
+            return _context.abrupt("return", locations);
+
+          case 7:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function geocode(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+var getDataItems = function getDataItems() {
+  var result = [];
+  var arr = Array.from(document.querySelector('#items').children);
+
+  if (0 === arr.length) {
+    return result;
+  }
+
+  Array.from(document.querySelector('#items').children).forEach(function (el) {
+    var dataTable = {
+      item_name: el.children[0].getAttribute('data'),
+      id_unit: el.children[1].getAttribute('data'),
+      quantity: el.children[2].getAttribute('data')
+    };
+    result.push(dataTable);
+  });
+  return result;
+};
+
+var eventHandler = function eventHandler() {
+  document.querySelector('#btn-back').addEventListener('click', function (event) {
+    event.preventDefault();
+    window.location.href = document.querySelector('input[name=_url_orders]').value.slice(0, -2);
+  });
+  document.querySelector('#btn-reload').addEventListener('click', function (event) {
+    event.preventDefault();
+    location.href = location.toLocaleString();
+  });
+  document.querySelector('#btn-add-item').addEventListener('click', function (event) {
+    event.preventDefault();
+    var messages = [];
+
+    var _JSON$parse = JSON.parse($('input[name=_messages]').val()),
+        item = _JSON$parse.item,
+        unit = _JSON$parse.unit,
+        quantity = _JSON$parse.quantity;
+
+    var validate = JSON.parse($('input[name=_validator]').val());
+
+    if (0 === document.querySelector('#item').value.length) {
+      messages.push(item);
+    }
+
+    if (0 === $('#unit').formSelect('getSelectedValues').length) {
+      messages.push(unit);
+    }
+
+    if (0 === document.querySelector('#quantity').value.length) {
+      messages.push(quantity);
+    } else {
+      if (Array.isArray(document.querySelector('#quantity').value.match(new RegExp(validate.quantity.re)))) {
+        messages.push(validate.quantity.error);
+      }
+    }
+
+    if (0 !== messages.length) {
+      document.querySelector('.message.items').style.display = '';
+      document.querySelector('.message.form').style.display = 'none';
+      $('.alert').html('<span class="closebtn" type="items" onclick="removeMessage($(this))">&times;</span>');
+      messages.map(function (val) {
+        $('.alert').append(val + '<br>');
+      });
+      document.querySelector('.alert').style.display = '';
+      document.querySelector('.section.error').style.display = '';
+      return;
+    }
+
+    var row = document.createElement('tr');
+    row.appendChild(document.createElement('td'));
+    row.appendChild(document.createElement('td'));
+    row.appendChild(document.createElement('td'));
+    row.appendChild(document.createElement('td'));
+    row.childNodes[0].appendChild(document.createTextNode(document.querySelector('#item').value));
+    row.childNodes[0].setAttribute('data', document.querySelector('#item').value);
+    row.childNodes[1].appendChild(document.createTextNode($('#unit>option:selected').html()));
+    row.childNodes[1].setAttribute('data', $('#unit').formSelect()[0].selectedOptions[0].value);
+    row.childNodes[2].appendChild(document.createTextNode(document.querySelector('#quantity').value));
+    row.childNodes[2].setAttribute('data', document.querySelector('#quantity').value);
+    row.childNodes[3].innerHTML = '<button class="waves-effect waves-light btn red" onclick="removeRow($(this))"><i class="small material-icons">close</i></button>';
+    document.querySelector('#items').appendChild(row);
+    $('#items').parents().css('display', '');
+  });
+  document.querySelector('#kg').addEventListener('change', function () {
+    document.querySelector('#total-amount').value = $('#kg').formSelect()[0].selectedOptions[0].value.split('-')[1] + ' VND';
+    document.querySelector('#total-amount').setAttribute('data', $('#kg').formSelect()[0].selectedOptions[0].value.split('-')[0]);
+  });
+  document.querySelector('#province').addEventListener('change', function () {
+    document.querySelector('.main-loader').style.display = '';
+    $('#district').empty();
+    $('#district').prop('disabled', true);
+    $('#district').formSelect();
+    $('#ward').empty();
+    $('#ward').prop('disabled', true);
+    $('#ward').formSelect();
+    axios.get(document.querySelector('input[name=_url_districts]').value, {
+      params: {
+        id: $('#province').formSelect()[0].selectedOptions[0].value
+      }
+    }).then(function (response) {
+      response.data.forEach(function (element) {
+        var opt = document.createElement('option');
+        opt.value = element.id;
+        opt.innerHTML = element.text;
+        document.querySelector('#district').appendChild(opt);
+      });
+      $('#district').prop('disabled', false);
+      $('#district').formSelect();
+      axios.get(document.querySelector('input[name=_url_wards]').value, {
+        params: {
+          id: $('#district').formSelect('getSelectedValues').pop()
+        }
+      }).then(function (response) {
+        response.data.forEach(function (element) {
+          var opt = document.createElement('option');
+          opt.value = element.id;
+          opt.innerHTML = element.text;
+          document.querySelector('#ward').appendChild(opt);
+        });
+        $('#ward').prop('disabled', false);
+        $('#ward').formSelect();
+        document.querySelector('#address').value = [$('#' + $('#province').parent().children()[1].id + '>li.selected').text(), $('#' + $('#district').parent().children()[1].id + '>li.selected').text(), $('#' + $('#ward').parent().children()[1].id + '>li.selected').text()].join(', ');
+        document.querySelector('label[for=address]').classList.add('active');
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function () {
+        document.querySelector('.main-loader').style.display = 'none';
+      });
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  });
+  document.querySelector('#district').addEventListener('change', function () {
+    document.querySelector('.main-loader').style.display = '';
+    $('#ward').empty();
+    $('#ward').prop('disabled', true);
+    $('#ward').formSelect();
+    axios.get(document.querySelector('input[name=_url_wards]').value, {
+      params: {
+        id: $('#district').formSelect()[0].selectedOptions[0].value
+      }
+    }).then(function (response) {
+      response.data.forEach(function (element) {
+        var opt = document.createElement('option');
+        opt.value = element.id;
+        opt.innerHTML = element.text;
+        document.querySelector('#ward').appendChild(opt);
+      });
+      $('#ward').prop('disabled', false);
+      $('#ward').formSelect();
+      document.querySelector('#address').value = [$('#' + $('#province').parent().children()[1].id + '>li.selected').text(), $('#' + $('#district').parent().children()[1].id + '>li.selected').text(), $('#' + $('#ward').parent().children()[1].id + '>li.selected').text()].join(', ');
+      document.querySelector('label[for=address]').classList.add('active');
+    })["catch"](function (error) {
+      console.log(error);
+    })["finally"](function () {
+      document.querySelector('.main-loader').style.display = 'none';
+    });
+  });
+  document.querySelector('#ward').addEventListener('change', function () {
+    document.querySelector('#address').value = [$('#' + $('#province').parent().children()[1].id + '>li.selected').text(), $('#' + $('#district').parent().children()[1].id + '>li.selected').text(), $('#' + $('#ward').parent().children()[1].id + '>li.selected').text()].join(', ');
+    document.querySelector('label[for=address]').classList.add('active');
+  });
+  document.querySelector('#btn-edit').addEventListener('click', function (event) {
+    event.preventDefault();
+    var messages = [];
+
+    var _JSON$parse2 = JSON.parse($('input[name=_messages]').val()),
+        items = _JSON$parse2.items,
+        province = _JSON$parse2.province,
+        district = _JSON$parse2.district,
+        ward = _JSON$parse2.ward,
+        address = _JSON$parse2.address,
+        receiver = _JSON$parse2.receiver,
+        phone = _JSON$parse2.phone,
+        kg = _JSON$parse2.kg;
+
+    var listItems = getDataItems();
+
+    if (0 === listItems.length) {
+      messages.push(items);
+    }
+
+    if (0 === $('#province').formSelect('getSelectedValues')[0]) {
+      messages.push(province);
+    }
+
+    if (0 === $('#district').formSelect('getSelectedValues')[0]) {
+      messages.push(district);
+    }
+
+    if (0 === $('#ward').formSelect('getSelectedValues')[0]) {
+      messages.push(ward);
+    }
+
+    if ('' === document.querySelector('#address').value) {
+      messages.push(address);
+    }
+
+    if ('' === document.querySelector('#receiver').value) {
+      messages.push(receiver);
+    }
+
+    if ('' === document.querySelector('#phone').value) {
+      messages.push(phone);
+    }
+
+    if (0 === $('#kg').formSelect('getSelectedValues')[0]) {
+      messages.push(kg);
+    }
+
+    if (0 !== messages.length) {
+      document.querySelector('.message.form').style.display = '';
+      document.querySelector('.message.items').style.display = 'none';
+      $('.alert').html('<span class="closebtn" type="form" onclick="removeMessage($(this))">&times;</span>');
+      messages.map(function (val) {
+        $('.alert').append(val + '<br>');
+      });
+      document.querySelector('.alert').style.display = '';
+      document.querySelector('.section.error').style.display = '';
+      return;
+    }
+
+    var params = {};
+    params._token = document.querySelector('input[name=_token]').value;
+    params._method = document.querySelector('input[name=_method]').value;
+    params.code = document.querySelector('#code').value;
+    params.items = JSON.stringify(listItems);
+    params.user = $('#user').formSelect()[0].selectedOptions[0].value;
+    params.province = $('#province').formSelect()[0].selectedOptions[0].value;
+    params.district = $('#district').formSelect()[0].selectedOptions[0].value;
+    params.ward = $('#ward').formSelect()[0].selectedOptions[0].value;
+    params.address = document.querySelector('#address').value;
+    params.receiver = document.querySelector('#receiver').value;
+    params.phone = document.querySelector('#phone').value;
+    params.kg = $('#kg').formSelect()[0].selectedOptions[0].value.split('-')[0];
+    params.total_amount = document.querySelector('#total-amount').value.split(' ')[0];
+    geocode(params.address).then(function (value) {
+      params.lat = String(value.latitude);
+      params.lng = String(value.longitude);
+      document.querySelector('.main-loader').style.display = '';
+      axios.put(document.querySelector('input[name=_url_orders]').value, params).then(function (response) {
+        if (response.data.error) {
+          document.querySelector('.message.form').style.display = '';
+          document.querySelector('.message.items').style.display = 'none';
+          $('.alert').html('<span class="closebtn" type="form" onclick="removeMessage($(this))">&times;</span>');
+          $('.alert').append(response.data.message);
+          document.querySelector('.alert').style.display = '';
+          document.querySelector('.section.error').style.display = '';
+          document.querySelector('.main-loader').style.display = 'none';
+        } else {
+          document.querySelector('#message').innerHTML = response.data.message;
+          document.querySelector('.main-loader').style.display = 'none';
+          document.querySelector('.alert').style.display = 'none';
+          document.querySelector('.section.error').style.display = 'none';
+          document.querySelector('.message.form').style.display = 'none';
+          document.querySelector('.message.items').style.display = 'none';
+          document.querySelector('.main-loader').style.display = 'none';
+          $('#modal-message').modal('open');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+  });
+
+  window.removeRow = function (node) {
+    event.preventDefault();
+    node.parents('tr').remove();
+
+    if (0 === $('#items').children().length) {
+      $('#items').parents('table').css('display', 'none');
+    }
+  };
+
+  window.removeMessage = function (node) {
+    setTimeout(function () {
+      node.parent().css('display', 'none');
+      document.querySelector('.section.error').style.display = 'none';
+    }, 400);
+    document.querySelector('.message.items').style.display = 'none';
+    document.querySelector('.message.form').style.display = 'none';
+  };
+};
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
+/***/ "./public/app/portal/index.js":
+/*!************************************!*\
+  !*** ./public/app/portal/index.js ***!
+  \************************************/
+/*! exports provided: Portal */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Portal", function() { return ready; });
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
+
+
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["common"])();
+  eventHandler();
+};
+
+var eventHandler = function eventHandler() {
+  document.querySelector('#' + document.querySelector('input[name=_tab_active').value + '>div>table').classList.add('activated');
+  document.querySelector('#' + document.querySelector('input[name=_tab_active').value + '>div>table').style.display = '';
+  document.querySelectorAll('.btn-assign').forEach(function (element) {
+    element.addEventListener('click', function () {
+      event.preventDefault();
+      document.querySelector('.message').style.display = 'none';
+      document.querySelector('.section.error').style.display = 'none';
+      document.querySelector('#modal-assign>div>h5>div>.code').innerHTML = element.getAttribute('code');
+      document.querySelector('#tbl-shippers').innerHTML = '';
+      document.querySelector('.main-loader').style.display = '';
+      axios.get(document.querySelector('input[name=_url_shippers]').value).then(function (response) {
+        if (response.data.error) {
+          document.querySelector('.message').style.display = '';
+          $('.alert').html('<span class="closebtn" onclick="removeMessage($(this))">&times;</span>');
+          $('.alert').append(response.data.message + '<br>');
+          document.querySelector('.alert').style.display = '';
+          document.querySelector('.section.error').style.display = '';
+        } else {
+          var html = '';
+          response.data.data.forEach(function (val) {
+            html += '<tr>';
+            html += '<td data-label="' + document.querySelector('#th-shippers-name').textContent + '">' + val.name + '</td>';
+            html += '<td data-label="' + document.querySelector('#th-shippers-email').textContent + '">' + val.email + '</td>';
+            html += '<td data-label="' + document.querySelector('#th-shippers-phone').textContent + '">' + val.phone + '</td>';
+            html += '<td data-label="' + document.querySelector('#th-shippers-province').textContent + '">' + val.province + '</td>';
+            html += '<td data-label="' + document.querySelector('#th-shippers-district').textContent + '">' + val.district + '</td>';
+            html += '<td data-label="' + document.querySelector('#th-shippers-ward').textContent + '">' + val.ward + '</td>';
+            html += '<td data-label="' + document.querySelector('#th-shippers-assign').textContent + '">';
+            html += '<button class="waves-effect waves-light btn btn-small green darken-3 tooltipped btn-modal-assign" data-position="top" data-tooltip="Chọn" data-order="' + element.getAttribute('data') + '" data-shipper="' + val.id_shipper + '">';
+            html += '<i class="material-icons">done</i>';
+            html += '</button>';
+            html += '</td>';
+            html += '</tr>';
+          });
+          document.querySelector('#tbl-shippers').innerHTML = html;
+          document.querySelectorAll('.btn-modal-assign').forEach(function (element) {
+            element.addEventListener('click', function () {
+              document.querySelector('.main-loader').style.display = '';
+              event.preventDefault();
+              var params = {};
+              params._token = document.querySelector('input[name=_token]').value;
+              params.order = element.getAttribute('data-order');
+              params.shipper = element.getAttribute('data-shipper');
+              axios.post(document.querySelector('input[name=_url_assign]').value, params).then(function (response) {
+                if (response.data.error) {
+                  var modal = document.querySelector('#modal-assign>div');
+                  var message = modal.querySelector('.message');
+                  message.style.display = '';
+                  var sectionError = message.querySelector('.section.error');
+                  sectionError.style.display = '';
+                  var alert = sectionError.querySelector('.alert');
+                  alert.style.display = '';
+                  alert.innerHTML = '<span class="closebtn" onclick="removeMessage($(this))">&times;</span>';
+                  alert.append(response.data.message);
+                  document.querySelector('.main-loader').style.display = 'none';
+                } else {
+                  document.querySelector('#message').innerHTML = response.data.message;
+                  document.querySelector('.main-loader').style.display = 'none';
+                  $('#modal-message').modal('open');
+                }
+              })["catch"](function (error) {
+                console.log(error);
+              });
+            });
+          });
+        }
+
+        document.querySelector('.main-loader').style.display = 'none';
+        $('#modal-assign').modal('open');
+      })["catch"](function (error) {
+        console.log(error);
+      }).then(function () {});
+    });
+  });
+  document.querySelectorAll('.tabs>li').forEach(function (element) {
+    element.addEventListener('click', function () {
+      event.preventDefault();
+      var tab = element.querySelector('a').getAttribute('href').match(/[a-z]+\-[a-z]+/).pop();
+      var page = '';
+
+      if (_container_index_js__WEBPACK_IMPORTED_MODULE_0__["NULL"] !== document.querySelector('.pagination>li.active>a')) {
+        var _page = Number(document.querySelector('.pagination>li.active>a').innerText);
+      }
+
+      window.location = document.querySelector('input[name=_url]').value + '?tab=' + tab + '&page=' + page;
+    });
+  });
+  document.querySelectorAll('.btn-change-status').forEach(function (element) {
+    element.addEventListener('click', function () {
+      event.preventDefault();
+      document.querySelector('#modal-shipping').style['max-height'] = '100%';
+      document.querySelector('#modal-shipping>div>h5>div>.code').innerHTML = element.getAttribute('code');
+      document.querySelectorAll('input[name=status]').forEach(function (radio) {
+        if (document.querySelector('input[name=_radio_assign]').value == radio.value) {
+          radio.disabled = true;
+        } else {
+          radio.disabled = false;
+        }
+      });
+      var radio = document.querySelector('input[name=status][value="' + element.getAttribute('status') + '"]');
+      radio.checked = true;
+      radio.setAttribute('disabled', 'disabled');
+      document.querySelector('input[name=_order]').value = element.getAttribute('data');
+      var modal = document.querySelector('#modal-shipping>div');
+      var message = modal.querySelector('.message');
+      message.style.display = 'none';
+      var sectionError = message.querySelector('.section.error');
+      sectionError.style.display = 'none';
+      var alert = sectionError.querySelector('.alert');
+      alert.style.display = 'none';
+      $('#modal-shipping').modal('open');
+    });
+  });
+  document.querySelector('.btn-modal-shipping').addEventListener('click', function () {
+    event.preventDefault();
+
+    if ('' === document.querySelector('input[name=_order]').value) {
+      return;
+    }
+
+    var params = {};
+    params._token = document.querySelector('input[name=_token]').value;
+    params.id = document.querySelector('input[name=_order]').value;
+    params.status = document.querySelector('input[name=status]:checked').value;
+    document.querySelector('.main-loader').style.display = '';
+    axios.post(document.querySelector('input[name=_url_status]').value, params).then(function (response) {
+      if (response.data.error) {
+        var modal = document.querySelector('#modal-shipping>div');
+        var message = modal.querySelector('.message');
+        message.style.display = '';
+        var sectionError = message.querySelector('.section.error');
+        sectionError.style.display = '';
+        var alert = sectionError.querySelector('.alert');
+        alert.style.display = '';
+        alert.innerHTML = '<span class="closebtn" onclick="removeMessage($(this))">&times;</span>';
+        alert.append(response.data.message);
+        document.querySelector('.main-loader').style.display = 'none';
+      } else {
+        var tab = document.querySelector('.tabs>li>a.active').getAttribute('href').match(/[a-z]+\-[a-z]+/).pop();
+        var page = '';
+
+        if (_container_index_js__WEBPACK_IMPORTED_MODULE_0__["NULL"] !== document.querySelector('.pagination>li.active>a')) {
+          var _page2 = Number(document.querySelector('.pagination>li.active>a').innerText);
+        }
+
+        document.querySelector('#message').innerHTML = response.data.message;
+        document.querySelector('.main-loader').style.display = 'none';
+        document.querySelector('input[name=tab]').value = tab;
+        document.querySelector('input[name=page]').value = page;
+        $('#modal-message').modal('open');
+      }
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  });
+  document.querySelectorAll('.btn-transfers').forEach(function (element) {
+    element.addEventListener('click', function () {
+      event.preventDefault();
+      var params = {};
+      params._token = document.querySelector('input[name=_token]').value;
+      params.id = element.getAttribute('data');
+      document.querySelector('.main-loader').style.display = '';
+      axios.post(document.querySelector('input[name=_url_transfers]').value, params).then(function (response) {
+        if (response.data.error) {
+          var tab = document.querySelector('#tab-transfers');
+          var message = tab.querySelector('.message');
+          message.style.display = '';
+          var sectionError = message.querySelector('.section.error');
+          sectionError.style.display = '';
+          var alert = sectionError.querySelector('.alert');
+          alert.style.display = '';
+          alert.innerHTML = '<span class="closebtn" onclick="removeMessage($(this))">&times;</span>';
+          alert.append(response.data.message);
+          document.querySelector('.main-loader').style.display = 'none';
+        } else {
+          var _tab = document.querySelector('.tabs>li>a.active').getAttribute('href').match(/[a-z]+\-[a-z]+/).pop();
+
+          var page = '';
+
+          if (_container_index_js__WEBPACK_IMPORTED_MODULE_0__["NULL"] !== document.querySelector('.pagination>li.active>a')) {
+            var _page3 = Number(document.querySelector('.pagination>li.active>a').innerText);
+          }
+
+          document.querySelector('#message').innerHTML = response.data.message;
+          document.querySelector('.main-loader').style.display = 'none';
+          document.querySelector('input[name=tab]').value = _tab;
+          document.querySelector('input[name=page]').value = page;
+          $('#modal-message').modal('open');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+  });
+  document.querySelectorAll('.btn-shipping').forEach(function (element) {
+    element.addEventListener('click', function () {
+      var params = {};
+      params._token = document.querySelector('input[name=_token]').value;
+      params.id = element.getAttribute('data');
+      document.querySelector('.main-loader').style.display = '';
+      axios.post(document.querySelector('input[name=_url_status]').value, params).then(function (response) {
+        if (response.data.error) {
+          var tab = document.querySelector('#tab-transfers');
+          var message = tab.querySelector('.message');
+          message.style.display = '';
+          var sectionError = message.querySelector('.section.error');
+          sectionError.style.display = '';
+          var alert = sectionError.querySelector('.alert');
+          alert.style.display = '';
+          alert.innerHTML = '<span class="closebtn" onclick="removeMessage($(this))">&times;</span>';
+          alert.append(response.data.message);
+          document.querySelector('.main-loader').style.display = 'none';
+        } else {
+          var _tab2 = document.querySelector('.tabs>li>a.active').getAttribute('href').match(/[a-z]+\-[a-z]+/).pop();
+
+          var page = '';
+
+          if (_container_index_js__WEBPACK_IMPORTED_MODULE_0__["NULL"] !== document.querySelector('.pagination>li.active>a')) {
+            var _page4 = Number(document.querySelector('.pagination>li.active>a').innerText);
+          }
+
+          document.querySelector('#message').innerHTML = response.data.message;
+          document.querySelector('.main-loader').style.display = 'none';
+          document.querySelector('input[name=tab]').value = _tab2;
+          document.querySelector('input[name=page]').value = page;
+          $('#modal-message').modal('open');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+  });
+  document.querySelectorAll('.btn-map').forEach(function (element) {
+    element.addEventListener('click', function () {
+      axios.post(document.querySelector('input[name=_url_map_check]').value, {
+        _token: document.querySelector('input[name=_token]').value,
+        btn: 'map',
+        id: element.getAttribute('data')
+      }).then(function (response) {
+        if (response.data.error) {
+          toastr.error(response.data.message);
+        } else {
+          document.querySelector('input[name=order]').value = element.getAttribute('data');
+          document.querySelector('form[name=frm-map]').action = document.querySelector('input[name=_url_map]').value;
+          document.querySelector('#btn-map-submit').click();
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+  });
+  document.querySelectorAll('.btn-location').forEach(function (element) {
+    element.addEventListener('click', function () {
+      axios.post(document.querySelector('input[name=_url_map_check]').value, {
+        _token: document.querySelector('input[name=_token]').value,
+        btn: 'location',
+        id: element.getAttribute('data')
+      }).then(function (response) {
+        if (response.data.error) {
+          toastr.error(response.data.message);
+        } else {
+          document.querySelector('input[name=order]').value = element.getAttribute('data');
+          document.querySelector('form[name=frm-map]').action = document.querySelector('input[name=_url_map_location]').value;
+          document.querySelector('#btn-map-submit').click();
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    });
+  });
+  document.querySelectorAll('.btn-traces').forEach(function (element) {
+    element.addEventListener('click', function (event) {
+      event.preventDefault();
+      window.location.href = document.querySelector('input[name=_url_timeline]').value + '?id=' + element.getAttribute('data');
+    });
+  });
+
+  window.removeMessage = function (node) {
+    setTimeout(function () {
+      node.parent().css('display', 'none');
+      document.querySelector('.section.error').style.display = 'none';
+    }, 400);
+    document.querySelector('.message').style.display = 'none';
+  };
+};
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
+/***/ "./public/app/prices/index.js":
+/*!************************************!*\
+  !*** ./public/app/prices/index.js ***!
+  \************************************/
+/*! exports provided: Prices */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Prices", function() { return ready; });
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
+
+
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["common"])();
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["onFocusOutInputNumber"])(['#kg', '#amount']);
+  eventHandler();
+};
+
+var eventHandler = function eventHandler() {
+  document.querySelectorAll('label').forEach(function (label) {
+    label.classList.remove('active');
+  });
+  document.querySelector('#kg').value = '';
+  document.querySelector('#amount').value = '';
+  document.querySelector('#btn-cancel').addEventListener('click', function () {
+    $('.modal').modal('close');
+    document.querySelectorAll('label').forEach(function (label) {
+      label.classList.remove('active');
+    });
+    document.querySelector('#kg').value = '';
+    document.querySelector('#amount').value = '';
+  });
+  document.querySelector('#btn-add').addEventListener('click', function () {
+    var messages = [];
+
+    var _JSON$parse = JSON.parse($('input[name=_messages]').val()),
+        amount = _JSON$parse.amount,
+        kg = _JSON$parse.kg;
+
+    if (0 === document.querySelector('#amount').value.length) {
+      messages.push(amount);
+    }
+
+    if (0 === document.querySelector('#kg').value.length) {
+      messages.push(kg);
+    }
+
+    if (messages.length > 0) {
+      toastr.error(messages.join('<br>'));
+      return;
+    }
+
+    document.querySelector('.main-loader').style.display = '';
+    axios.post(location, {
+      '_token': document.querySelector('input[name=_token]').value,
+      'kg': document.querySelector('#kg').value,
+      'amount': document.querySelector('#amount').value
+    }).then(function (response) {
+      $('#tbl').html('');
+      document.querySelectorAll('label').forEach(function (label) {
+        label.classList.remove('active');
+      });
+      document.querySelector('#kg').value = '';
+      document.querySelector('#amount').value = '';
+      var tbody = '';
+      response.data.data.map(function (val) {
+        tbody += '<tr>';
+        tbody += '<td data-label="' + document.querySelector('#th-kg').textContent + '">' + val.kg + '</td>';
+        tbody += '<td data-label="' + document.querySelector('#th-amount').textContent + '">' + val.amount + '</td>';
+        tbody += '<td data-label="' + document.querySelector('#th-status').textContent + '">';
+        tbody += '<form method="POST" action="' + location + '/status">';
+        tbody += '<input type="hidden" name="_token" value="' + document.querySelector('input[name="_token"]').value + '">';
+        tbody += '<input type="hidden" name="id" value="' + val.id + '"></input>';
+
+        if (0 == val.turn_on) {
+          tbody += '<button class="waves-effect waves-light btn btn-small green darken-3">bật</button>';
+        } else {
+          tbody += '<button class="waves-effect waves-light btn btn-small green darken-3">tắt</button>';
+        }
+
+        tbody += '</form>';
+        tbody += '</td>';
+        tbody += '<td data-label="' + document.querySelector('#th-delete').textContent + '">';
+        tbody += '<form method="POST" action="' + val.url + '">';
+        tbody += '<input type="hidden" name="_method" value="DELETE">';
+        tbody += '<input type="hidden" name="_token" value="' + document.querySelector('input[name=_token]').value + '">';
+        tbody += '<button class="waves-effect waves-light btn btn-small grey darken-2">xóa</button>';
+        tbody += '</form>';
+        tbody += '</td>';
+        tbody += '</tr>';
+      });
+      $('.modal').modal('close');
+      $('#tbl').html(tbody);
+      document.querySelector('.main-loader').style.display = 'none';
+      toastr.success(response.data.message);
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  });
+};
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
+/***/ "./public/app/units/index.js":
+/*!***********************************!*\
+  !*** ./public/app/units/index.js ***!
+  \***********************************/
+/*! exports provided: Units */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Units", function() { return ready; });
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
+
+
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["common"])();
+  eventHandler();
+};
+
+var eventHandler = function eventHandler() {
+  document.querySelectorAll('label').forEach(function (label) {
+    label.classList.remove('active');
+  });
+  document.querySelector('#name').value = '';
+  document.querySelector('.btn-close').addEventListener('click', function () {
+    $('.modal').modal('close');
+    document.querySelectorAll('label').forEach(function (label) {
+      label.classList.remove('active');
+    });
+    document.querySelector('#name').value = '';
+  });
+  document.querySelector('.fixed-action-btn').addEventListener('click', function () {
+    $('#modal-add').modal('open');
+  });
+  document.querySelector('#btn-modal-add').addEventListener('click', function () {
+    document.querySelector('.main-loader').style.display = '';
+    axios.post(document.querySelector('#url').value, {
+      _token: document.querySelector('input[name=_token]').value,
+      name: document.querySelector('#name').value.trim()
+    }).then(function (response) {
+      document.querySelector('.main-loader').style.display = 'none';
+
+      if (response.data.error) {
+        response.data.messages.map(function (val) {
+          toastr.error(val);
+        });
+      } else {
+        document.querySelector('#message').innerHTML = response.data.messages[0];
+        $('#modal-message').modal('open');
+      }
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  });
+};
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
+/***/ "./public/app/users/create.js":
+/*!************************************!*\
+  !*** ./public/app/users/create.js ***!
+  \************************************/
+/*! exports provided: UsersCreate */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersCreate", function() { return ready; });
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
+
+
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["common"])();
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["onFocusOutInputNumber"])(['#identity_card', '#phone']);
+  eventHandler();
+};
+
+var eventHandler = function eventHandler() {
+  var _document$querySelect;
+
+  var text = JSON.parse($('input[name=_text]').val());
+  $('.datepicker').datepicker({
+    format: 'dd/mm/yyyy',
+    changeMonth: true,
+    changeYear: true,
+    i18n: {
+      cancel: text['cancel'],
+      clear: text['clear'],
+      done: text['done'],
+      months: text['months'],
+      monthsShort: text['monthsShort'],
+      weekdays: text['weekdays'],
+      weekdaysShort: text['weekdaysShort'],
+      weekdaysAbbrev: text['weekdaysAbbrev']
+    }
+  });
+
+  (_document$querySelect = document.querySelector('.datepicker-calendar-container').classList).add.apply(_document$querySelect, ['grey', 'darken-3', 'white-text']);
+
+  document.querySelector('#btn-add').addEventListener('click', function (event) {
+    event.preventDefault();
+    document.querySelector('.main-loader').style.display = '';
+    var data = new FormData(document.querySelector('#users-create'));
+    $.ajax({
+      method: 'POST',
+      enctype: 'multipart/form-data',
+      url: document.querySelector('#users-create').action,
+      contentType: false,
+      processData: false,
+      data: data,
+      success: function success(response) {
+        document.querySelector('.main-loader').style.display = 'none';
+
+        if (response.error) {
+          response.messages.map(function (val) {
+            toastr.error(val);
+          });
+        } else {
+          document.querySelector('#message').innerHTML = response.messages[0];
+          $('#modal-message').modal('open');
+        }
+      }
+    });
+  });
+};
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
+/***/ "./public/app/users/edit.js":
+/*!**********************************!*\
+  !*** ./public/app/users/edit.js ***!
+  \**********************************/
+/*! exports provided: UsersEdit */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersEdit", function() { return ready; });
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
+
+
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["common"])();
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["onFocusOutInputNumber"])(['#identity_card', '#phone']);
+  eventHandler();
+};
+
+var eventHandler = function eventHandler() {
+  var _document$querySelect;
+
+  var text = JSON.parse($('input[name=_text]').val());
+  $('.datepicker').datepicker({
+    format: 'dd/mm/yyyy',
+    changeMonth: true,
+    changeYear: true,
+    i18n: {
+      cancel: text['cancel'],
+      clear: text['clear'],
+      done: text['done'],
+      months: text['months'],
+      monthsShort: text['monthsShort'],
+      weekdays: text['weekdays'],
+      weekdaysShort: text['weekdaysShort'],
+      weekdaysAbbrev: text['weekdaysAbbrev']
+    }
+  });
+
+  (_document$querySelect = document.querySelector('.datepicker-calendar-container').classList).add.apply(_document$querySelect, ['grey', 'darken-3', 'white-text']);
+
+  $('.datepicker').datepicker('setDate', new Date(document.querySelector('#birthdate').value.split('/')[2], document.querySelector('#birthdate').value.split('/')[1] - 1, document.querySelector('#birthdate').value.split('/')[0], '00', '00', '00'));
+  document.querySelector('#btn-edit').addEventListener('click', function (event) {
+    event.preventDefault();
+    document.querySelector('.main-loader').style.display = '';
+    var data = new FormData(document.querySelector('#users-edit'));
+    $.ajax({
+      method: 'POST',
+      enctype: 'multipart/form-data',
+      url: document.querySelector('#users-edit').action,
+      contentType: false,
+      processData: false,
+      data: data,
+      success: function success(response) {
+        document.querySelector('.main-loader').style.display = 'none';
+
+        if (response.error) {
+          response.messages.map(function (val) {
+            toastr.error(val);
+          });
+        } else {
+          document.querySelector('#message').innerHTML = response.messages[0];
+          $('#modal-message').modal('open');
+        }
+      }
+    });
+  });
+};
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
+/***/ "./public/app/users/info.js":
+/*!**********************************!*\
+  !*** ./public/app/users/info.js ***!
+  \**********************************/
+/*! exports provided: UsersInfo */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersInfo", function() { return ready; });
+/* harmony import */ var _container_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index.js */ "./public/app/container/index.js");
+
+
+var ready = function ready() {
+  Object(_container_index_js__WEBPACK_IMPORTED_MODULE_0__["common"])();
+  eventHandler();
+};
+
+var eventHandler = function eventHandler() {
+  document.querySelector('#btn-back').addEventListener('click', function (event) {
+    event.preventDefault();
+    window.location.href = document.querySelector('input[name=_url_back]').value;
+  });
+};
+
+
 
 /***/ }),
 
@@ -54430,16 +57067,28 @@ window.QRCode = __webpack_require__(/*! qrcode */ "./node_modules/qrcode/lib/bro
 
 /***/ }),
 
-/***/ 2:
-/*!*********************************************************************************************!*\
-  !*** multi ./resources/js/app.js ./public/app/container/index.js ./public/app/map/index.js ***!
-  \*********************************************************************************************/
+/***/ 0:
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./public/app/index.js ./public/app/container/index.js ./public/app/container/common.js ./public/app/detail-shippers/index.js ./public/app/map/index.js ./public/app/map/location.js ./public/app/orders/create.js ./public/app/orders/edit.js ./public/app/portal/index.js ./public/app/prices/index.js ./public/app/units/index.js ./public/app/users/create.js ./public/app/users/edit.js ./public/app/users/info.js ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! /var/www/trading/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /var/www/trading/public/app/index.js */"./public/app/index.js");
 __webpack_require__(/*! /var/www/trading/public/app/container/index.js */"./public/app/container/index.js");
-module.exports = __webpack_require__(/*! /var/www/trading/public/app/map/index.js */"./public/app/map/index.js");
+__webpack_require__(/*! /var/www/trading/public/app/container/common.js */"./public/app/container/common.js");
+__webpack_require__(/*! /var/www/trading/public/app/detail-shippers/index.js */"./public/app/detail-shippers/index.js");
+__webpack_require__(/*! /var/www/trading/public/app/map/index.js */"./public/app/map/index.js");
+__webpack_require__(/*! /var/www/trading/public/app/map/location.js */"./public/app/map/location.js");
+__webpack_require__(/*! /var/www/trading/public/app/orders/create.js */"./public/app/orders/create.js");
+__webpack_require__(/*! /var/www/trading/public/app/orders/edit.js */"./public/app/orders/edit.js");
+__webpack_require__(/*! /var/www/trading/public/app/portal/index.js */"./public/app/portal/index.js");
+__webpack_require__(/*! /var/www/trading/public/app/prices/index.js */"./public/app/prices/index.js");
+__webpack_require__(/*! /var/www/trading/public/app/units/index.js */"./public/app/units/index.js");
+__webpack_require__(/*! /var/www/trading/public/app/users/create.js */"./public/app/users/create.js");
+__webpack_require__(/*! /var/www/trading/public/app/users/edit.js */"./public/app/users/edit.js");
+module.exports = __webpack_require__(/*! /var/www/trading/public/app/users/info.js */"./public/app/users/info.js");
 
 
 /***/ })

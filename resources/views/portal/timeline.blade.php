@@ -17,7 +17,8 @@
         @endforeach
     </div>
 </div>
+<input type="hidden" id="object" value="PageCommon" />
 @endsection
 @section('script')
-<script type="module" src="{{url('js/container/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection

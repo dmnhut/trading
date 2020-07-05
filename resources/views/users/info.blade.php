@@ -70,7 +70,8 @@
     </div>
 </div>
 <input type="hidden" name="_url_back" value="{{route('dashboard')}}" />
+<input type="hidden" id="object" value="UsersInfo" />
 @endsection
 @section('script')
-<script type="module" src="{{url('js/users/info/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection

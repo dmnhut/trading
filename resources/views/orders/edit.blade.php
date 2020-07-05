@@ -236,7 +236,8 @@
 <input type="hidden" name="_url_provinces" value="{{route('provinces.index')}}" />
 <input type="hidden" name="_url_districts" value="{{route('districts.index')}}" />
 <input type="hidden" name="_url_wards" value="{{route('wards.index')}}" />
+<input type="hidden" id="object" value="OrdersEdit" />
 @endsection
 @section('script')
-<script type="module" src="{{url('js/orders/edit/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection

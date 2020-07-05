@@ -2,12 +2,11 @@ import {
     common
 } from './index.js';
 
-$(document).ready(() => {
+const ready = () => {
 
     common();
+};
 
-    // $(document).on('pjax:complete', () => {
-    //
-    //     common();
-    // });
-});
+export {
+    ready as PageCommon
+};

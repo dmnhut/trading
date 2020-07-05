@@ -96,6 +96,7 @@
     </div>
 </div>
 <input type="hidden" name="_messages" value='@json($messages)' />
+<input type="hidden" id="object" value="Prices" />
 @endsection
 @section('fix-btn')
 <div class="row">
@@ -107,5 +108,5 @@
 </div>
 @endsection
 @section('script')
-<script type="module" src="{{url('js/prices/index/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection

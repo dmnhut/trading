@@ -335,6 +335,7 @@
 <input type="hidden" name="_url_map_location" value="{{route('map.location')}}" />
 <input type="hidden" name="_url_timeline" value="{{route('portal.timeline')}}" />
 <input type="hidden" name="_radio_assign" value="{{\App\Fun\__::status('assign')}}" />
+<input type="hidden" id="object" value="Portal" />
 @csrf
 @endsection
 @section('script')
@@ -345,5 +346,5 @@
     document.querySelector("#tbl-transfers").style.display = "none";
 </script>
 @endif
-<script type="module" src="{{url('js/portal/index/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection

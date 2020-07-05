@@ -1,52 +1,12 @@
-window.apikey = 'rdPtJTe3tAU-3NtGSN8ZaPeJGm63EsYwqSFwxEzmBYg';
+import {
+    common
+} from '../container/index.js';
 
-window.addEventListener('resize', () => map.getViewPort().resize());
+const ready = () => {
 
-window.onload = () => {
-
-    moveMapToOrder(map);
-    let {
-        lat,
-        lng
-    } = JSON.parse(document.querySelector('#destination').value);
-    let client = new H.map.Marker({
-        lat,
-        lng
-    });
-    client.setData(document.querySelector('#title-address').value);
-
-    client.addEventListener('tap', evt => {
-
-        let bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
-            content: evt.target.getData()
-        });
-        ui.addBubble(bubble);
-    }, false);
-
-    map.addObject(client);
-    map.setZoom(18);
-
-    setInterval(() => {
-
-        getLocationShipper()
-    }, 10000);
+    common();
+    eventHandler();
 };
-
-let platform = new H.service.Platform({
-    apikey: window.apikey
-});
-let defaultLayers = platform.createDefaultLayers();
-let map = new H.Map(document.getElementById('map'),
-    defaultLayers.vector.normal.map, {
-        center: {
-            lat: 0,
-            lng: 0
-        },
-        zoom: 4,
-        pixelRatio: window.devicePixelRatio || 1
-    });
-let ui = H.ui.UI.createDefault(map, defaultLayers);
-let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
 const moveMapToOrder = map => {
 
@@ -102,4 +62,63 @@ const getLocationShipper = () => {
 
         console.log(error);
     });
+};
+
+const eventHandler = () => {
+
+    window.apikey = 'rdPtJTe3tAU-3NtGSN8ZaPeJGm63EsYwqSFwxEzmBYg';
+
+    let platform = new H.service.Platform({
+        apikey: window.apikey
+    });
+    let defaultLayers = platform.createDefaultLayers();
+    let map = new H.Map(document.getElementById('map'),
+        defaultLayers.vector.normal.map, {
+            center: {
+                lat: 0,
+                lng: 0
+            },
+            zoom: 4,
+            pixelRatio: window.devicePixelRatio || 1
+        });
+    let ui = H.ui.UI.createDefault(map, defaultLayers);
+    let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+    window.addEventListener('resize', () => map.getViewPort().resize());
+
+    window.onload = () => {
+
+        moveMapToOrder(map);
+        let {
+            lat,
+            lng
+        } = JSON.parse(document.querySelector('#destination').value);
+        let client = new H.map.Marker({
+            lat,
+            lng
+        });
+        client.setData(document.querySelector('#title-address').value);
+
+        client.addEventListener('tap', evt => {
+
+            let bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+                content: evt.target.getData()
+            });
+            ui.addBubble(bubble);
+        }, false);
+
+        map.addObject(client);
+        map.setZoom(18);
+
+        setInterval(() => {
+
+            getLocationShipper()
+        }, 10000);
+    };
+
+    window.onload();
+};
+
+export {
+    ready as MapIndex
 };

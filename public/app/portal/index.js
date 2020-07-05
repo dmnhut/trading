@@ -3,14 +3,14 @@ import {
     common
 } from '../container/index.js';
 
-$(document).ready(() => {
-
-    ready();
-});
-
 const ready = () => {
 
     common();
+    eventHandler();
+};
+
+const eventHandler = () => {
+
     document.querySelector('#' + document.querySelector('input[name=_tab_active').value + '>div>table').classList.add('activated');
     document.querySelector('#' + document.querySelector('input[name=_tab_active').value + '>div>table').style.display = '';
 
@@ -328,15 +328,19 @@ const ready = () => {
             window.location.href = document.querySelector('input[name=_url_timeline]').value + '?id=' + element.getAttribute('data');
         });
     });
+
+    window.removeMessage = node => {
+
+        setTimeout(() => {
+
+            node.parent().css('display', 'none');
+            document.querySelector('.section.error').style.display = 'none';
+        }, 400);
+
+        document.querySelector('.message').style.display = 'none';
+    };
 };
 
-window.removeMessage = node => {
-
-    setTimeout(() => {
-
-        node.parent().css('display', 'none');
-        document.querySelector('.section.error').style.display = 'none';
-    }, 400);
-
-    document.querySelector('.message').style.display = 'none';
+export {
+    ready as Portal
 };

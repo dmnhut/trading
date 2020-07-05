@@ -96,7 +96,8 @@
     </div>
 </div>
 <input type="hidden" name="_text" value='@json($text)' />
+<input type="hidden" id="object" value="UsersEdit" />
 @endsection
 @section('script')
-<script type="module" src="{{url('js/users/edit/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection

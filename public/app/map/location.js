@@ -1,3 +1,18 @@
+import {
+    common
+} from '../container/index.js';
+
+const ready = () => {
+
+    common();
+    geoGet();
+
+    setInterval(() => {
+
+        geoGet();
+    }, 10000);
+};
+
 const geoGet = () => {
 
     const status = document.querySelector('#status');
@@ -48,7 +63,6 @@ const geoGet = () => {
     }
 };
 
-setInterval(() => {
-
-    geoGet();
-}, 10000);
+export {
+    ready as MapLocation
+};

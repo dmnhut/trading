@@ -3,15 +3,14 @@ import {
     onFocusOutInputNumber
 } from '../container/index.js';
 
-$(document).ready(() => {
-
-    ready();
-});
-
 const ready = () => {
 
     common();
     onFocusOutInputNumber(['#kg', '#amount']);
+    eventHandler();
+};
+
+const eventHandler = () => {
 
     document.querySelectorAll('label').forEach(label => {
 
@@ -105,4 +104,8 @@ const ready = () => {
             console.log(error);
         });
     });
+};
+
+export {
+    ready as Prices
 };

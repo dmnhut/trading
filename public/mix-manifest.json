@@ -1,14 +1,3 @@
 {
-    "/js/container/app.js": "/js/container/app.js",
-    "/js/detail-shippers/index/app.js": "/js/detail-shippers/index/app.js",
-    "/js/map/index/app.js": "/js/map/index/app.js",
-    "/js/map/location/app.js": "/js/map/location/app.js",
-    "/js/orders/create/app.js": "/js/orders/create/app.js",
-    "/js/orders/edit/app.js": "/js/orders/edit/app.js",
-    "/js/portal/index/app.js": "/js/portal/index/app.js",
-    "/js/prices/index/app.js": "/js/prices/index/app.js",
-    "/js/units/index/app.js": "/js/units/index/app.js",
-    "/js/users/create/app.js": "/js/users/create/app.js",
-    "/js/users/edit/app.js": "/js/users/edit/app.js",
-    "/js/users/info/app.js": "/js/users/info/app.js"
+    "/js/app.js": "/js/app.js"
 }

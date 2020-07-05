@@ -23,7 +23,8 @@
 <input name="_url_location_store" type="hidden" value="{{route('map.store')}}" />
 <input name="order" type="hidden" value="{{$order}}" />
 <input name="shipper" type="hidden" value="{{$shipper}}" />
+<input type="hidden" id="object" value="MapLocation" />
 @endsection
 @section('script')
-<script type="module" src="{{url('js/map/location/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection

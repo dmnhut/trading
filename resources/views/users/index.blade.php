@@ -123,6 +123,7 @@
     @endif
     @endfor
 </ul>
+<input type="hidden" id="object" value="PageCommon" />
 @endsection
 @if($role === App\Fun\__::ROLES['ADMIN'])
 @section('fix-btn')
@@ -136,5 +137,5 @@
 @endsection
 @endif
 @section('script')
-<script type="module" src="{{url('js/container/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection

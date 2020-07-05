@@ -68,6 +68,7 @@
     @endif
     @endfor
 </ul>
+<input type="hidden" id="object" value="PageCommon" />
 @endsection
 @section('fix-btn')
 <div class="row">
@@ -79,5 +80,5 @@
 </div>
 @endsection
 @section('script')
-<script type="module" src="{{url('js/container/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection

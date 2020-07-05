@@ -202,7 +202,8 @@
 <input type="hidden" name="_mode" />
 <input type="hidden" name="_id_shipper" />
 <input type="hidden" name="_captions" value='@json($captions)' />
+<input type="hidden" id="object" value="DetailShippers" />
 @endsection
 @section('script')
-<script type="module" src="{{url('js/detail-shippers/index/app.js')}}"></script>
+<script type="module" src="{{url('js/app.js')}}"></script>
 @endsection
