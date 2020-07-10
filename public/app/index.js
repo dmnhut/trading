@@ -37,6 +37,16 @@ import {
 
 $(document).ready(() => {
 
+    $(document).on('pjax:complete', function() {
+
+        run();
+    });
+
+    run();
+});
+
+const run = () => {
+
     let object = document.querySelector('#object').value;
     if ('PageCommon' === object) {
         PageCommon();
@@ -74,4 +84,4 @@ $(document).ready(() => {
     if ('UsersInfo' === object) {
         UsersInfo();
     }
-});
+};

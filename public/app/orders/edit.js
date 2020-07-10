@@ -1,7 +1,7 @@
 import {
     onFocusOutInputNumber,
     common
-} from '../container/index.js';
+} from '../container/index';
 
 const ready = () => {
 

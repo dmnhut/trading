@@ -36,7 +36,9 @@ const common = () => {
         window.history.pushState(NULL, '', window.location.href);
     };
 
-    // $(document).pjax('a', 'body');
+    window.M.AutoInit();
+
+    $(document).pjax('a', 'body');
     $('select').formSelect();
     $('.sidenav').sidenav();
     $('.modal').modal({

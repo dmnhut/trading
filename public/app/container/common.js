@@ -1,6 +1,6 @@
 import {
     common
-} from './index.js';
+} from './index';
 
 const ready = () => {
 

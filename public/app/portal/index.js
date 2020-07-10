@@ -1,7 +1,7 @@
 import {
     NULL,
     common
-} from '../container/index.js';
+} from '../container/index';
 
 const ready = () => {
 
@@ -110,7 +110,9 @@ const eventHandler = () => {
             if (NULL !== document.querySelector('.pagination>li.active>a')) {
                 let page = Number(document.querySelector('.pagination>li.active>a').innerText);
             }
-            window.location = document.querySelector('input[name=_url]').value + '?tab=' + tab + '&page=' + page;
+            let url = document.querySelector('input[name=_url]').value + '?tab=' + tab + '&page=' + page;
+            // window.location = url;
+            $.pjax({url, container: 'body'});
         });
     });
 
