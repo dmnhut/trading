@@ -13,7 +13,7 @@ import { UsersInfo } from './users/info';
 
 $(document).ready(() => {
 
-    $(document).on('pjax:complete', function() {
+    $(document).on('pjax:complete', () => {
 
         run();
     });
