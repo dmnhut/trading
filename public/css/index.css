@@ -50,6 +50,10 @@
     color: black;
 }
 
+#modal-message {
+    width: 30% !important;
+}
+
 .dropdown-content.select-dropdown {
     height: 150px;
     background-color: #424242;
