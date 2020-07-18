@@ -307,7 +307,7 @@
         <button class="modal-close waves-effect btn btn-close grey darken-2">Hủy</button>
     </div>
 </div>
-<div id="modal-message" class="modal" style="width:30%!important;">
+<div id="modal-message" class="modal">
     <div class="modal-content">
         <form method="GET" action="{{route('portal.index')}}">
             <input type="hidden" name="page" />

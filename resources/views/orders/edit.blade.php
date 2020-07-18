@@ -220,7 +220,7 @@
         </div>
     </div>
 </form>
-<div id="modal-message" class="modal" style="width:30%!important;">
+<div id="modal-message" class="modal">
     <div class="modal-content">
         <form method="GET" action="{{route('orders.index')}}">
             <span id="message"></span>
