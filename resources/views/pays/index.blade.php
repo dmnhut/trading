@@ -67,13 +67,6 @@
                     </td>
                 </tr>
                 @endforeach
-                @if($data->count() == 0)
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                    @endif
             </tbody>
         </table>
     </div>
