@@ -25,7 +25,7 @@
         "webpack": "^4.43.0"
     },
     "dependencies": {
-        "bcrypt": "^2.0.1",
+        "bcrypt": "^5.0.0",
         "canvas": "^2.6.1",
         "here-js-api": "^2.0.0",
         "jquery-pjax": "^2.0.1",
