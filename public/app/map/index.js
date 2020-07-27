@@ -20,7 +20,7 @@ const moveMapToOrder = map => {
     });
 };
 
-const getLocationShipper = () => {
+const getLocationShipper = (map, ui) => {
 
     axios.get(document.querySelector('input[name=_url_map_get]').value, {
         params: {
@@ -110,13 +110,22 @@ const eventHandler = () => {
         map.addObject(client);
         map.setZoom(18);
 
-        setInterval(() => {
-
-            getLocationShipper()
-        }, 10000);
+        timer(map, ui);
     };
 
     window.onload();
+};
+
+const timer = (map, ui) => {
+
+    setInterval(() => {
+
+        if ('MapIndex' === document.querySelector('#object').value) {
+            getLocationShipper(map, ui);
+        } else {
+            clearInterval(timer);
+        }
+    }, 10000);
 };
 
 export {

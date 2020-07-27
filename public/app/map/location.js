@@ -6,11 +6,7 @@ const ready = () => {
 
     common();
     geoGet();
-
-    setInterval(() => {
-
-        geoGet();
-    }, 10000);
+    timer();
 };
 
 const geoGet = () => {
@@ -38,7 +34,6 @@ const geoGet = () => {
             lng: longitude
         }).then(response => {
 
-            console.log(response.data);
             if (response.data.error) {
                 // TODO
             } else {
@@ -61,6 +56,18 @@ const geoGet = () => {
         status.textContent = 'Locating…';
         navigator.geolocation.getCurrentPosition(success, error);
     }
+};
+
+const timer = () => {
+
+    setInterval(() => {
+
+        if ('MapLocation' === document.querySelector('#object').value) {
+            geoGet();
+        } else {
+            clearInterval(timer);
+        }
+    }, 10000);
 };
 
 export {
