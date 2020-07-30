@@ -33,7 +33,7 @@ const eventHandler = () => {
 
         label.classList.add('active');
     });
-    
+
     document.querySelector('.datepicker-calendar-container').classList.add(...['grey', 'darken-3', 'white-text']);
     $('.datepicker').datepicker('setDate', new Date(document.querySelector('#birthdate').value.split('/')[2], document.querySelector('#birthdate').value.split('/')[1] - 1, document.querySelector('#birthdate').value.split('/')[0], '00', '00', '00'));
 
