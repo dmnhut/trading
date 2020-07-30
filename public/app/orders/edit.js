@@ -85,10 +85,16 @@ const getDataItems = () => {
 
 const eventHandler = () => {
 
+    document.querySelectorAll('input + label').forEach(label => {
+
+        label.classList.add('active');
+    });
+
     document.querySelector('#btn-back').addEventListener('click', event => {
 
         event.preventDefault();
-        window.location.href = document.querySelector('input[name=_url_orders]').value.slice(0, -2);
+        let url = document.querySelector('input[name=_url_orders]').value.slice(0, -2);
+        $.pjax({url, container: 'body'});
     });
 
     document.querySelector('#btn-reload').addEventListener('click', event => {

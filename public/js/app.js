@@ -55018,6 +55018,11 @@ var common = function common() {
   $('.tabs').tabs();
   $('.materialboxed').materialbox();
   $('.tooltipped').tooltip();
+  document.querySelectorAll('.modal-close').forEach(function (element) {
+    element.addEventListener('click', function () {
+      document.querySelector('body').style.overflow = '';
+    });
+  });
   document.querySelectorAll('.closebtn').forEach(function (element) {
     element.addEventListener('click', function () {
       onClickCloseBtn(element);
@@ -55754,7 +55759,11 @@ var geocode = /*#__PURE__*/function () {
 var eventHandler = function eventHandler() {
   document.querySelector('#btn-back').addEventListener('click', function (event) {
     event.preventDefault();
-    window.location.href = document.querySelector('input[name=_url_orders]').value;
+    var url = document.querySelector('input[name=_url_orders]').value;
+    $.pjax({
+      url: url,
+      container: 'body'
+    });
   });
   document.querySelector('#btn-clear').addEventListener('click', function (event) {
     event.preventDefault();
@@ -56145,9 +56154,16 @@ var getDataItems = function getDataItems() {
 };
 
 var eventHandler = function eventHandler() {
+  document.querySelectorAll('input + label').forEach(function (label) {
+    label.classList.add('active');
+  });
   document.querySelector('#btn-back').addEventListener('click', function (event) {
     event.preventDefault();
-    window.location.href = document.querySelector('input[name=_url_orders]').value.slice(0, -2);
+    var url = document.querySelector('input[name=_url_orders]').value.slice(0, -2);
+    $.pjax({
+      url: url,
+      container: 'body'
+    });
   });
   document.querySelector('#btn-reload').addEventListener('click', function (event) {
     event.preventDefault();
@@ -56516,8 +56532,7 @@ var eventHandler = function eventHandler() {
         var _page = Number(document.querySelector('.pagination>li.active>a').innerText);
       }
 
-      var url = document.querySelector('input[name=_url]').value + '?tab=' + tab + '&page=' + page; // window.location = url;
-
+      var url = document.querySelector('input[name=_url]').value + '?tab=' + tab + '&page=' + page;
       $.pjax({
         url: url,
         container: 'body'
@@ -56710,7 +56725,11 @@ var eventHandler = function eventHandler() {
   document.querySelectorAll('.btn-traces').forEach(function (element) {
     element.addEventListener('click', function (event) {
       event.preventDefault();
-      window.location.href = document.querySelector('input[name=_url_timeline]').value + '?id=' + element.getAttribute('data');
+      var url = document.querySelector('input[name=_url_timeline]').value + '?id=' + element.getAttribute('data');
+      $.pjax({
+        url: url,
+        container: 'body'
+      });
     });
   });
 
@@ -57006,6 +57025,9 @@ var eventHandler = function eventHandler() {
       weekdaysAbbrev: text['weekdaysAbbrev']
     }
   });
+  document.querySelectorAll('input + label').forEach(function (label) {
+    label.classList.add('active');
+  });
 
   (_document$querySelect = document.querySelector('.datepicker-calendar-container').classList).add.apply(_document$querySelect, ['grey', 'darken-3', 'white-text']);
 
@@ -57051,7 +57073,7 @@ var eventHandler = function eventHandler() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersInfo", function() { return ready; });
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersInfo", function() { return ready; });
 /* harmony import */ var _container_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index */ "./public/app/container/index.js");
 
 
@@ -57066,11 +57088,16 @@ var eventHandler = function eventHandler() {
   });
   document.querySelector('#btn-back').addEventListener('click', function (event) {
     event.preventDefault();
-    window.location.href = document.querySelector('input[name=_url_back]').value;
+    var url = document.querySelector('input[name=_url_back]').value;
+    $.pjax({
+      url: url,
+      container: 'body'
+    });
   });
 };
 
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
 

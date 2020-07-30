@@ -49,6 +49,14 @@ const common = () => {
     $('.materialboxed').materialbox();
     $('.tooltipped').tooltip();
 
+    document.querySelectorAll('.modal-close').forEach(element => {
+
+        element.addEventListener('click', () => {
+
+            document.querySelector('body').style.overflow = '';
+        });
+    });
+
     document.querySelectorAll('.closebtn').forEach(element => {
 
         element.addEventListener('click', () => {

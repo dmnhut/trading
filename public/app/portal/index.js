@@ -111,7 +111,6 @@ const eventHandler = () => {
                 let page = Number(document.querySelector('.pagination>li.active>a').innerText);
             }
             let url = document.querySelector('input[name=_url]').value + '?tab=' + tab + '&page=' + page;
-            // window.location = url;
             $.pjax({url, container: 'body'});
         });
     });
@@ -327,7 +326,8 @@ const eventHandler = () => {
         element.addEventListener('click', event => {
 
             event.preventDefault();
-            window.location.href = document.querySelector('input[name=_url_timeline]').value + '?id=' + element.getAttribute('data');
+            let url = document.querySelector('input[name=_url_timeline]').value + '?id=' + element.getAttribute('data');
+            $.pjax({url, container: 'body'});
         });
     });
 

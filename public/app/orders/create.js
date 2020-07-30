@@ -103,7 +103,8 @@ const eventHandler = () => {
     document.querySelector('#btn-back').addEventListener('click', event => {
 
         event.preventDefault();
-        window.location.href = document.querySelector('input[name=_url_orders]').value;
+        let url = document.querySelector('input[name=_url_orders]').value;
+        $.pjax({url, container: 'body'});
     });
 
     document.querySelector('#btn-clear').addEventListener('click', event => {
