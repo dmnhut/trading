@@ -55757,6 +55757,9 @@ var geocode = /*#__PURE__*/function () {
 }();
 
 var eventHandler = function eventHandler() {
+  document.querySelectorAll('input[disabled=""] + label').forEach(function (label) {
+    label.classList.add('active');
+  });
   document.querySelector('#btn-back').addEventListener('click', function (event) {
     event.preventDefault();
     var url = document.querySelector('input[name=_url_orders]').value;

@@ -100,11 +100,19 @@ const geocode = async text => {
 
 const eventHandler = () => {
 
+    document.querySelectorAll('input[disabled=""] + label').forEach(label => {
+
+        label.classList.add('active');
+    });
+
     document.querySelector('#btn-back').addEventListener('click', event => {
 
         event.preventDefault();
         let url = document.querySelector('input[name=_url_orders]').value;
-        $.pjax({url, container: 'body'});
+        $.pjax({
+            url,
+            container: 'body'
+        });
     });
 
     document.querySelector('#btn-clear').addEventListener('click', event => {
