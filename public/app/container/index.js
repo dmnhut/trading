@@ -11,9 +11,9 @@ const onClickCloseBtn = element => {
     }, 400);
 }
 
-const onFocusOutInputNumber = ids => {
+const onFocusOutInputNumber = arrs => {
 
-    ids.forEach(id => {
+    arrs.forEach(id => {
 
         document.querySelector(id).addEventListener('focusout', () => {
 
