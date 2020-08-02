@@ -133,11 +133,12 @@ table {
         margin-top: 1.5em;
     }
 
-    tr:not(.datepicker-row), td:not([data-day], .is-empty) {
+    tr:not(.datepicker-row) {
         display: block;
     }
 
-    td:not([data-day], .is-empty) {
+    td:not([data-day]):not(.is-empty) {
+        display: block;
         border: none;
         border-bottom: 0.125em solid;
         padding-left: 50%;
