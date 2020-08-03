@@ -69,13 +69,13 @@
                     <td data-label="Ngày sinh">{{$value->birthdate}}</td>
                     <td data-label="Số điện thoại">{{$value->phone}}</td>
                     <td data-label="Số CMND">{{$value->identity_card}}</td>
-                    <td data-label="Trạng thái">
+                    <td data-label="Cập nhật">
                         <form method="GET" action="{{route('users.edit', [$value->id])}}">
                             <button class="waves-effect waves-light btn btn-small green darken-3">cập nhật</button>
                         </form>
                     </td>
                     @if($role === App\Fun\__::ROLES['ADMIN'])
-                    <td data-label="">
+                    <td data-label="Trạng thái">
                         <form method="POST" action="{{route('users.status')}}">
                             @csrf
                             <input type="hidden" name="id" value="{{$value->id}}" />
