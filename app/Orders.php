@@ -18,6 +18,8 @@ class Orders extends Model
         'id_ward',
         'total_amount',
         'address',
+        'lat',
+        'lng',
         'receiver',
         'phone',
         'note',
