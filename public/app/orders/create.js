@@ -47,7 +47,12 @@ const clear = () => {
     document.querySelector('#item').value = '';
     document.querySelector('#quantity').value = '';
     document.querySelector('#items').innerHTML = '';
-    document.querySelector('.alert').style.display = 'none';
+
+    document.querySelectorAll('.alert').forEach(element => {
+
+        element.style.display = 'none';
+    });
+
     document.querySelector('.section.error').style.display = 'none';
     document.querySelector('.message.items').style.display = 'none';
     document.querySelector('.message.form').style.display = 'none';
@@ -165,7 +170,11 @@ const eventHandler = () => {
                 $('.alert').append(val + '<br>');
             });
 
-            document.querySelector('.alert').style.display = '';
+            document.querySelectorAll('.alert').forEach(element => {
+
+                element.style.display = '';
+            });
+
             document.querySelector('.section.error').style.display = '';
             return;
         }
@@ -346,7 +355,12 @@ const eventHandler = () => {
             messages.map(val => {
                 $('.alert').append(val + '<br>');
             });
-            document.querySelector('.alert').style.display = '';
+
+            document.querySelectorAll('.alert').forEach(element => {
+
+                element.style.display = '';
+            });
+
             document.querySelector('.section.error').style.display = '';
             return;
         }
@@ -389,13 +403,23 @@ const eventHandler = () => {
                     document.querySelector('.message.items').style.display = 'none';
                     $('.alert').html('<span class="closebtn" type="form" onclick="removeMessage($(this))">&times;</span>');
                     $('.alert').append(response.data.message);
-                    document.querySelector('.alert').style.display = '';
+
+                    document.querySelectorAll('.alert').forEach(element => {
+
+                        element.style.display = '';
+                    });
+
                     document.querySelector('.section.error').style.display = '';
                     document.querySelector('.main-loader').style.display = 'none';
                 } else {
                     document.querySelector('#message').innerHTML = response.data.message;
                     document.querySelector('.main-loader').style.display = 'none';
-                    document.querySelector('.alert').style.display = 'none';
+
+                    document.querySelectorAll('.alert').forEach(element => {
+
+                        element.style.display = 'none';
+                    });
+
                     document.querySelector('.section.error').style.display = 'none';
                     document.querySelector('.message.form').style.display = 'none';
                     document.querySelector('.message.items').style.display = 'none';

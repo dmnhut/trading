@@ -54986,8 +54986,8 @@ var onClickCloseBtn = function onClickCloseBtn(element) {
   }, 400);
 };
 
-var onFocusOutInputNumber = function onFocusOutInputNumber(ids) {
-  ids.forEach(function (id) {
+var onFocusOutInputNumber = function onFocusOutInputNumber(arrs) {
+  arrs.forEach(function (id) {
     document.querySelector(id).addEventListener('focusout', function () {
       if (isNaN(Number(document.querySelector(id).value))) {
         document.querySelector(id).value = '';
@@ -55692,7 +55692,9 @@ var clear = function clear() {
   document.querySelector('#item').value = '';
   document.querySelector('#quantity').value = '';
   document.querySelector('#items').innerHTML = '';
-  document.querySelector('.alert').style.display = 'none';
+  document.querySelectorAll('.alert').forEach(function (element) {
+    element.style.display = 'none';
+  });
   document.querySelector('.section.error').style.display = 'none';
   document.querySelector('.message.items').style.display = 'none';
   document.querySelector('.message.form').style.display = 'none';
@@ -55814,7 +55816,9 @@ var eventHandler = function eventHandler() {
       messages.map(function (val) {
         $('.alert').append(val + '<br>');
       });
-      document.querySelector('.alert').style.display = '';
+      document.querySelectorAll('.alert').forEach(function (element) {
+        element.style.display = '';
+      });
       document.querySelector('.section.error').style.display = '';
       return;
     }
@@ -55968,7 +55972,9 @@ var eventHandler = function eventHandler() {
       messages.map(function (val) {
         $('.alert').append(val + '<br>');
       });
-      document.querySelector('.alert').style.display = '';
+      document.querySelectorAll('.alert').forEach(function (element) {
+        element.style.display = '';
+      });
       document.querySelector('.section.error').style.display = '';
       return;
     }
@@ -56004,13 +56010,17 @@ var eventHandler = function eventHandler() {
           document.querySelector('.message.items').style.display = 'none';
           $('.alert').html('<span class="closebtn" type="form" onclick="removeMessage($(this))">&times;</span>');
           $('.alert').append(response.data.message);
-          document.querySelector('.alert').style.display = '';
+          document.querySelectorAll('.alert').forEach(function (element) {
+            element.style.display = '';
+          });
           document.querySelector('.section.error').style.display = '';
           document.querySelector('.main-loader').style.display = 'none';
         } else {
           document.querySelector('#message').innerHTML = response.data.message;
           document.querySelector('.main-loader').style.display = 'none';
-          document.querySelector('.alert').style.display = 'none';
+          document.querySelectorAll('.alert').forEach(function (element) {
+            element.style.display = 'none';
+          });
           document.querySelector('.section.error').style.display = 'none';
           document.querySelector('.message.form').style.display = 'none';
           document.querySelector('.message.items').style.display = 'none';
@@ -56092,7 +56102,9 @@ var clear = function clear() {
   $('select').formSelect();
   document.querySelector('#item').value = '';
   document.querySelector('#quantity').value = '';
-  document.querySelector('.alert').style.display = 'none';
+  document.querySelectorAll('.alert').forEach(function (element) {
+    element.style.display = 'none';
+  });
   document.querySelector('.section.error').style.display = 'none';
   document.querySelector('.message.items').style.display = 'none';
   document.querySelector('.message.form').style.display = 'none';
@@ -56206,7 +56218,9 @@ var eventHandler = function eventHandler() {
       messages.map(function (val) {
         $('.alert').append(val + '<br>');
       });
-      document.querySelector('.alert').style.display = '';
+      document.querySelectorAll('.alert').forEach(function (element) {
+        element.style.display = '';
+      });
       document.querySelector('.section.error').style.display = '';
       return;
     }
@@ -56360,7 +56374,9 @@ var eventHandler = function eventHandler() {
       messages.map(function (val) {
         $('.alert').append(val + '<br>');
       });
-      document.querySelector('.alert').style.display = '';
+      document.querySelectorAll('.alert').forEach(function (element) {
+        element.style.display = '';
+      });
       document.querySelector('.section.error').style.display = '';
       return;
     }
@@ -56389,13 +56405,17 @@ var eventHandler = function eventHandler() {
           document.querySelector('.message.items').style.display = 'none';
           $('.alert').html('<span class="closebtn" type="form" onclick="removeMessage($(this))">&times;</span>');
           $('.alert').append(response.data.message);
-          document.querySelector('.alert').style.display = '';
+          document.querySelectorAll('.alert').forEach(function (element) {
+            element.style.display = '';
+          });
           document.querySelector('.section.error').style.display = '';
           document.querySelector('.main-loader').style.display = 'none';
         } else {
           document.querySelector('#message').innerHTML = response.data.message;
           document.querySelector('.main-loader').style.display = 'none';
-          document.querySelector('.alert').style.display = 'none';
+          document.querySelectorAll('.alert').forEach(function (element) {
+            element.style.display = 'none';
+          });
           document.querySelector('.section.error').style.display = 'none';
           document.querySelector('.message.form').style.display = 'none';
           document.querySelector('.message.items').style.display = 'none';
@@ -56456,18 +56476,28 @@ var eventHandler = function eventHandler() {
   document.querySelectorAll('.btn-assign').forEach(function (element) {
     element.addEventListener('click', function () {
       event.preventDefault();
-      document.querySelector('.message').style.display = 'none';
-      document.querySelector('.section.error').style.display = 'none';
+      document.querySelectorAll('.message').forEach(function (element) {
+        element.style.display = 'none';
+      });
+      document.querySelectorAll('.section.error').forEach(function (element) {
+        element.style.display = 'none';
+      });
       document.querySelector('#modal-assign>div>h5>div>.code').innerHTML = element.getAttribute('code');
       document.querySelector('#tbl-shippers').innerHTML = '';
       document.querySelector('.main-loader').style.display = '';
       axios.get(document.querySelector('input[name=_url_shippers]').value).then(function (response) {
         if (response.data.error) {
-          document.querySelector('.message').style.display = '';
+          document.querySelectorAll('.message').forEach(function (element) {
+            element.style.display = 'none';
+          });
           $('.alert').html('<span class="closebtn" onclick="removeMessage($(this))">&times;</span>');
           $('.alert').append(response.data.message + '<br>');
-          document.querySelector('.alert').style.display = '';
-          document.querySelector('.section.error').style.display = '';
+          document.querySelectorAll('.alert').forEach(function (element) {
+            element.style.display = 'none';
+          });
+          document.querySelectorAll('.section.error').forEach(function (element) {
+            element.style.display = 'none';
+          });
         } else {
           var html = '';
           response.data.data.forEach(function (val) {
@@ -56739,9 +56769,13 @@ var eventHandler = function eventHandler() {
   window.removeMessage = function (node) {
     setTimeout(function () {
       node.parent().css('display', 'none');
-      document.querySelector('.section.error').style.display = 'none';
+      document.querySelectorAll('.section.error').forEach(function (element) {
+        element.style.display = 'none';
+      });
     }, 400);
-    document.querySelector('.message').style.display = 'none';
+    document.querySelectorAll('.message').forEach(function (element) {
+      element.style.display = 'none';
+    });
   };
 };
 

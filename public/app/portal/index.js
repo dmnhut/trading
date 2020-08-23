@@ -19,8 +19,17 @@ const eventHandler = () => {
         element.addEventListener('click', () => {
 
             event.preventDefault();
-            document.querySelector('.message').style.display = 'none';
-            document.querySelector('.section.error').style.display = 'none';
+
+            document.querySelectorAll('.message').forEach(element => {
+
+                element.style.display = 'none';
+            });
+
+            document.querySelectorAll('.section.error').forEach(element => {
+
+                element.style.display = 'none';
+            });
+
             document.querySelector('#modal-assign>div>h5>div>.code').innerHTML = element.getAttribute('code');
             document.querySelector('#tbl-shippers').innerHTML = '';
             document.querySelector('.main-loader').style.display = '';
@@ -28,11 +37,24 @@ const eventHandler = () => {
             axios.get(document.querySelector('input[name=_url_shippers]').value).then(response => {
 
                 if (response.data.error) {
-                    document.querySelector('.message').style.display = '';
+
+                    document.querySelectorAll('.message').forEach(element => {
+
+                        element.style.display = 'none';
+                    });
+
                     $('.alert').html('<span class="closebtn" onclick="removeMessage($(this))">&times;</span>');
                     $('.alert').append(response.data.message + '<br>');
-                    document.querySelector('.alert').style.display = '';
-                    document.querySelector('.section.error').style.display = '';
+
+                    document.querySelectorAll('.alert').forEach(element => {
+
+                        element.style.display = 'none';
+                    });
+
+                    document.querySelectorAll('.section.error').forEach(element => {
+
+                        element.style.display = 'none';
+                    });
                 } else {
                     let html = '';
 
@@ -111,7 +133,10 @@ const eventHandler = () => {
                 let page = Number(document.querySelector('.pagination>li.active>a').innerText);
             }
             let url = document.querySelector('input[name=_url]').value + '?tab=' + tab + '&page=' + page;
-            $.pjax({url, container: 'body'});
+            $.pjax({
+                url,
+                container: 'body'
+            });
         });
     });
 
@@ -327,7 +352,10 @@ const eventHandler = () => {
 
             event.preventDefault();
             let url = document.querySelector('input[name=_url_timeline]').value + '?id=' + element.getAttribute('data');
-            $.pjax({url, container: 'body'});
+            $.pjax({
+                url,
+                container: 'body'
+            });
         });
     });
 
@@ -336,10 +364,18 @@ const eventHandler = () => {
         setTimeout(() => {
 
             node.parent().css('display', 'none');
-            document.querySelector('.section.error').style.display = 'none';
+
+            document.querySelectorAll('.section.error').forEach(element => {
+
+                element.style.display = 'none';
+            });
+
         }, 400);
 
-        document.querySelector('.message').style.display = 'none';
+        document.querySelectorAll('.message').forEach(element => {
+
+            element.style.display = 'none';
+        });
     };
 };
 

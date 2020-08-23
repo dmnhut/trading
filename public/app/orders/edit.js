@@ -32,7 +32,12 @@ const clear = () => {
     $('select').formSelect();
     document.querySelector('#item').value = '';
     document.querySelector('#quantity').value = '';
-    document.querySelector('.alert').style.display = 'none';
+
+    document.querySelectorAll('.alert').forEach(element => {
+
+        element.style.display = 'none';
+    });
+
     document.querySelector('.section.error').style.display = 'none';
     document.querySelector('.message.items').style.display = 'none';
     document.querySelector('.message.form').style.display = 'none';
@@ -94,7 +99,10 @@ const eventHandler = () => {
 
         event.preventDefault();
         let url = document.querySelector('input[name=_url_orders]').value.slice(0, -2);
-        $.pjax({url, container: 'body'});
+        $.pjax({
+            url,
+            container: 'body'
+        });
     });
 
     document.querySelector('#btn-reload').addEventListener('click', event => {
@@ -136,7 +144,10 @@ const eventHandler = () => {
                 $('.alert').append(val + '<br>');
             });
 
-            document.querySelector('.alert').style.display = '';
+            document.querySelectorAll('.alert').forEach(element => {
+
+                element.style.display = '';
+            });
             document.querySelector('.section.error').style.display = '';
             return;
         }
@@ -320,7 +331,11 @@ const eventHandler = () => {
                 $('.alert').append(val + '<br>');
             });
 
-            document.querySelector('.alert').style.display = '';
+            document.querySelectorAll('.alert').forEach(element => {
+
+                element.style.display = '';
+            });
+
             document.querySelector('.section.error').style.display = '';
             return;
         }
@@ -352,13 +367,23 @@ const eventHandler = () => {
                     document.querySelector('.message.items').style.display = 'none';
                     $('.alert').html('<span class="closebtn" type="form" onclick="removeMessage($(this))">&times;</span>');
                     $('.alert').append(response.data.message);
-                    document.querySelector('.alert').style.display = '';
+
+                    document.querySelectorAll('.alert').forEach(element => {
+
+                        element.style.display = '';
+                    });
+
                     document.querySelector('.section.error').style.display = '';
                     document.querySelector('.main-loader').style.display = 'none';
                 } else {
                     document.querySelector('#message').innerHTML = response.data.message;
                     document.querySelector('.main-loader').style.display = 'none';
-                    document.querySelector('.alert').style.display = 'none';
+
+                    document.querySelectorAll('.alert').forEach(element => {
+
+                        element.style.display = 'none';
+                    });
+
                     document.querySelector('.section.error').style.display = 'none';
                     document.querySelector('.message.form').style.display = 'none';
                     document.querySelector('.message.items').style.display = 'none';
