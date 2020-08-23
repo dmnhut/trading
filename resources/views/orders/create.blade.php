@@ -14,7 +14,7 @@
         </div>
     </div>
 </div>
-<form id="orders-create" enctype="multipart/form-data">
+<div>
     @csrf
     <div class="card-panel grey darken-3 white-text">
         <div class="row">
@@ -184,7 +184,7 @@
         <div class="row">
         </div>
     </div>
-</form>
+</div>
 <div id="modal-message" class="modal">
     <div class="modal-content">
         <form method="GET" action="{{route('orders.index')}}">
