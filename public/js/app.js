@@ -54955,11 +54955,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageCommon", function() { return ready; });
 /* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index */ "./public/app/container/index.js");
 
-
-var ready = function ready() {
-  Object(_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+var ready = {
+  run: function run() {
+    Object(_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+  }
 };
-
 
 
 /***/ }),
@@ -54968,99 +54968,91 @@ var ready = function ready() {
 /*!***************************************!*\
   !*** ./public/app/container/index.js ***!
   \***************************************/
-/*! exports provided: NULL, onFocusOutInputNumber, common */
+/*! exports provided: BLANK, NULL, NONE, onFocusOutInputNumber, common */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NULL", function() { return NULL; });
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BLANK", function() { return BLANK; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NULL", function() { return NULL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NONE", function() { return NONE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "onFocusOutInputNumber", function() { return onFocusOutInputNumber; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "common", function() { return common; });
 var NULL = null;
+var NONE = 'none';
+var BLANK = '';
+var MATERIAL_PLACEHOLDER = 'material-placeholder';
 
 var onClickCloseBtn = function onClickCloseBtn(element) {
   var div = element.parentElement;
+
+  var setDisplayNone = function setDisplayNone() {
+    div.style.display = NONE;
+  };
+
   div.style.opacity = '0';
-  setTimeout(function () {
-    div.style.display = 'none';
-  }, 400);
+  setTimeout(setDisplayNone, 400);
 };
 
 var onFocusOutInputNumber = function onFocusOutInputNumber(arrs) {
   arrs.forEach(function (id) {
-    document.querySelector(id).addEventListener('focusout', function () {
-      if (isNaN(Number(document.querySelector(id).value))) {
-        document.querySelector(id).value = '';
+    var idQuery = document.querySelector(id);
+    idQuery.addEventListener('focusout', inputNumberFocusOutHandler);
+
+    var inputNumberFocusOutHandler = function inputNumberFocusOutHandler() {
+      if (isNaN(Number(idQuery.value))) {
+        idQuery.value = BLANK;
       }
-    });
+    };
   });
 };
 
-var common = function common() {
-  var _document$querySelect;
+var onInputSearchHandler = function onInputSearchHandler(txtQuery) {
+  if (NULL != txtQuery.value) {
+    var count = 0;
+    var rows = tableActivatedQuery.rows;
 
-  console.clear();
-  console.log('%cHACK!', 'color:black;font-family:monospace;font-size:2rem;font-weight:bold');
-  window.history.pushState(NULL, '', window.location.href);
-
-  window.onpopstate = function () {
-    window.history.pushState(NULL, '', window.location.href);
-  };
-
-  window.M.AutoInit();
-  $(document).pjax('a', 'body');
-  $('select').formSelect();
-  $('.sidenav').sidenav();
-  $('.modal').modal({
-    opacity: '0.2',
-    dismissible: false
-  });
-  $('.tabs').tabs();
-  $('.materialboxed').materialbox();
-  $('.tooltipped').tooltip();
-  document.querySelectorAll('.modal-close').forEach(function (element) {
-    element.addEventListener('click', function () {
-      document.querySelector('body').style.overflow = '';
-    });
-  });
-  document.querySelectorAll('.closebtn').forEach(function (element) {
-    element.addEventListener('click', function () {
-      onClickCloseBtn(element);
-    });
-  });
-  (_document$querySelect = document.querySelector('#txt')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.addEventListener('input', function () {
-    if (NULL != document.querySelector('#txt').value) {
-      var count = 0;
-      var rows = document.querySelector('table.activated').rows;
-
-      for (var i = 1; i < rows.length; i++) {
-        for (var cell = 0; cell < rows[i].childNodes.length; cell++) {
-          if (NULL != rows[i].childNodes[cell].firstChild) {
-            if ('material-placeholder' === rows[i].childNodes[cell].firstChild.className) {
-              continue;
-            }
+    for (var i = 1; i < rows.length; i = i + 1) {
+      for (var cell = 0; cell < rows[i].childNodes.length; cell = cell + 1) {
+        if (NULL != rows[i].childNodes[cell].firstChild) {
+          if (MATERIAL_PLACEHOLDER === rows[i].childNodes[cell].firstChild.className) {
+            continue;
           }
+        }
 
-          if (0 !== rows[i].childNodes[cell].childNodes.length) {
-            if (rows[i].childNodes[cell].childNodes[0].nodeValue.toUpperCase().indexOf(document.querySelector('#txt').value.toUpperCase()) > -1) {
-              rows[i].style.display = '';
-              count++;
-              break;
-            } else {
-              rows[i].style.display = 'none';
-            }
+        if (0 !== rows[i].childNodes[cell].childNodes.length) {
+          if (rows[i].childNodes[cell].childNodes[0].nodeValue.toUpperCase().indexOf(txtQuery.value.toUpperCase()) > -1) {
+            rows[i].style.display = BLANK;
+            count++;
+            break;
+          } else {
+            rows[i].style.display = NONE;
           }
         }
       }
-
-      if (0 === count) {
-        rows[0].style.display = 'none';
-      } else {
-        rows[0].style.display = '';
-      }
     }
-  });
-  toastr.options = {
+
+    if (0 === count) {
+      rows[0].style.display = NONE;
+    } else {
+      rows[0].style.display = BLANK;
+    }
+  }
+};
+
+var common = function common() {
+  var documentQuery = $(document);
+  var selectQuery = $('select');
+  var sidenavQuery = $('.sidenav');
+  var modalQuery = $('.modal');
+  var tabsQuery = $('.tabs');
+  var materialboxedQuery = $('.materialboxed');
+  var tooltippedQuery = $('.tooltipped');
+  var modalCloseQuery = document.querySelectorAll('.modal-close');
+  var closebtnQuery = document.querySelectorAll('.closebtn');
+  var txtQuery = document.querySelector('#txt');
+  var tableActivatedQuery = document.querySelector('table.activated');
+  var options = {
     'closeButton': false,
     'debug': false,
     'newestOnTop': false,
@@ -55077,6 +55069,41 @@ var common = function common() {
     'showMethod': 'fadeIn',
     'hideMethod': 'fadeOut'
   };
+  console.clear();
+  console.log('%cHACK!', 'color:black;font-family:monospace;font-size:2rem;font-weight:bold');
+  window.history.pushState(NULL, BLANK, window.location.href);
+
+  window.onpopstate = function () {
+    window.history.pushState(NULL, BLANK, window.location.href);
+  };
+
+  window.M.AutoInit();
+  documentQuery.pjax('a', 'body');
+  selectQuery.formSelect();
+  sidenavQuery.sidenav();
+  modalQuery.modal({
+    opacity: '0.2',
+    dismissible: false
+  });
+  tabsQuery.tabs();
+  materialboxedQuery.materialbox();
+  tooltippedQuery.tooltip();
+  modalCloseQuery.forEach(function (element) {
+    var bodyQuery = document.querySelector('body');
+    element.addEventListener('click', onModalCloseHandler);
+
+    var onModalCloseHandler = function onModalCloseHandler() {
+      body.style.overflow = BLANK;
+    };
+  });
+  closebtnQuery.forEach(function (element) {
+    element.addEventListener('click', onClickCloseBtn(element));
+  });
+  txtQuery === null || txtQuery === void 0 ? void 0 : txtQuery.addEventListener('input', onInputSearchHandler({
+    txtQuery: txtQuery,
+    tableActivatedQuery: tableActivatedQuery
+  }));
+  toastr.options = options;
 };
 
 
@@ -55096,11 +55123,12 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DetailShippers", function() { return ready; });
 /* harmony import */ var _container_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index */ "./public/app/container/index.js");
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
-  formSelect();
-  eventHandler();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+    formSelect();
+    eventHandler();
+  }
 };
 
 var formSelect = function formSelect() {
@@ -55370,64 +55398,33 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-$(document).ready(function () {
-  $(document).on('pjax:complete', function () {
-    run();
-  });
+var ready = {
+  PageCommon: _container_common__WEBPACK_IMPORTED_MODULE_0__["PageCommon"],
+  DetailShippers: _detail_shippers__WEBPACK_IMPORTED_MODULE_1__["DetailShippers"],
+  MapIndex: _map__WEBPACK_IMPORTED_MODULE_2__["MapIndex"],
+  MapLocation: _map_location__WEBPACK_IMPORTED_MODULE_3__["MapLocation"],
+  OrdersCreate: _orders_create__WEBPACK_IMPORTED_MODULE_4__["OrdersCreate"],
+  OrdersEdit: _orders_edit__WEBPACK_IMPORTED_MODULE_5__["OrdersEdit"],
+  Portal: _portal__WEBPACK_IMPORTED_MODULE_6__["Portal"],
+  Prices: _prices__WEBPACK_IMPORTED_MODULE_7__["Prices"],
+  Units: _units__WEBPACK_IMPORTED_MODULE_8__["Units"],
+  UsersCreate: _users_create__WEBPACK_IMPORTED_MODULE_9__["UsersCreate"],
+  UsersEdit: _users_edit__WEBPACK_IMPORTED_MODULE_10__["UsersEdit"],
+  UsersInfo: _users_info__WEBPACK_IMPORTED_MODULE_11__["UsersInfo"]
+};
+var documentQuery = $(document);
+
+var onReadyHandler = function onReadyHandler() {
+  documentQuery.on('pjax:complete', run);
   run();
-});
+};
 
 var run = function run() {
-  var object = document.querySelector('#object').value;
-
-  if ('PageCommon' === object) {
-    Object(_container_common__WEBPACK_IMPORTED_MODULE_0__["PageCommon"])();
-  }
-
-  if ('DetailShippers' === object) {
-    Object(_detail_shippers__WEBPACK_IMPORTED_MODULE_1__["DetailShippers"])();
-  }
-
-  if ('MapIndex' === object) {
-    Object(_map__WEBPACK_IMPORTED_MODULE_2__["MapIndex"])();
-  }
-
-  if ('MapLocation' === object) {
-    Object(_map_location__WEBPACK_IMPORTED_MODULE_3__["MapLocation"])();
-  }
-
-  if ('OrdersCreate' === object) {
-    Object(_orders_create__WEBPACK_IMPORTED_MODULE_4__["OrdersCreate"])();
-  }
-
-  if ('OrdersEdit' === object) {
-    Object(_orders_edit__WEBPACK_IMPORTED_MODULE_5__["OrdersEdit"])();
-  }
-
-  if ('Portal' === object) {
-    Object(_portal__WEBPACK_IMPORTED_MODULE_6__["Portal"])();
-  }
-
-  if ('Prices' === object) {
-    Object(_prices__WEBPACK_IMPORTED_MODULE_7__["Prices"])();
-  }
-
-  if ('Units' === object) {
-    Object(_units__WEBPACK_IMPORTED_MODULE_8__["Units"])();
-  }
-
-  if ('UsersCreate' === object) {
-    Object(_users_create__WEBPACK_IMPORTED_MODULE_9__["UsersCreate"])();
-  }
-
-  if ('UsersEdit' === object) {
-    Object(_users_edit__WEBPACK_IMPORTED_MODULE_10__["UsersEdit"])();
-  }
-
-  if ('UsersInfo' === object) {
-    Object(_users_info__WEBPACK_IMPORTED_MODULE_11__["UsersInfo"])();
-  }
+  var objectQuery = document.querySelector('#object');
+  ready[objectQuery.value].run();
 };
+
+documentQuery.ready(onReadyHandler);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
@@ -55444,10 +55441,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MapIndex", function() { return ready; });
 /* harmony import */ var _container_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index */ "./public/app/container/index.js");
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
-  eventHandler();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+    eventHandler();
+  }
 };
 
 var moveMapToOrder = function moveMapToOrder(map) {
@@ -55570,11 +55568,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MapLocation", function() { return ready; });
 /* harmony import */ var _container_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index */ "./public/app/container/index.js");
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
-  geoGet();
-  timer();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+    geoGet();
+    timer();
+  }
 };
 
 var geoGet = function geoGet() {
@@ -55652,13 +55651,14 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_1__["common"])();
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_1__["onFocusOutInputNumber"])(['#phone', '#quantity']);
-  clear();
-  printCode();
-  eventHandler();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_1__["common"])();
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_1__["onFocusOutInputNumber"])(['#phone', '#quantity']);
+    clear();
+    printCode();
+    eventHandler();
+  }
 };
 
 var printCode = function printCode() {
@@ -56077,13 +56077,14 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_1__["common"])();
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_1__["onFocusOutInputNumber"])(['#phone', '#quantity']);
-  clear();
-  printCode();
-  eventHandler();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_1__["common"])();
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_1__["onFocusOutInputNumber"])(['#phone', '#quantity']);
+    clear();
+    printCode();
+    eventHandler();
+  }
 };
 
 var printCode = function printCode() {
@@ -56464,10 +56465,11 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Portal", function() { return ready; });
 /* harmony import */ var _container_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index */ "./public/app/container/index.js");
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
-  eventHandler();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+    eventHandler();
+  }
 };
 
 var eventHandler = function eventHandler() {
@@ -56796,11 +56798,12 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Prices", function() { return ready; });
 /* harmony import */ var _container_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index */ "./public/app/container/index.js");
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["onFocusOutInputNumber"])(['#kg', '#amount']);
-  eventHandler();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["onFocusOutInputNumber"])(['#kg', '#amount']);
+    eventHandler();
+  }
 };
 
 var eventHandler = function eventHandler() {
@@ -56903,10 +56906,11 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Units", function() { return ready; });
 /* harmony import */ var _container_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index */ "./public/app/container/index.js");
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
-  eventHandler();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+    eventHandler();
+  }
 };
 
 var eventHandler = function eventHandler() {
@@ -56963,11 +56967,12 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersCreate", function() { return ready; });
 /* harmony import */ var _container_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index */ "./public/app/container/index.js");
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["onFocusOutInputNumber"])(['#identity_card', '#phone']);
-  eventHandler();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["onFocusOutInputNumber"])(['#identity_card', '#phone']);
+    eventHandler();
+  }
 };
 
 var eventHandler = function eventHandler() {
@@ -57036,11 +57041,12 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersEdit", function() { return ready; });
 /* harmony import */ var _container_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index */ "./public/app/container/index.js");
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["onFocusOutInputNumber"])(['#identity_card', '#phone']);
-  eventHandler();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["onFocusOutInputNumber"])(['#identity_card', '#phone']);
+    eventHandler();
+  }
 };
 
 var eventHandler = function eventHandler() {
@@ -57113,10 +57119,11 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UsersInfo", function() { return ready; });
 /* harmony import */ var _container_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../container/index */ "./public/app/container/index.js");
 
-
-var ready = function ready() {
-  Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
-  eventHandler();
+var ready = {
+  run: function run() {
+    Object(_container_index__WEBPACK_IMPORTED_MODULE_0__["common"])();
+    eventHandler();
+  }
 };
 
 var eventHandler = function eventHandler() {

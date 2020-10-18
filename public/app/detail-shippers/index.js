@@ -2,11 +2,13 @@ import {
     common
 } from '../container/index';
 
-const ready = () => {
-
-    common();
-    formSelect();
-    eventHandler();
+const ready = {
+    run: function() {
+        
+        common();
+        formSelect();
+        eventHandler();
+    }
 };
 
 const formSelect = () => {

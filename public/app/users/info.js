@@ -2,11 +2,12 @@ import {
     common
 } from '../container/index';
 
-const ready = () => {
-
-    common();
-    eventHandler();
-
+const ready = {
+    run: function() {
+        
+        common();
+        eventHandler();
+    }
 };
 
 const eventHandler = () => {
@@ -20,7 +21,10 @@ const eventHandler = () => {
 
         event.preventDefault();
         let url = document.querySelector('input[name=_url_back]').value;
-        $.pjax({url, container: 'body'});
+        $.pjax({
+            url,
+            container: 'body'
+        });
     });
 };
 

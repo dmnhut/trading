@@ -2,9 +2,11 @@ import {
     common
 } from './index';
 
-const ready = () => {
-
-    common();
+const ready = {
+    run: function() {
+        
+        common();
+    }
 };
 
 export {

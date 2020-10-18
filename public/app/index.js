@@ -11,53 +11,29 @@ import { UsersCreate } from './users/create';
 import { UsersEdit } from './users/edit';
 import { UsersInfo } from './users/info';
 
-$(document).ready(() => {
+const ready = {
+    PageCommon,
+    DetailShippers,
+    MapIndex,
+    MapLocation,
+    OrdersCreate,
+    OrdersEdit,
+    Portal,
+    Prices,
+    Units,
+    UsersCreate,
+    UsersEdit,
+    UsersInfo
+};
+const documentQuery = $(document);
+const onReadyHandler = () => {
 
-    $(document).on('pjax:complete', () => {
-
-        run();
-    });
-
+    documentQuery.on('pjax:complete', run);
     run();
-});
-
+};
 const run = () => {
 
-    let object = document.querySelector('#object').value;
-    if ('PageCommon' === object) {
-        PageCommon();
-    }
-    if ('DetailShippers' === object) {
-        DetailShippers();
-    }
-    if ('MapIndex' === object) {
-        MapIndex();
-    }
-    if ('MapLocation' === object) {
-        MapLocation();
-    }
-    if ('OrdersCreate' === object) {
-        OrdersCreate();
-    }
-    if ('OrdersEdit' === object) {
-        OrdersEdit();
-    }
-    if ('Portal' === object) {
-        Portal();
-    }
-    if ('Prices' === object) {
-        Prices();
-    }
-    if ('Units' === object) {
-        Units();
-    }
-    if ('UsersCreate' === object) {
-        UsersCreate();
-    }
-    if ('UsersEdit' === object) {
-        UsersEdit();
-    }
-    if ('UsersInfo' === object) {
-        UsersInfo();
-    }
+    let objectQuery = document.querySelector('#object');
+    ready[objectQuery.value].run();
 };
+documentQuery.ready(onReadyHandler);

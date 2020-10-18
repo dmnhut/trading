@@ -3,13 +3,15 @@ import {
     common
 } from '../container/index';
 
-const ready = () => {
-
-    common();
-    onFocusOutInputNumber(['#phone', '#quantity']);
-    clear();
-    printCode();
-    eventHandler();
+const ready = {
+    run: function() {
+        
+        common();
+        onFocusOutInputNumber(['#phone', '#quantity']);
+        clear();
+        printCode();
+        eventHandler();
+    }
 };
 
 const printCode = () => {

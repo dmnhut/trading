@@ -2,11 +2,13 @@ import {
     common
 } from '../container/index';
 
-const ready = () => {
-
-    common();
-    geoGet();
-    timer();
+const ready = {
+    run: function() {
+        
+        common();
+        geoGet();
+        timer();
+    }
 };
 
 const geoGet = () => {

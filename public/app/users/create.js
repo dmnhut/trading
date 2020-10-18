@@ -3,11 +3,13 @@ import {
     common
 } from '../container/index';
 
-const ready = () => {
-
-    common();
-    onFocusOutInputNumber(['#identity_card', '#phone']);
-    eventHandler();
+const ready = {
+    run: function() {
+        
+        common();
+        onFocusOutInputNumber(['#identity_card', '#phone']);
+        eventHandler();
+    }
 };
 
 const eventHandler = () => {

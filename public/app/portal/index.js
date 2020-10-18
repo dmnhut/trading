@@ -3,10 +3,12 @@ import {
     common
 } from '../container/index';
 
-const ready = () => {
-
-    common();
-    eventHandler();
+const ready = {
+    run: function() {
+        
+        common();
+        eventHandler();
+    }
 };
 
 const eventHandler = () => {

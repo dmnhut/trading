@@ -3,11 +3,13 @@ import {
     onFocusOutInputNumber
 } from '../container/index';
 
-const ready = () => {
-
-    common();
-    onFocusOutInputNumber(['#kg', '#amount']);
-    eventHandler();
+const ready = {
+    run: function() {
+        
+        common();
+        onFocusOutInputNumber(['#kg', '#amount']);
+        eventHandler();
+    }
 };
 
 const eventHandler = () => {
