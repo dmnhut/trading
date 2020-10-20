@@ -28,7 +28,7 @@ const onFocusOutInputNumber = arrs => {
     });
 };
 
-const onInputSearchHandler = (txtQuery) => {
+const onInputSearchHandler = txtQuery => {
 
     if (NULL != txtQuery.value) {
         let count = 0;
@@ -117,7 +117,7 @@ const common = () => {
         }
     });
     closebtnQuery.forEach(element => {
-        
+
         element.addEventListener('click', onClickCloseBtn(element));
     });
     txtQuery?.addEventListener('input', onInputSearchHandler({txtQuery, tableActivatedQuery}));
